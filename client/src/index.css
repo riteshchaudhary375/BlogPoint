@@ -15,7 +15,8 @@
 }
 
 a.active hr {
-  display: block;
+  /* display: block; */
+  opacity: 100;
 }
 
 body {
