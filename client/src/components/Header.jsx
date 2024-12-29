@@ -8,74 +8,86 @@ const Header = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex items-center justify-between py-5 font-medium">
-      <Link to={"/"}>
-        <img
-          src={assets.logo_light}
-          alt="logo"
-          className="w-[170px] sm:w-[200px] md:w-[220px] lg:w-[240px]"
-        />
-      </Link>
+    <div className="mb-20 md:mb-24">
+      <div className="fixed left-0 top-0 right-0 px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
+        <div className="flex items-center justify-between py-3 md:py-4 font-medium bg-[#F4F6FC] border-b border-b-gray-400 shadow-sm">
+          <Link to={"/"}>
+            <img
+              src={assets.logo_light}
+              alt="logo"
+              className="w-[170px] sm:w-[200px] md:w-[220px] lg:w-[240px]"
+            />
+          </Link>
 
-      <ul className="hidden md:flex gap-5 text-sm lg:text-md text-gray-700 uppercase font-semibold">
-        <NavLink to={"/"} className="flex flex-col items-center gap-1">
-          <p>Home</p>
-          <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 opacity-0" />
-        </NavLink>
+          <ul className="hidden md:flex gap-5 text-sm lg:text-md text-gray-700 uppercase font-semibold">
+            <NavLink to={"/"} className="flex flex-col items-center gap-1">
+              <p>Home</p>
+              <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 opacity-0" />
+            </NavLink>
 
-        <NavLink to={"/projects"} className="flex flex-col items-center gap-1">
-          <p>Projects</p>
-          <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 opacity-0" />
-        </NavLink>
+            <NavLink to={"/blogs"} className="flex flex-col items-center gap-1">
+              <p>Blogs</p>
+              <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 opacity-0" />
+            </NavLink>
 
-        <NavLink to={"/about"} className="flex flex-col items-center gap-1">
-          <p>About</p>
-          <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 opacity-0" />
-        </NavLink>
+            <NavLink to={"/about"} className="flex flex-col items-center gap-1">
+              <p>About</p>
+              <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 opacity-0" />
+            </NavLink>
 
-        <NavLink to={"/contact"} className="flex flex-col items-center gap-1">
-          <p>Contact</p>
-          <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 opacity-0" />
-        </NavLink>
-      </ul>
+            <NavLink
+              to={"/contact"}
+              className="flex flex-col items-center gap-1"
+            >
+              <p>Contact</p>
+              <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 opacity-0" />
+            </NavLink>
+          </ul>
 
-      <div className="flex items-center gap-3 sm:gap-4 md:gap-5">
-        <img
-          src={assets.search_icon}
-          alt="search"
-          title="Search"
-          className="w-5 sm:w-6 cursor-pointer"
-          onClick={() => navigate("/search")}
-        />
+          <div className="flex items-center gap-3 sm:gap-4 md:gap-5">
+            <img
+              src={assets.search_icon}
+              alt="search"
+              title="Search"
+              className="w-5 sm:w-6 cursor-pointer"
+              onClick={() => navigate("/search")}
+            />
 
-        <img
-          src={assets.moon}
-          alt="theme"
-          title="Change Theme"
-          className="w-5 sm:w-6 cursor-pointer"
-        />
+            <img
+              src={assets.moon}
+              alt="theme"
+              title="Change Theme"
+              className="w-5 sm:w-6 cursor-pointer"
+            />
 
-        <img
-          src={assets.profile_icon}
-          alt="user"
-          title="Your Account"
-          className="w-5 sm:w-6 cursor-pointer"
-          onClick={() => navigate("/sign-in")}
-        />
+            <img
+              src={assets.profile_icon}
+              alt="user"
+              title="Your Account"
+              className="w-5 sm:w-6 cursor-pointer"
+              onClick={() => navigate("/sign-in")}
+            />
 
-        <img
-          src={assets.menu_icon}
-          alt="menu"
-          title="Menu"
-          className="w-5 sm:w-6 cursor-pointer md:hidden"
-          onClick={() => setVisible(true)}
-        />
+            <img
+              src={assets.menu_icon}
+              alt="menu"
+              title="Menu"
+              className="w-5 sm:w-6 cursor-pointer md:hidden"
+              onClick={() => setVisible(true)}
+            />
+          </div>
+        </div>
       </div>
 
       {/* Sidebar menu for small screen */}
+      {/*  <div
+        className={`absolute bg-red-400 md:hidden top-0 right-0 left-0 max-h-screen overflow-y-hidden transition-all duration-300 ease-in-out bg-[#F4F6FC] ${
+          visible ? "left-[0%]" : "left-[100%]"
+        }`}
+      > */}
       <div
-        className={`absolute md:hidden top-0 right-4  left-[100%] overflow-hidden transition-all duration-300 ease-in-out bg-[#F4F6FC] ${
-          visible && "left-0"
+        className={`fixed top-0 right-0 left-0 bottom-0 overflow-hidden transition-all duration-300 ease-in-out bg-[#F4F6FC] z-50 ${
+          visible ? "left-[0%]" : "left-[100%]"
         }`}
       >
         <div className="flex flex-col text-gray-800 pt-4 min-h-screen">
@@ -100,11 +112,11 @@ const Header = () => {
               Home
             </NavLink>
             <NavLink
-              to={"/projects"}
+              to={"/blogs"}
               className="px-7 py-2 rounded-md"
               onClick={() => setVisible(false)}
             >
-              Projects
+              Blogs
             </NavLink>
             <NavLink
               to={"/about"}

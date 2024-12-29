@@ -8,6 +8,12 @@ import moon from "./moon.png";
 import sun from "./sun.png";
 import dropdown_icon from "./dropdown_icon.png";
 import right_arrow from "./right_arrow.png";
+import dribble from "./dribble.png";
+import fb from "./fb.png";
+import github from "./github.png";
+import instagram from "./instagram.png";
+import linkedin from "./linkedin.png";
+import twitter from "./twitter.png";
 
 export const assets = {
   bin_icon,
@@ -20,4 +26,10 @@ export const assets = {
   sun,
   dropdown_icon,
   right_arrow,
+  dribble,
+  fb,
+  github,
+  instagram,
+  linkedin,
+  twitter,
 };
