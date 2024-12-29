@@ -4,7 +4,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { assets } from "../assets/assets";
 
 const Header = () => {
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
   const navigate = useNavigate();
 
   return (
@@ -74,8 +74,8 @@ const Header = () => {
 
       {/* Sidebar menu for small screen */}
       <div
-        className={`absolute md:hidden top-0 right-4 left-[100%] overflow-hidden transition-all duration-300 ease-in-out bg-[#F4F6FC] ${
-          visible && "left-[0%]"
+        className={`absolute md:hidden top-0 right-4  left-[100%] overflow-hidden transition-all duration-300 ease-in-out bg-[#F4F6FC] ${
+          visible && "left-0"
         }`}
       >
         <div className="flex flex-col text-gray-800 pt-4 min-h-screen">
