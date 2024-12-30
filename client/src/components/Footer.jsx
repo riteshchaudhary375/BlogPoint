@@ -1,6 +1,7 @@
 import React from "react";
 import { assets } from "../assets/assets";
 import { Link } from "react-router-dom";
+import HorizontalLine from "./HorizontalLine";
 
 const Footer = () => {
   return (
@@ -68,7 +69,7 @@ const Footer = () => {
 
       {/* Copyright */}
       <div>
-        <hr className="bg-gray-300 h-[1.4px]" />
+        <HorizontalLine />
 
         <div className="py-5 text-sm w-full sm:flex sm:items-center sm:justify-between">
           <p>

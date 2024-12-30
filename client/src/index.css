@@ -30,7 +30,7 @@ body {
 
 @media (max-width: 768px) {
   a.active {
-    background-color: black;
-    color: white;
+    background-color: #101720;
+    color: #f4f6fc;
   }
 }

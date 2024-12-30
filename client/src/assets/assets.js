@@ -14,6 +14,7 @@ import github from "./github.png";
 import instagram from "./instagram.png";
 import linkedin from "./linkedin.png";
 import twitter from "./twitter.png";
+import blog_contact_img from "./blog_contact_img.jpg";
 
 export const assets = {
   bin_icon,
@@ -32,4 +33,5 @@ export const assets = {
   instagram,
   linkedin,
   twitter,
+  blog_contact_img,
 };
