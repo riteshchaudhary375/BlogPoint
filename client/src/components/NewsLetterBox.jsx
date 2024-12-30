@@ -3,7 +3,7 @@ import Button from "./Button";
 
 const NewsLetterBox = () => {
   return (
-    <div className="text-center">
+    <div className="text-center my-32">
       <p className="text-2xl font-medium text-textColor1">
         Subscribe now & read the latest blog
       </p>

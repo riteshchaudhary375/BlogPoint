@@ -8,11 +8,11 @@ import { assets } from "../assets/assets";
 const Contact = () => {
   return (
     <div>
-      <div className="text-center text-2xl pt-10">
+      <div className="text-center text-2xl pt-8">
         <Title text1={"contact"} text2={"us"} />
       </div>
 
-      <div className="my-12 flex flex-col justify-center md:flex-row gap-10 mb-32">
+      <div className="my-10 flex flex-col justify-center md:flex-row gap-10 mb-32">
         {/* Left */}
         <img
           src={assets.blog_contact_img}
