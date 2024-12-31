@@ -9,7 +9,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="mb-20 md:mb-24">
+    <nav className="mb-20 md:mb-24 z-40">
       {/* Desktop view */}
       <div className="fixed left-0 top-0 right-0 px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
         {/* <div className="flex items-center justify-between py-3 md:py-4 font-medium bg-bgLight border-gray-400 border-b-2 "> */}
@@ -95,17 +95,21 @@ const Header = () => {
           visible ? "left-[0%]" : "left-[100%]"
         }`}
       >
-        <div className="flex flex-col text-textColor1 pt-4 min-h-screen">
+        <div className="flex flex-col text-textColor1 min-h-screen">
           <div
-            className="flex items-center justify-end p-3 text-lg"
+            className="flex items-center justify-end text-lg mb-2 pt-4 pr-4"
             onClick={() => setVisible(false)}
           >
-            <p className="cursor-pointer text-textColor1">Back</p>
+            <p className="cursor-pointer text-textColor1 text-xl">Back</p>
             <img
               src={assets.right_arrow}
               alt="back"
-              className="w-5 sm:w-7 cursor-pointer text-textColor1"
+              className="w-5 sm:w-7 cursor-pointer text-textColor1 scale-125"
             />
+          </div>
+
+          <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
+            <HorizontalLine />
           </div>
 
           <div className="flex flex-col items-center gap-6 font-medium text-lg uppercase mt-12">
@@ -140,7 +144,7 @@ const Header = () => {
           </div>
         </div>
       </div>
-    </div>
+    </nav>
   );
 };
 

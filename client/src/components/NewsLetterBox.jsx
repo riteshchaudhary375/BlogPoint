@@ -24,7 +24,8 @@ const NewsLetterBox = () => {
           type={"submit"}
           text={"Subscribe"}
           className={
-            "text-textLight bg-bgDark border-none outline-none bg-opacity-95 hover:bg-opacity-100"
+            // "text-textLight bg-bgDark border-none outline-none bg-opacity-95 hover:bg-opacity-100"
+            "text-textLight bg-bgDark border-none outline-none hover:bg-opacity-[93%]"
           }
           handleClick={() => alert("Processing...")}
         />

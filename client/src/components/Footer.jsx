@@ -5,7 +5,7 @@ import HorizontalLine from "./HorizontalLine";
 
 const Footer = () => {
   return (
-    <div>
+    <footer>
       <div className="flex flex-col sm:grid grid-cols-[3fr_1fr_1fr] gap-14 my-10 mt-40 text-sm">
         <div>
           <Link to={"/"}>
@@ -154,7 +154,7 @@ const Footer = () => {
           </ul>
         </div>
       </div>
-    </div>
+    </footer>
   );
 };
 
