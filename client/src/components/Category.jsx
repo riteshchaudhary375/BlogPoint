@@ -17,7 +17,7 @@ const Category = () => {
         a sense of accomplishment or newfound perspective.
       </p>
 
-      <div className="flex flex-wrap items-center justify-center gap-6 pt-7 w-full">
+      <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 md:gap-8 pt-7 w-full">
         {categoryData.map((item, index) => (
           <Link
             to={`/blogs/${item.category}`}
@@ -28,9 +28,9 @@ const Category = () => {
             <img
               src={item.image}
               alt="category"
-              className="p-2 w-24 h-24 object-cover object-top bg-no-repeat mb-2  border rounded-full hover:border-textColor3/90 transition-all duration-200 ease-in"
+              className="p-2 w-14 h-14 sm:w-16 sm:h-16 md:w-24 md:h-24 object-cover object-top bg-no-repeat mb-2  border rounded-full hover:border-textColor3/90 transition-all duration-200 ease-in"
             />
-            <p className="text-xs">{item.category}</p>
+            <p className="text-xs md:text-sm">{item.category}</p>
           </Link>
         ))}
       </div>
