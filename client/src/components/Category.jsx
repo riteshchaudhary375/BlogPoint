@@ -5,10 +5,9 @@ import { categoryData } from "../assets/assets";
 
 const Category = () => {
   return (
-    <div className="flex flex-col items-center gap-6 py-16 text-textColor2">
-      <div className="text-center text-2xl pt-8">
-        <Title text1={"Find by"} text2={"Category"} />
-      </div>
+    <div className="flex flex-col items-center gap-4 text-textColor2 my-16 sm:my-20 md:my-24">
+      <Title text1={"Find by"} text2={"Category"} />
+
       {/* <p className="">Immerse yourself in the excellence of your top article.</p> */}
       <p className="text-sm text-center sm:w-3/5">
         Choose the article that resonates most with your interests or needs, and
@@ -28,7 +27,7 @@ const Category = () => {
             <img
               src={item.image}
               alt="category"
-              className="p-2 w-14 h-14 sm:w-16 sm:h-16 md:w-24 md:h-24 object-cover object-top bg-no-repeat mb-2  border rounded-full hover:border-textColor3/90 transition-all duration-200 ease-in"
+              className="p-2 w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 object-cover object-top bg-no-repeat mb-2  border rounded-full hover:border-textColor3/90 transition-all duration-200 ease-in"
             />
             <p className="text-xs md:text-sm">{item.category}</p>
           </Link>

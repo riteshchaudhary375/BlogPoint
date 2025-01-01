@@ -2,20 +2,19 @@ import React from "react";
 import Title from "../components/Title";
 import { assets } from "../assets/assets";
 import NewsLetterBox from "../components/NewsLetterBox";
+import Title2 from "../components/Title2";
 
 const About = () => {
   return (
-    <div>
-      <div className="text-2xl text-center pt-8">
-        <Title text1={"about"} text2={"us"} />
-      </div>
+    <div className="pt-2 sm:pt-6 md:pt-8">
+      <Title text1={"about"} text2={"us"} />
 
-      <div className="my-10 flex flex-col md:flex-row gap-10">
+      <div className="my-8 sm:my-12 md:my-14 flex flex-col md:flex-row gap-10">
         <div>
           <img
             src={assets.about_img}
             alt="image"
-            className="w-full md:max-w-[480px] object-cover"
+            className="w-full h-[300px] sm:h-[380px] md:h-auto md:max-w-[480px] object-cover"
           />
         </div>
 
@@ -49,34 +48,38 @@ const About = () => {
       </div>
 
       {/* Title */}
-      <div className="text-xl py-4">
+      {/* <div className="text-xl py-4">
         <Title text1={"Why"} text2={"we are the best"} />
-      </div>
+      </div> */}
 
-      {/* Card */}
-      <div className="flex flex-col md:flex-row text-sm mb-20">
-        <div className="border border-gray-200 px-10 md:px-16 py-8 sm:py-20 flex flex-col gap-5">
-          <b className="font-medium">Quality Assurance:</b>
-          <p className="text-textColor2">
-            We meticulously select and vet each product to ensure it meets our
-            stringent quality standards.
-          </p>
-        </div>
+      <div className="my-20 md:my-24">
+        <Title2 text1={"Why"} text2={"we are the best"} />
 
-        <div className="border border-gray-200 px-10 md:px-16 py-8 sm:py-20 flex flex-col gap-5">
-          <b className="font-medium">Convenience:</b>
-          <p className="text-textColor2">
-            With our user-friendly interface and hassle-free ordering process,
-            shopping has never been easier.
-          </p>
-        </div>
+        {/* Card */}
+        <div className="flex flex-col md:flex-row text-sm mb-20">
+          <div className="border border-gray-200 px-10 md:px-16 py-8 sm:py-16 md:py-20 flex flex-col gap-5">
+            <b className="font-medium">Quality Assurance:</b>
+            <p className="text-textColor2">
+              We meticulously select and vet each product to ensure it meets our
+              stringent quality standards.
+            </p>
+          </div>
 
-        <div className="border border-gray-200 px-10 md:px-16 py-8 sm:py-20 flex flex-col gap-5">
-          <b className="font-medium">Exceptional Customer Service:</b>
-          <p className="text-textColor2">
-            Our team of dedicated professionals is here to assist you the way,
-            ensuring your satisfaction is our top priority.
-          </p>
+          <div className="border border-gray-200 px-10 md:px-16 py-8 sm:py-20 flex flex-col gap-5">
+            <b className="font-medium">Convenience:</b>
+            <p className="text-textColor2">
+              With our user-friendly interface and hassle-free ordering process,
+              shopping has never been easier.
+            </p>
+          </div>
+
+          <div className="border border-gray-200 px-10 md:px-16 py-8 sm:py-20 flex flex-col gap-5">
+            <b className="font-medium">Exceptional Customer Service:</b>
+            <p className="text-textColor2">
+              Our team of dedicated professionals is here to assist you the way,
+              ensuring your satisfaction is our top priority.
+            </p>
+          </div>
         </div>
       </div>
 

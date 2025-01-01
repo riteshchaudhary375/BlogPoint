@@ -7,17 +7,15 @@ import { assets } from "../assets/assets";
 
 const Contact = () => {
   return (
-    <div>
-      <div className="text-center text-2xl pt-8">
-        <Title text1={"contact"} text2={"us"} />
-      </div>
+    <div className="pt-2 sm:pt-6 md:pt-8">
+      <Title text1={"contact"} text2={"us"} />
 
-      <div className="my-10 flex flex-col justify-center md:flex-row gap-10 mb-32">
+      <div className="my-8 sm:my-12 md:my-14 flex flex-col md:flex-row gap-10">
         {/* Left */}
         <img
           src={assets.blog_contact_img}
           alt="image"
-          className="w-full md:max-w-[480px] object-cover"
+          className="w-full md:max-w-[480px] object-cover overflow-hidden"
         />
 
         {/* Right */}
