@@ -19,24 +19,18 @@ import about_img from "./about_img.png";
 import man_cellular_illust from "./man_cellular_illust.png";
 
 // Category
-import technology from "./technology.png";
-import health from "./health.png";
-import finance from "./finance.png";
-import finance_2 from "./finance_2.png";
-import travel from "./travel.png";
-import travel_2 from "./travel_2.png";
-import lifestyle from "./lifestyle.png";
-import lifestyle_2 from "./lifestyle_2.png";
-import food from "./food.png";
-import education from "./education.png";
-import business_entrepreneurship from "./business_entrepreneurship.png";
-import business_entrepreneurship_2 from "./business_entrepreneurship_2.png";
-import entertainment from "./entertainment.png";
-import parenting_family from "./parenting_family.png";
-import parenting_family_2 from "./parenting_family_2.png";
-import self_improvement from "./self_improvement.png";
-import self_Improvement_2 from "./self_Improvement_2.png";
-import sports_fitness from "./sports_fitness.png";
+import cpu from "./cpu.svg";
+import health from "./health.svg";
+import finance from "./finance.svg";
+import travel from "./travel.svg";
+import lifestyle from "./lifestyle.svg";
+import food from "./food.svg";
+import education from "./education_cap.svg";
+import handshake from "./handshake.svg";
+import entertainment from "./entertainment.svg";
+import family from "./family.svg";
+import self_improvement from "./self_improvement.svg";
+import sport_fitness from "./sport_fitness.svg";
 
 export const assets = {
   bin_icon,
@@ -63,7 +57,7 @@ export const assets = {
 export const categoryData = [
   {
     category: "Technology",
-    image: technology,
+    image: cpu,
   },
   {
     category: "Health",
@@ -71,15 +65,15 @@ export const categoryData = [
   },
   {
     category: "Finance",
-    image: finance_2,
+    image: finance,
   },
   {
     category: "Travel",
-    image: travel_2,
+    image: travel,
   },
   {
     category: "Lifestyle",
-    image: lifestyle_2,
+    image: lifestyle,
   },
   {
     category: "Food",
@@ -91,7 +85,7 @@ export const categoryData = [
   },
   {
     category: "Business & Entrepreneurship",
-    image: business_entrepreneurship_2,
+    image: handshake,
   },
   {
     category: "Entertainment",
@@ -99,7 +93,7 @@ export const categoryData = [
   },
   {
     category: "Parenting & Family",
-    image: parenting_family_2,
+    image: family,
   },
   {
     category: "Self-Improvement",
@@ -107,6 +101,6 @@ export const categoryData = [
   },
   {
     category: "Sports & Fitness",
-    image: sports_fitness,
+    image: sport_fitness,
   },
 ];
