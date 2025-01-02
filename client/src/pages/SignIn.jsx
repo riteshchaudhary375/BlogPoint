@@ -1,8 +1,12 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+
 import Title from "../components/Title";
 import Button from "../components/Button";
 
 const SignIn = () => {
+  const navigate = useNavigate();
+
   return (
     // <div className="min-h-screen pt-8">
     <div className="min-h-[70vh] flex items-center justify-center">
@@ -46,7 +50,12 @@ const SignIn = () => {
                 <p className="cursor-pointer hover:underline">
                   Forgot password?
                 </p>
-                <p className="cursor-pointer hover:underline">Create account</p>
+                <p
+                  className="cursor-pointer hover:underline"
+                  onClick={() => navigate("/sign-up")}
+                >
+                  Create account
+                </p>
               </div>
 
               <Button
