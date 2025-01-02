@@ -27,7 +27,7 @@ const Category = () => {
             <img
               src={item.image}
               alt="category"
-              className="p-2 w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 object-cover object-top bg-no-repeat mb-2  border rounded-full hover:border-textColor3/90 transition-all duration-200 ease-in"
+              className="p-2 w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 object-cover bg-no-repeat mb-2 border border-borderColor hover:border-borderColorHover rounded-full transition-all duration-200 ease-in"
             />
             <p className="text-xs md:text-sm">{item.category}</p>
           </Link>

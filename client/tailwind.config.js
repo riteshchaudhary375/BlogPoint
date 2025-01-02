@@ -13,6 +13,9 @@ export default {
         textColor3: "#6b7280", // gray-500
 
         lightBgHover: "#E5E7EB", // gray-200
+
+        borderColor: "#D1D5DB", // gray-300
+        borderColorHover: "#6B7280", // gray-500
       },
     },
   },
