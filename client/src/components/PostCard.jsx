@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Badge from "./Badge";
 
 const PostCard = ({
   id,
@@ -8,7 +9,6 @@ const PostCard = ({
   category,
   image,
   date,
-  postCreator,
   postCreatorProfile,
   postCreatorName,
   read,
@@ -31,9 +31,15 @@ const PostCard = ({
               <p className="text-xs">{read}</p>
             </div>
             {/* Category */}
-            <span className="text-xs inline-flex flex-nowrap items-center bg-lightBgHover px-1 py-0.5 ring-1 ring-inset ring-borderColor rounded-sm">
+            {/*  <span className="text-xs inline-flex flex-nowrap items-center bg-lightBgHover px-1 py-0.5 ring-1 ring-inset ring-borderColor rounded-sm">
               {category}
-            </span>
+            </span> */}
+            <Badge
+              badgeTitle={category}
+              textSize={"xs"}
+              paddingX={"1"}
+              paddingY={"0.5"}
+            />
           </div>
 
           {/* Title */}
@@ -49,9 +55,9 @@ const PostCard = ({
             <img
               src={postCreatorProfile}
               alt="Creator profile"
-              className="w-6 h-6 rounded-full"
+              className="w-6 h-6 rounded-full opacity-90"
             />
-            <p className="text-base font-medium text-textColor2">
+            <p className="text-base font-medium text-textColor3">
               {postCreatorName}
             </p>
           </div>
