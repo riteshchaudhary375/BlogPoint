@@ -9,7 +9,6 @@ import Dashboard from "./pages/Dashboard";
 import CreatePost from "./pages/CreatePost";
 import UpdatePost from "./pages/UpdatePost";
 import PostPage from "./pages/PostPage";
-import Search from "./pages/Search";
 import Header from "./components/Header";
 import Contact from "./pages/Contact";
 import Footer from "./components/Footer";
@@ -28,7 +27,6 @@ function App() {
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/post/:postId" element={<PostPage />} />
-          <Route path="/search" element={<Search />} />
 
           {/* Private Route */}
           <Route path="/dashboard" element={<Dashboard />} />

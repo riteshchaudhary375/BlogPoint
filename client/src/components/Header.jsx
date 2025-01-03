@@ -53,14 +53,7 @@ const Header = () => {
               alt="search"
               title="Search"
               className="w-5 sm:w-6 cursor-pointer opacity-90 hover:opacity-100"
-              onClick={() => navigate("/search")}
-            />
-
-            <img
-              src={assets.moon}
-              alt="theme"
-              title="Change Theme"
-              className="w-5 sm:w-6 cursor-pointer opacity-90 hover:opacity-100"
+              onClick={() => navigate("/blogs")}
             />
 
             <img
