@@ -43,7 +43,7 @@ const PostsContainer = () => {
               ))}
         </div>
 
-        <div className="text-center mt-4">
+        <div className="text-center mt-6">
           <Button
             type={"button"}
             text={"More"}

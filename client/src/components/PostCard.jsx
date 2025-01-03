@@ -15,7 +15,7 @@ const PostCard = ({
 }) => {
   return (
     <div className="w-full border border-borderColor hover:border-borderColorHover rounded-sm h-[430px] overflow-hidden transition-all duration-300 ease-in">
-      <Link to={`/posts/${id}`}>
+      <Link to={`/post/${id}`}>
         <img
           src={image}
           alt={title}
@@ -55,7 +55,7 @@ const PostCard = ({
             <img
               src={postCreatorProfile}
               alt="Creator profile"
-              className="w-6 h-6 rounded-full opacity-90"
+              className="w-6 h-6 rounded-full"
             />
             <p className="text-base font-medium text-textColor3">
               {postCreatorName}

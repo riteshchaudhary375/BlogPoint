@@ -27,7 +27,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
-          <Route path="/post/:postSlug" element={<PostPage />} />
+          <Route path="/post/:postId" element={<PostPage />} />
           <Route path="/search" element={<Search />} />
 
           {/* Private Route */}
