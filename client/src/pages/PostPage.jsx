@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { posts } from "../assets/assets";
 import Badge from "../components/Badge";
+import RelatedPosts from "../components/RelatedPosts";
 
 const PostPage = () => {
   const { postId } = useParams();
@@ -11,8 +12,7 @@ const PostPage = () => {
     posts.map((item) => {
       if (item._id === postId) {
         setPostData(item);
-        console.log(item);
-
+        // console.log(item);
         return null;
       }
     });
@@ -32,7 +32,7 @@ const PostPage = () => {
         <div className="pt-2 sm:pt-6 md:pt-8">
           <div className="flex flex-col gap-6">
             <div>
-              <h1 className="text-textColor1 text-xl sm:text-2xl md:text-3xl text-center font-medium">
+              <h1 className="text-textColor1 text-2xl md:text-3xl text-center font-medium">
                 {postData.title}
               </h1>
             </div>
@@ -83,6 +83,9 @@ const PostPage = () => {
               </div>
             </div>
           </div>
+
+          {/* Related posts */}
+          <RelatedPosts category={postData.category} />
         </div>
       )}
     </>

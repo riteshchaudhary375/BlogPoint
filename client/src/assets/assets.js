@@ -32,6 +32,10 @@ import parenting_family_img from "./parenting_family.jpg";
 import self_improvement_img from "./self_improvement.jpg";
 import sport_fitness_img from "./sport_fitness.jpg";
 import technology_img from "./technology.jpg";
+import ai_img from "./ai.jpg";
+import cyber_security_img from "./cyber_security.png";
+import data_science_img from "./data_science.jpg";
+import programming_img from "./programming.jpg";
 
 // Category
 import cpu from "./cpu.svg";
@@ -275,5 +279,60 @@ export const posts = [
     postCreatorProfile: profile_r_img,
     postCreatorName: "Ritesh Kumar",
     read: "17 mins read",
+  },
+
+  {
+    _id: "mmm",
+    category: "Technology",
+    image: cyber_security_img,
+    date: "3 Jan 2025",
+    title: "Importance of Cyber Security in the Digital Age",
+    description:
+      "As our lives become increasingly digital, the threat landscape expands, putting personal data, financial information, and even national infrastructure at risk. This topic explores the essential role of cyber security in protecting digital assets, ensuring privacy, and maintaining trust in technology-driven systems.",
+    postCreatorProfile: profile_r_img,
+    postCreatorName: "Ritesh Kumar",
+    read: "11 mins read",
+  },
+
+  {
+    _id: "nnn",
+    category: "Technology",
+    image: programming_img,
+    date: "3 Jan 2025",
+    title:
+      "Introduction to Programming: Building the Foundation of Software Development",
+    description:
+      "Programming is the backbone of modern technology, enabling the creation of software, applications, and systems. This topic introduces the basics of programming, covering key concepts such as syntax, logic, and algorithms, along with an overview of popular programming languages.",
+    postCreatorProfile: profile_r_img,
+    postCreatorName: "Ritesh Kumar",
+    read: "9 mins read",
+  },
+
+  {
+    _id: "ooo",
+    category: "Technology",
+    image: data_science_img,
+    date: "3 Jan 2025",
+    title:
+      "What is Data Science? Understanding the Core Concepts and Applications",
+    description:
+      "Data science is a multidisciplinary field that combines statistics, programming, and domain expertise to extract insights from data. This topic introduces key components of data science, including data collection, cleaning, analysis, and visualization, and discusses its applications in various industries.",
+    postCreatorProfile: profile_r_img,
+    postCreatorName: "Ritesh Kumar",
+    read: "4 mins read",
+  },
+
+  {
+    _id: "ppp",
+    category: "Technology",
+    image: ai_img,
+    date: "3 Jan 2025",
+    title:
+      "An Introduction to Artificial Intelligence: Concepts and Applications",
+    description:
+      "Artificial Intelligence (AI) refers to the development of computer systems capable of performing tasks that typically require human intelligence, such as learning, reasoning, and decision-making. This topic provides an overview of AI, its core concepts, and real-world applications in healthcare, finance, transportation, and more.",
+    postCreatorProfile: profile_r_img,
+    postCreatorName: "Ritesh Kumar",
+    read: "4 mins read",
   },
 ];
