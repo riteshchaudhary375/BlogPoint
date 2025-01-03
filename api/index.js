@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 
+import userRoutes from "./routes/user.route.js";
+
 dotenv.config();
 
 mongoose
@@ -23,6 +25,9 @@ const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
 });
+
+// API endpoint
+app.use("/api/user", userRoutes);
 
 // Middleware for error handle
 app.use((err, req, res, next) => {
