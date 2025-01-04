@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -38,6 +39,8 @@ function App() {
 
         <Footer />
       </BrowserRouter>
+
+      <Toaster position="bottom-right" reverseOrder={false} />
     </div>
   );
 }

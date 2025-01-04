@@ -1,11 +1,52 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import Title from "../components/Title";
 import Button from "../components/Button";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  signInFailure,
+  signInStart,
+  signInSuccess,
+} from "../redux/user/userSlice.js";
 
 const SignIn = () => {
+  const { error, loading } = useSelector((state) => state.user);
+
+  const [formData, setFormData] = useState({});
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!formData.email || !formData.password)
+      return dispatch(signInFailure("All fields required!"));
+    try {
+      dispatch(signInStart());
+      const res = await fetch(`/api/auth/signin`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(signInFailure(data.message));
+        return;
+      }
+      if (res.ok) {
+        dispatch(signInSuccess(data));
+        navigate("/");
+        toast.success("Welcome, Have a great day!");
+      }
+    } catch (error) {
+      dispatch(signInFailure(error.message));
+    }
+  };
 
   return (
     // <div className="min-h-screen pt-8">
@@ -19,7 +60,7 @@ const SignIn = () => {
           </p>
 
           <div className="">
-            <form className="flex flex-col gap-3">
+            <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
               <div className="flex flex-col gap-1">
                 <label htmlFor="email" className="text-sm">
                   Your email
@@ -30,6 +71,7 @@ const SignIn = () => {
                   placeholder="name@email.com"
                   required
                   className="border border-bgDark/30 rounded-sm w-full p-2 outline-bgDark/50 text-sm bg-inherit"
+                  onChange={handleChange}
                 />
               </div>
 
@@ -43,6 +85,7 @@ const SignIn = () => {
                   placeholder="⁎⁎⁎⁎⁎⁎⁎"
                   required
                   className="border border-bgDark/30 rounded-sm w-full p-2 outline-bgDark/50 text-sm bg-inherit"
+                  onChange={handleChange}
                 />
               </div>
 
@@ -50,23 +93,31 @@ const SignIn = () => {
                 <p className="cursor-pointer hover:underline">
                   Forgot password?
                 </p>
-                <p
+                {/* <p
                   className="cursor-pointer hover:underline"
                   onClick={() => navigate("/sign-up")}
+                > */}
+                <Link
+                  to={"/sign-up"}
+                  className="cursor-pointer hover:underline"
                 >
                   Create account
-                </p>
+                </Link>
+                {/* </p> */}
               </div>
 
               <Button
-                type={"button"}
-                text={"Login"}
-                className={
-                  "text-textLight bg-bgDark border-none outline-none hover:bg-opacity-[93%] mt-3"
-                }
-                handleClick={() => alert("Processing...")}
+                disabled={loading}
+                type={"submit"}
+                text={loading ? "Loading..." : "Login"}
+                className={`text-textLight bg-bgDark border-none outline-none hover:bg-opacity-[93%] mt-3 ${
+                  loading && "opacity-90"
+                }`}
               />
             </form>
+
+            {/* Error message */}
+            {error && <p className="text-red-500 text-xs mt-2">{error}</p>}
           </div>
         </div>
       </div>

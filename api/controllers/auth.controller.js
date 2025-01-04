@@ -1,7 +1,8 @@
-import User from "../models/user.model.js";
 import bcryptjs from "bcryptjs";
 import validator from "validator";
 import jwt from "jsonwebtoken";
+
+import User from "../models/user.model.js";
 import { errorHandler } from "../utils/error.js";
 
 export const signup = async (req, res, next) => {
@@ -39,7 +40,7 @@ export const signup = async (req, res, next) => {
 
     res
       .status(201)
-      .json({ success: true, message: "Welcome, Please login your account." });
+      .json({ success: true, message: "Account created, Please login." });
   } catch (error) {
     next(error);
   }
@@ -51,9 +52,10 @@ export const signin = async (req, res, next) => {
 
     if (!email || !password)
       return next(errorHandler(400, "All fields required!"));
+
     // Matching user
     const validUser = await User.findOne({ email });
-    if (!validUser) return next(404, "User not found!");
+    if (!validUser) return next(errorHandler(404, "User not found!"));
 
     // Matching password
     const validPassword = await bcryptjs.compareSync(

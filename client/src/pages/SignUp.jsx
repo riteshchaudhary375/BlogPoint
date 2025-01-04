@@ -1,11 +1,53 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import Title from "../components/Title";
 import Button from "../components/Button";
 
 const SignUp = () => {
+  const [formData, setFormData] = useState({});
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!formData.username || !formData.email || !formData.password) {
+      return setErrorMessage("All filelds required.");
+    }
+
+    try {
+      setLoading(true);
+      setErrorMessage(null);
+      const res = await fetch(`/api/auth/signup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        setLoading(false);
+        setErrorMessage(data.message);
+        return;
+      }
+      if (res.ok) {
+        setLoading(false);
+        setErrorMessage(null);
+        navigate("/sign-in");
+        toast.success(data.message);
+      }
+    } catch (error) {
+      // console.log(error);
+      setLoading(false);
+      setErrorMessage(error.message);
+    }
+  };
 
   return (
     // <div className="min-h-screen pt-8">
@@ -19,19 +61,21 @@ const SignUp = () => {
           </p>
 
           <div className="">
-            <form className="flex flex-col gap-3">
+            <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
               <div className="flex flex-col gap-1">
-                <label htmlFor="name" className="text-sm">
+                <label htmlFor="username" className="text-sm">
                   Your name
                 </label>
                 <input
                   type="text"
-                  id="name"
+                  id="username"
                   placeholder="full name"
                   required
                   className="border border-bgDark/30 rounded-sm w-full p-2 outline-bgDark/50 text-sm bg-inherit"
+                  onChange={handleChange}
                 />
               </div>
+
               <div className="flex flex-col gap-1">
                 <label htmlFor="email" className="text-sm">
                   Your email
@@ -42,6 +86,7 @@ const SignUp = () => {
                   placeholder="name@email.com"
                   required
                   className="border border-bgDark/30 rounded-sm w-full p-2 outline-bgDark/50 text-sm bg-inherit"
+                  onChange={handleChange}
                 />
               </div>
 
@@ -55,6 +100,7 @@ const SignUp = () => {
                   placeholder="⁎⁎⁎⁎⁎⁎⁎"
                   required
                   className="border border-bgDark/30 rounded-sm w-full p-2 outline-bgDark/50 text-sm bg-inherit"
+                  onChange={handleChange}
                 />
               </div>
 
@@ -62,23 +108,33 @@ const SignUp = () => {
                 <p className="cursor-pointer hover:underline">
                   Forgot password?
                 </p>
-                <p
+                {/* <p
                   className="cursor-pointer hover:underline"
                   onClick={() => navigate("/sign-in")}
+                > */}
+                <Link
+                  to={"/sign-in"}
+                  className="cursor-pointer hover:underline"
                 >
                   Login here
-                </p>
+                </Link>
+                {/* </p> */}
               </div>
 
               <Button
-                type={"button"}
-                text={"Create"}
-                className={
-                  "text-textLight bg-bgDark border-none outline-none hover:bg-opacity-[93%] mt-3"
-                }
-                handleClick={() => alert("Processing...")}
+                type={"submit"}
+                text={loading ? "Loading..." : "Create"}
+                disabled={loading}
+                className={`text-textLight bg-bgDark border-none outline-none hover:bg-opacity-[93%] mt-3 ${
+                  loading && "opacity-90"
+                }`}
               />
             </form>
+
+            {/* Error message */}
+            {errorMessage && (
+              <p className="text-red-500 text-xs mt-2">{errorMessage}</p>
+            )}
           </div>
         </div>
       </div>
