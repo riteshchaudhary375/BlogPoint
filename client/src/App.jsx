@@ -14,6 +14,7 @@ import Header from "./components/Header";
 import Contact from "./pages/Contact";
 import Footer from "./components/Footer";
 import Profile from "./pages/Profile";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   return (
@@ -29,9 +30,11 @@ function App() {
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/post/:postId" element={<PostPage />} />
-          <Route path="/profile" element={<Profile />} />
 
           {/* Private Route */}
+          <Route element={<PrivateRoute />}>
+            <Route path="/profile" element={<Profile />} />
+          </Route>
           <Route path="/dashboard" element={<Dashboard />} />
 
           {/* Admin Route */}
