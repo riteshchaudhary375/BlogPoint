@@ -21,6 +21,22 @@ const userSchema = new mongoose.Schema(
       default:
         "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
     },
+    address: {
+      type: Object,
+      default: { line1: "", line2: "" },
+    },
+    gender: {
+      type: String,
+      default: "Not Selected",
+    },
+    dob: {
+      type: String,
+      default: "Not Selected",
+    },
+    phone: {
+      type: String,
+      default: "9845123456",
+    },
   },
   { timestamps: true }
 );

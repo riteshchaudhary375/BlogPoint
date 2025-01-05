@@ -18,6 +18,7 @@ import blog_contact_img from "./blog_contact_img.jpg";
 import about_img from "./about_img.png";
 import man_cellular_illust from "./man_cellular_illust.png";
 
+import upload_icon from "./upload_icon.png";
 import profile_r_img from "./profile_r.png";
 
 import business_img from "./business.jpg";
@@ -71,6 +72,7 @@ export const assets = {
   blog_contact_img,
   about_img,
   man_cellular_illust,
+  upload_icon,
 };
 
 export const categoryData = [
