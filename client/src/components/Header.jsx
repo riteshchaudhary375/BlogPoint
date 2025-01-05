@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import { assets } from "../assets/assets";
 import HorizontalLine from "./HorizontalLine";
 
 const Header = () => {
+  const { currentUser } = useSelector((state) => state.user);
+
   const [visible, setVisible] = useState(false);
+  const [toggleProfile, setToggleProfile] = useState(false);
   const navigate = useNavigate();
 
   return (
@@ -55,14 +59,56 @@ const Header = () => {
               className="w-5 sm:w-6 cursor-pointer opacity-90 hover:opacity-100"
               onClick={() => navigate("/blogs")}
             />
-
-            <img
-              src={assets.profile_icon}
-              alt="user"
-              title="Your Account"
-              className="w-5 sm:w-6 cursor-pointer opacity-90 hover:opacity-100"
-              onClick={() => navigate("/sign-in")}
-            />
+            {currentUser ? (
+              <div className="group relative">
+                <img
+                  src={currentUser.profilePicture}
+                  alt="Profile picture"
+                  title="Your Profile"
+                  className="w-6 h-6 sm:w-8 sm:h-8 rounded-full cursor-pointer object-cover"
+                  onClick={() => {
+                    setToggleProfile(!toggleProfile);
+                  }}
+                />
+                {toggleProfile && (
+                  <div className="absolute -right-2 md:right-2 pt-1">
+                    <div className="flex flex-col border border-borderColor rounded-sm bg-bgLight shadow-sm">
+                      <div className="flex flex-col gap-0 px-4 py-2.5">
+                        <p className="text-sm font-light">
+                          @{currentUser.username}
+                        </p>
+                        <p className="text-sm font-medium">
+                          {currentUser.email}
+                        </p>
+                      </div>
+                      <HorizontalLine />
+                      <div className="flex flex-col gap-1 my-1 cursor-pointer font-light text-base">
+                        <Link
+                          to={"/profile"}
+                          onClick={() => setToggleProfile(false)}
+                        >
+                          <p className="hover:bg-lightBgHover px-4 py-1.5">
+                            Profile
+                          </p>
+                        </Link>
+                        <HorizontalLine />
+                        <p className="hover:bg-lightBgHover px-4 py-1.5">
+                          Sign out
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <img
+                src={assets.profile_icon}
+                alt="user"
+                title="Your Account"
+                className="w-5 sm:w-6 cursor-pointer opacity-90 hover:opacity-100"
+                onClick={() => navigate(currentUser ? "/profile" : "/sign-in")}
+              />
+            )}
 
             <img
               src={assets.menu_icon}
