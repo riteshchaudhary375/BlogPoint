@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-
+import { useSelector, useDispatch } from "react-redux";
+import { signOutUserSuccess } from "../redux/user/userSlice.js";
 import { assets } from "../assets/assets";
 import HorizontalLine from "./HorizontalLine";
+import toast from "react-hot-toast";
 
 const Header = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -11,6 +12,25 @@ const Header = () => {
   const [visible, setVisible] = useState(false);
   const [toggleProfile, setToggleProfile] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleSignOut = async () => {
+    try {
+      const res = await fetch(`/api/user/signout`, {
+        method: "POST",
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        console.log(data.message);
+        return;
+      } else {
+        dispatch(signOutUserSuccess(data));
+        toast.success("Logged out successful");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <nav className="mb-20 md:mb-24 z-40">
@@ -92,7 +112,10 @@ const Header = () => {
                           </p>
                         </Link>
                         <HorizontalLine />
-                        <p className="hover:bg-lightBgHover px-4 py-1.5">
+                        <p
+                          className="hover:bg-lightBgHover px-4 py-1.5"
+                          onClick={handleSignOut}
+                        >
                           Sign out
                         </p>
                       </div>
