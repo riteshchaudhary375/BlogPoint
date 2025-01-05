@@ -10,6 +10,7 @@ import {
   signInStart,
   signInSuccess,
 } from "../redux/user/userSlice.js";
+import OAuth from "../components/OAuth.jsx";
 
 const SignIn = () => {
   const { error, loading } = useSelector((state) => state.user);
@@ -114,6 +115,9 @@ const SignIn = () => {
                   loading && "opacity-90"
                 }`}
               />
+
+              {/* Google OAuth */}
+              <OAuth />
             </form>
 
             {/* Error message */}

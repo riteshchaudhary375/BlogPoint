@@ -85,3 +85,62 @@ export const signin = async (req, res, next) => {
     next(error);
   }
 };
+
+export const google = async (req, res, next) => {
+  try {
+    const { name, email, googlePhotoUrl } = req.body;
+
+    const user = await User.findOne({ email });
+
+    if (user) {
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+      const { password, ...rest } = user._doc;
+
+      res
+        .cookie("access_token", token, {
+          path: "/",
+          httpOnly: true,
+          expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7d
+          sameSite: "none",
+          secure: true,
+        })
+        .status(200)
+        .json(rest);
+    } else {
+      const generatedPassword =
+        Math.random().toString(36).slice(-8) +
+        Math.random().toString(36).slice(-8);
+
+      const salt = await bcryptjs.genSalt(10);
+      const hashedPassword = bcryptjs.hashSync(generatedPassword, salt);
+
+      const newUser = new User({
+        username:
+          name.toLowerCase().split(" ").join("") +
+          Math.random().toString(9).slice(-4),
+        email,
+        password: hashedPassword,
+        profilePicture: googlePhotoUrl,
+      });
+
+      await newUser.save();
+
+      const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
+
+      const { password, ...rest } = newUser._doc;
+
+      res
+        .cookie("access_token", token, {
+          path: "/",
+          httpOnly: true,
+          expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7d
+          sameSite: "none",
+          secure: true,
+        })
+        .status(201)
+        .json(rest);
+    }
+  } catch (error) {
+    next(error);
+  }
+};

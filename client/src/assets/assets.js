@@ -17,6 +17,7 @@ import twitter from "./twitter.png";
 import blog_contact_img from "./blog_contact_img.jpg";
 import about_img from "./about_img.png";
 import man_cellular_illust from "./man_cellular_illust.png";
+import google from "./google.svg";
 
 import upload_icon from "./upload_icon.png";
 import profile_r_img from "./profile_r.png";
@@ -73,6 +74,7 @@ export const assets = {
   about_img,
   man_cellular_illust,
   upload_icon,
+  google,
 };
 
 export const categoryData = [

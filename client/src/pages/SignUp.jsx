@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 
 import Title from "../components/Title";
 import Button from "../components/Button";
+import OAuth from "../components/OAuth";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({});
@@ -129,6 +130,9 @@ const SignUp = () => {
                   loading && "opacity-90"
                 }`}
               />
+
+              {/* OAuth Google */}
+              <OAuth />
             </form>
 
             {/* Error message */}
