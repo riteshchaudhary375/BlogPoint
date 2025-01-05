@@ -22,9 +22,11 @@ const Header = () => {
       const data = await res.json();
       if (!res.ok) {
         console.log(data.message);
+        setToggleProfile(false);
         return;
       } else {
         dispatch(signOutUserSuccess(data));
+        setToggleProfile(false);
         toast.success("Logged out successful");
       }
     } catch (error) {
