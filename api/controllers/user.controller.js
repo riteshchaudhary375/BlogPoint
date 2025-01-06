@@ -54,8 +54,8 @@ export const updateUserProfile = async (req, res, next) => {
         e.g., 9845123456
         regex: [9][8][0-9]{8}
         */
-      if (!req.body.phone.match(/^[9][8][0-9]{8}/))
-        return next(errorHandler(400, "Phone no. not valid"));
+      if (!req.body.phone.match(/^[9][8][0-9]{8}$/))
+        return next(errorHandler(400, "Invalid phone no."));
     }
 
     const updatedUser = await User.findByIdAndUpdate(
@@ -65,6 +65,7 @@ export const updateUserProfile = async (req, res, next) => {
           username: req.body.username,
           phone: req.body.phone,
           // address: JSON.parse(address),
+          // address: JSON.parse(req.body.address),
           address: req.body.address,
           dob: req.body.dob,
           gender: req.body.gender,

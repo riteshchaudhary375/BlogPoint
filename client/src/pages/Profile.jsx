@@ -1,14 +1,21 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import toast from "react-hot-toast";
+
 import Title from "../components/Title";
 // import { assets } from "../assets/assets";
 import Button from "../components/Button";
 import HorizontalLine from "../components/HorizontalLine";
 import Title2 from "../components/Title2";
-import toast from "react-hot-toast";
+import {
+  updateUserStart,
+  updateUserSuccess,
+  updateUserFailure,
+} from "../redux/user/userSlice.js";
 
 const Profile = () => {
   const { error, loading, currentUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({});
   const [isEdit, setIsEdit] = useState(false);
@@ -19,11 +26,29 @@ const Profile = () => {
 
   const handleUpdateProfile = async (e) => {
     try {
-      console.log("Updating profile");
-      toast.success("Profile updated");
-      setIsEdit(false);
+      dispatch(updateUserStart());
+      const res = await fetch(
+        `/api/user/updateUserProfile/${currentUser._id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        }
+      );
+      const data = await res.json();
+      if (!res.ok) {
+        setIsEdit(false);
+        dispatch(updateUserFailure(data.message));
+        return;
+      }
+      if (res.ok) {
+        setIsEdit(false);
+        dispatch(updateUserSuccess(data));
+        toast.success("Profile updated");
+      }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
+      dispatch(updateUserFailure(error.message));
     }
   };
 
@@ -133,16 +158,29 @@ const Profile = () => {
                       id="phone"
                       className="bg-inherit border border-borderColor outline-borderColorHover rounded-sm px-2 py-1"
                       placeholder="address 1"
-                      onChange={handleChange}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          address: { ...prev.address, line1: e.target.value },
+                        }))
+                      }
                       defaultValue={currentUser.address.line1}
+                      // value={currentUser.address.line1}
                     />
                     <input
                       type="text"
                       id="phone"
                       className="bg-inherit border border-borderColor outline-borderColorHover rounded-sm px-2 py-1"
                       placeholder="address 2"
-                      onChange={handleChange}
+                      // onChange={handleChange}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          address: { ...prev.address, line2: e.target.value },
+                        }))
+                      }
                       defaultValue={currentUser.address.line2}
+                      // value={currentUser.address.line2}
                     />
                   </p>
                 ) : (
@@ -216,6 +254,14 @@ const Profile = () => {
                 />
               )}
             </div>
+
+            {/* Error message */}
+            {error && (
+              <p className="text-red-500 text-xs -mt-4">
+                {error || error.message}
+              </p>
+            )}
+            {/* <p className="bg-red-400 -mt-4">error</p> */}
           </div>
         </div>
       </div>

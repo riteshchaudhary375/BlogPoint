@@ -10,6 +10,6 @@ const router = express.Router();
 
 router.get("/test", test);
 router.post("/signout", signout);
-router.put("/update/:userId", verifyToken, updateUserProfile);
+router.put("/updateUserProfile/:userId", verifyToken, updateUserProfile);
 
 export default router;
