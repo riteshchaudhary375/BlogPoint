@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 
+import connectCloudinary from "./utils/cloudinary.js";
+
 import userRoutes from "./routes/user.route.js";
 import authRoutes from "./routes/auth.route.js";
 
@@ -16,6 +18,9 @@ mongoose
   .catch((error) => {
     console.log(error);
   });
+
+// Connect to cloudinary
+connectCloudinary();
 
 const app = express();
 

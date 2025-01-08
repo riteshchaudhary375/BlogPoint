@@ -1,3 +1,7 @@
+import bcryptjs from "bcryptjs";
+import jwt from "jsonwebtoken";
+import { v2 as cloudinary } from "cloudinary";
+
 import User from "../models/user.model.js";
 import { errorHandler } from "../utils/error.js";
 
@@ -16,13 +20,11 @@ export const signout = async (req, res, next) => {
 };
 
 // Update user
-export const updateUserProfile = async (req, res, next) => {
+export const updateUserProfileData = async (req, res, next) => {
   // user from verifyToken (logged in user)
   // console.log(req.user);
 
   try {
-    // const { address } = req.body;
-
     if (req.user.id !== req.params.userId)
       return next(errorHandler(403, "Not allowed to update this user."));
 
@@ -64,8 +66,6 @@ export const updateUserProfile = async (req, res, next) => {
         $set: {
           username: req.body.username,
           phone: req.body.phone,
-          // address: JSON.parse(address),
-          // address: JSON.parse(req.body.address),
           address: req.body.address,
           dob: req.body.dob,
           gender: req.body.gender,
@@ -77,6 +77,125 @@ export const updateUserProfile = async (req, res, next) => {
     const { password, ...rest } = updatedUser._doc;
 
     res.status(200).json(rest);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Update user password
+export const updateUserPassword = async (req, res, next) => {
+  try {
+    const { oldPassword, newPassword } = req.body;
+
+    if (req.user.id !== req.params.userId) {
+      return next(errorHandler(403, "Not allowed to update this user."));
+    } else {
+      const user = await User.findOne(req.user.email);
+      const decode_password = await bcryptjs.compareSync(
+        oldPassword,
+        user.password
+      );
+      if (!decode_password) {
+        return next(errorHandler(401, "Invalid old password!"));
+      } else {
+        if (oldPassword === newPassword) {
+          return next(
+            errorHandler(
+              400,
+              "Old & new password matched! Please enter different."
+            )
+          );
+        } else {
+          const salt = await bcryptjs.genSaltSync(10);
+          const hashedPassword = await bcryptjs.hashSync(newPassword, salt);
+
+          const updatedUserPassword = await User.findByIdAndUpdate(
+            req.params.userId,
+            {
+              $set: {
+                password: hashedPassword,
+              },
+            },
+            { new: true }
+          );
+
+          const { password, ...rest } = updatedUserPassword._doc;
+
+          res.clearCookie("access_token").status(200).json({
+            success: true,
+            message: "Password updated, Please login again.",
+          });
+        }
+      }
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Update profile image
+export const updateUserProfileImage = async (req, res, next) => {
+  try {
+    // using multer we upload image file
+    const imageFile = req.file;
+
+    if (req.user.id !== req.params.userId) {
+      return next(errorHandler(403, "Not allowed to update this user."));
+    } else {
+      if (!imageFile) {
+        return next(errorHandler(400, "Error on uploading image!"));
+      } else {
+        // upload image to cloudinary
+        // 1. uploading to cloudinary from local system
+        const imageUpload = await cloudinary.uploader.upload(imageFile.path, {
+          resource_type: "image",
+        });
+        // 2. storing link of that image from cloudinary into variable
+        const imageURL = imageUpload.secure_url;
+
+        // 3. update profile image into database
+        // await User.findByIdAndUpdate(userId, { profilePicture: imageURL });
+        const updatedUserProfileImage = await User.findByIdAndUpdate(
+          req.params.userId,
+          {
+            $set: {
+              profilePicture: imageURL,
+            },
+          },
+          { new: true }
+        );
+
+        /* const token = jwt.sign(
+          { id: req.params.userId },
+          process.env.JWT_SECRET,
+          {
+            expiresIn: "7d",
+          }
+        ); */
+
+        // Separate password
+        // const { password: pass, ...rest } = validUser._doc;
+
+        /* res
+              .status(200)
+              .cookie("access_token", token, {
+                path: "/",
+                httpOnly: true,
+                expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7d, (days/1) * (hours/day) * (minutes/hour) * (seconds/minute) * (miliseconds/second)
+                sameSite: "none",
+                secure: true,
+              })
+              .json(rest); */
+
+        const { password, ...rest } = updatedUserProfileImage._doc;
+
+        res.status(200).json({
+          success: true,
+          message: "Profile image updated",
+          rest,
+        });
+      }
+    }
   } catch (error) {
     next(error);
   }

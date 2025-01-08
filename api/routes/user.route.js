@@ -1,15 +1,29 @@
 import express from "express";
 import { verifyToken } from "../utils/verifyUser.js";
+import upload from "../utils/multer.js";
 import {
   signout,
   test,
-  updateUserProfile,
+  updateUserPassword,
+  updateUserProfileData,
+  updateUserProfileImage,
 } from "../controllers/user.controller.js";
 
 const router = express.Router();
 
 router.get("/test", test);
 router.post("/signout", signout);
-router.put("/updateUserProfile/:userId", verifyToken, updateUserProfile);
+router.put(
+  "/updateUserProfileData/:userId",
+  verifyToken,
+  updateUserProfileData
+);
+router.put("/updateUserPassword/:userId", verifyToken, updateUserPassword);
+router.put(
+  "/updateUserProfileImage/:userId",
+  upload.single("image"),
+  verifyToken,
+  updateUserProfileImage
+);
 
 export default router;

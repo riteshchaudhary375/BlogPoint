@@ -15,6 +15,7 @@ import Contact from "./pages/Contact";
 import Footer from "./components/Footer";
 import Profile from "./pages/Profile";
 import PrivateRoute from "./components/PrivateRoute";
+import UpdateUserPassword from "./pages/UpdateUserPassword";
 
 function App() {
   return (
@@ -34,6 +35,10 @@ function App() {
           {/* Private Route */}
           <Route element={<PrivateRoute />}>
             <Route path="/profile" element={<Profile />} />
+            <Route
+              path="/profile/update-password"
+              element={<UpdateUserPassword />}
+            />
           </Route>
           <Route path="/dashboard" element={<Dashboard />} />
 

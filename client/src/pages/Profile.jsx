@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 
-import Title from "../components/Title";
 // import { assets } from "../assets/assets";
+import Title from "../components/Title";
 import Button from "../components/Button";
 import HorizontalLine from "../components/HorizontalLine";
 import Title2 from "../components/Title2";
@@ -12,23 +12,33 @@ import {
   updateUserSuccess,
   updateUserFailure,
 } from "../redux/user/userSlice.js";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
   const { error, loading, currentUser } = useSelector((state) => state.user);
+  // console.log(currentUser);
+
   const dispatch = useDispatch();
 
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+  const [image, setImage] = useState(false);
+  const [isEditProfile, setIsEditProfile] = useState(false);
+  const filePickerRef = useRef();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
-  const handleUpdateProfile = async (e) => {
+  const handleUpdateProfileData = async (e) => {
     try {
+      if (Object.keys(formData).length === 0)
+        return dispatch(updateUserFailure("No change made!"));
+
       dispatch(updateUserStart());
+
       const res = await fetch(
-        `/api/user/updateUserProfile/${currentUser._id}`,
+        `/api/user/updateUserProfileData/${currentUser._id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -44,11 +54,47 @@ const Profile = () => {
       if (res.ok) {
         setIsEdit(false);
         dispatch(updateUserSuccess(data));
-        toast.success("Profile updated");
+        toast.success("Profile data updated");
       }
     } catch (error) {
       // console.log(error);
       dispatch(updateUserFailure(error.message));
+    }
+  };
+
+  const handleChangeProfieImage = async () => {
+    try {
+      dispatch(updateUserStart());
+      const imageData = new FormData();
+      image && imageData.append("image", image);
+
+      const res = await fetch(
+        `/api/user/updateUserProfileImage/${currentUser._id}`,
+        {
+          method: "PUT",
+          // headers: { "Content-Type": "application/json" },
+          body: imageData,
+        }
+      );
+      const data = await res.json();
+      if (!res.ok) {
+        dispatch(updateUserFailure(data.message));
+        setIsEditProfile(false);
+        toast.error(data.message);
+        console.log(data.message);
+        return;
+      }
+      if (res.ok) {
+        dispatch(updateUserSuccess(data));
+        setIsEditProfile(false);
+        toast.success(data.message);
+        // console.log(data.message);
+      }
+    } catch (error) {
+      dispatch(updateUserFailure(error.message));
+      setIsEditProfile(false);
+      toast.error(error.message);
+      console.log(error.message);
     }
   };
 
@@ -61,11 +107,105 @@ const Profile = () => {
 
         <div className="my-8 sm:my-12 md:my-14">
           <div className="flex flex-col gap-8">
-            <img
-              src={currentUser.profilePicture}
-              alt="Profile picture"
-              className="w-36 rounded-sm"
-            />
+            {isEditProfile ? (
+              <div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  ref={filePickerRef}
+                  onChange={(e) => {
+                    setImage(e.target.files[0]);
+                  }}
+                  required
+                  hidden
+                />
+                <div className=" flex flex-col gap-1">
+                  <div className="w-36 h-fit cursor-pointer rounded-sm shadow-sm">
+                    <div className="flex items-end gap-2">
+                      <img
+                        src={
+                          image
+                            ? URL.createObjectURL(image)
+                            : currentUser.profilePicture
+                        }
+                        alt="Profile picture"
+                        className="w-full h-full object-cover border-2 border-blue-400 rounded-sm"
+                        title="Choose new profile"
+                        onClick={() => filePickerRef.current.click()}
+                      />
+                      {/* <img
+                    src={assets.upload_icon}
+                    alt="upload icon"
+                    className="bg-red-700 w-16 rounded-sm"
+                    /> */}
+
+                      {/* <div className="w-full flex items-center justify-center gap-2 -mt-2"> */}
+
+                      <Button
+                        disabled={loading}
+                        type={"button"}
+                        text={"Cancel"}
+                        className={`w-fit border border-bgDark hover:bg-lightBgHover mt-6 ${
+                          loading && "opacity-90"
+                        } text-xs border-borderColor text-textColor3 hover:border-red-500 hover:text-red-500`}
+                        handleClick={() => setIsEditProfile(false)}
+                      />
+
+                      <Button
+                        disabled={loading}
+                        type={"button"}
+                        text={loading ? "Saving..." : "Save"}
+                        className={`w-fit border border-bgDark hover:bg-lightBgHover mt-6 ${
+                          loading && "opacity-90"
+                        } text-xs border-borderColor text-textColor3 hover:border-borderColorHover hover:text-textColor2`}
+                        handleClick={handleChangeProfieImage}
+                      />
+
+                      {/* <button
+                        disabled={loading}
+                        type="button"
+                        onClick={handleChangeProfieImage}
+                      >
+                        Save
+                      </button> */}
+
+                      {/* </div> */}
+                    </div>
+                  </div>
+                  <p className="text-xs font-light mt-1 text-textColor3">
+                    Please select image and click save button to change your
+                    profile picture.
+                  </p>
+                </div>
+                {/* {image && (
+                  <p className="text-xs font-light mt-1 text-textColor3">
+                    Please click save button to change your profile picture.
+                  </p>
+                )} */}
+              </div>
+            ) : (
+              <div className="w-full flex items-end gap-2">
+                <img
+                  src={currentUser.profilePicture}
+                  alt="Profile picture"
+                  className="w-36 rounded-sm"
+                />
+
+                <Button
+                  disabled={loading || isEdit}
+                  type={"button"}
+                  text={"Change image"}
+                  className={`w-fit border border-bgDark ${
+                    !isEdit && "hover:bg-lightBgHover"
+                  } mt-6 ${
+                    loading && "opacity-90"
+                  } text-xs font-light text-textColor3 border-borderColor ${
+                    !isEdit && "hover:border-borderColorHover"
+                  }`}
+                  handleClick={() => setIsEditProfile(true)}
+                />
+              </div>
+            )}
 
             <div className="flex flex-col gap-1">
               {isEdit ? (
@@ -138,14 +278,20 @@ const Profile = () => {
 
                 <p className="font-medium text-textColor1">Phone:</p>
                 {isEdit ? (
-                  <input
-                    type="text"
-                    id="phone"
-                    className="bg-inherit border border-borderColor outline-borderColorHover rounded-sm px-2 py-1"
-                    placeholder="phone no"
-                    onChange={handleChange}
-                    defaultValue={currentUser.phone}
-                  />
+                  <div className="">
+                    <input
+                      type="text"
+                      id="phone"
+                      className="bg-inherit border border-borderColor outline-borderColorHover rounded-sm px-2 py-1"
+                      placeholder="10-digits [e.g., 98(8-digits)]"
+                      onChange={handleChange}
+                      defaultValue={currentUser.phone}
+                    />
+                    {/* <p className="absolute flex flex-col gap-1 items-center font-light text-xs w-fit px-4 py-1 bg-lightBgHover text-textColor2 rounded-sm border border-borderColor right-14 sm:right-0  -top-2">
+                      <span className="underline">Accept: 10 digits</span>
+                      <span>98(8-digits)</span>
+                    </p> */}
+                  </div>
                 ) : (
                   <p>{currentUser.phone}</p>
                 )}
@@ -161,7 +307,7 @@ const Profile = () => {
                       onChange={(e) =>
                         setFormData((prev) => ({
                           ...prev,
-                          address: { ...prev.address, line1: e.target.value },
+                          address: { ...prev.address, [line1]: e.target.value },
                         }))
                       }
                       defaultValue={currentUser.address.line1}
@@ -233,26 +379,58 @@ const Profile = () => {
 
             <div className="flex items-center justify-center sm:justify-start">
               {isEdit ? (
-                <Button
-                  disabled={loading}
-                  type={"button"}
-                  text={loading ? "Saving..." : "Save Profile"}
-                  className={`w-fit border border-bgDark hover:bg-lightBgHover mt-6 ${
-                    loading && "opacity-90"
-                  }`}
-                  handleClick={handleUpdateProfile}
-                />
+                <div className="flex gap-2">
+                  <Button
+                    disabled={loading}
+                    type={"button"}
+                    text={"Cancel"}
+                    className={`w-fit border border-bgDark hover:bg-lightBgHover mt-6 ${
+                      loading && "opacity-90"
+                    }  text-sm border-borderColor text-textColor3 hover:border-red-500 hover:text-red-500`}
+                    handleClick={() => setIsEdit(false)}
+                  />
+                  <Button
+                    disabled={loading}
+                    type={"button"}
+                    text={loading ? "Saving..." : "Save Profile"}
+                    className={`w-fit border border-bgDark hover:bg-lightBgHover mt-6 ${
+                      loading && "opacity-90"
+                    }  text-sm border-borderColor text-textColor3 hover:border-borderColorHover hover:text-textColor2`}
+                    handleClick={handleUpdateProfileData}
+                  />
+                </div>
               ) : (
                 <Button
-                  disabled={loading}
+                  disabled={loading || isEditProfile}
                   type={"button"}
-                  text={"Edit Profile"}
-                  className={`w-fit border border-bgDark hover:bg-lightBgHover mt-6 ${
+                  text={"Edit Profile Data"}
+                  className={`w-fit border border-bgDark ${
+                    !isEditProfile && "hover:bg-lightBgHover"
+                  } mt-6 ${
                     loading && "opacity-90"
-                  }`}
+                  } font-light text-textColor3 border-borderColor ${
+                    !isEditProfile && "hover:border-borderColorHover"
+                  } text-sm`}
                   handleClick={() => setIsEdit(true)}
                 />
               )}
+            </div>
+
+            <div className="flex items-center justify-center sm:justify-start -mt-4">
+              <Link to={"/profile/update-password"}>
+                <Button
+                  disabled={loading || isEditProfile || isEdit}
+                  type={"button"}
+                  text={"Update Password"}
+                  className={`w-fit border border-bgDark ${
+                    !isEdit && !isEditProfile && "hover:bg-lightBgHover"
+                  } ${
+                    loading && "opacity-90"
+                  } font-light text-textColor3 border-borderColor ${
+                    !isEdit && !isEditProfile && "hover:border-borderColorHover"
+                  } text-sm`}
+                />
+              </Link>
             </div>
 
             {/* Error message */}
