@@ -114,6 +114,19 @@ const Header = () => {
                           </p>
                         </Link>
                         <HorizontalLine />
+                        {currentUser.isAdmin && (
+                          <>
+                            <Link
+                              to={"/admin/dashboard"}
+                              onClick={() => setToggleProfile(false)}
+                            >
+                              <p className="hover:bg-lightBgHover px-4 py-1.5">
+                                Dashboard
+                              </p>
+                            </Link>
+                            <HorizontalLine />
+                          </>
+                        )}
                         <p
                           className="hover:bg-lightBgHover px-4 py-1.5"
                           onClick={handleSignOut}

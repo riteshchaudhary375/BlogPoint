@@ -6,7 +6,6 @@ import About from "./pages/About";
 import Blogs from "./pages/Blogs";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
-import Dashboard from "./pages/Dashboard";
 import CreatePost from "./pages/CreatePost";
 import UpdatePost from "./pages/UpdatePost";
 import PostPage from "./pages/PostPage";
@@ -16,6 +15,8 @@ import Footer from "./components/Footer";
 import Profile from "./pages/Profile";
 import PrivateRoute from "./components/PrivateRoute";
 import UpdateUserPassword from "./pages/UpdateUserPassword";
+import PrivateRouteForAdmin from "./components/PrivateRouteForAdmin";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function App() {
   return (
@@ -40,10 +41,12 @@ function App() {
               element={<UpdateUserPassword />}
             />
           </Route>
-          <Route path="/dashboard" element={<Dashboard />} />
 
           {/* Admin Route */}
-          <Route path="/create-post" element={<CreatePost />} />
+          <Route element={<PrivateRouteForAdmin />}>
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/create-post" element={<CreatePost />} />
+          </Route>
           <Route path="/update-post/:postId" element={<UpdatePost />} />
         </Routes>
 
