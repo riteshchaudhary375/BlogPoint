@@ -341,10 +341,9 @@ const Profile = () => {
                     </p>
                   ) : (
                     <p>
-                      {/* {currentUser.address.line1}
+                      {currentUser.address.line1}
                       <br />
-                      {currentUser.address.line2} */}
-                      address here
+                      {currentUser.address.line2}
                     </p>
                   )}
                 </div>
