@@ -1,5 +1,4 @@
 import bcryptjs from "bcryptjs";
-import jwt from "jsonwebtoken";
 import { v2 as cloudinary } from "cloudinary";
 
 import User from "../models/user.model.js";
@@ -138,34 +137,59 @@ export const updateUserProfileImage = async (req, res, next) => {
   try {
     // using multer we upload image file
     const imageFile = req.file;
+    // console.log(imageFile);
 
     if (req.user.id !== req.params.userId) {
       return next(errorHandler(403, "Not allowed to update this user."));
-    } else {
-      if (!imageFile) {
-        return next(errorHandler(400, "Error on uploading image!"));
-      } else {
-        // upload image to cloudinary
-        // 1. uploading to cloudinary from local system
-        const imageUpload = await cloudinary.uploader.upload(imageFile.path, {
+    }
+    // else {
+    // console.log("user matched");
+    // }
+    // else {
+
+    if (!imageFile) {
+      return next(errorHandler(400, "Error on uploading image!"));
+    }
+
+    if (imageFile) {
+      // upload image to cloudinary
+      // 1. uploading to cloudinary from local system
+      const imageUpload = await cloudinary.uploader.upload(
+        imageFile.path,
+        {
+          // upload_preset:'unsigned_upload',
+          allowed_formats: ["png", "jpg", "jpeg", "svg", "ico", "jfif", "webp"],
+          // public_id:"avatar",
           resource_type: "image",
-        });
-        // 2. storing link of that image from cloudinary into variable
-        const imageURL = imageUpload.secure_url;
+        },
+        function (error, result) {
+          if (error) {
+            next(errorHandler(error.message));
+            // console.log(error);
+            return;
+          }
+          // console.log(result);
+        }
+      );
+      // 2. storing link of that image from cloudinary into variable
+      const imageURL = imageUpload.secure_url;
 
-        // 3. update profile image into database
-        // await User.findByIdAndUpdate(userId, { profilePicture: imageURL });
-        const updatedUserProfileImage = await User.findByIdAndUpdate(
-          req.params.userId,
-          {
-            $set: {
-              profilePicture: imageURL,
-            },
+      // 3. update profile image into database
+      /* const updatedUserProfileImage = await User.findByIdAndUpdate(
+        req.params.userId,
+        { profilePicture: imageURL }
+      ); */
+      const updatedUserProfileImage = await User.findByIdAndUpdate(
+        req.params.userId,
+        {
+          $set: {
+            profilePicture: imageURL,
           },
-          { new: true }
-        );
+        },
+        { new: true }
+      );
 
-        /* const token = jwt.sign(
+      /* const token = jwt.sign(
           { id: req.params.userId },
           process.env.JWT_SECRET,
           {
@@ -173,29 +197,15 @@ export const updateUserProfileImage = async (req, res, next) => {
           }
         ); */
 
-        // Separate password
-        // const { password: pass, ...rest } = validUser._doc;
+      const { password, ...rest } = await updatedUserProfileImage._doc;
 
-        /* res
-              .status(200)
-              .cookie("access_token", token, {
-                path: "/",
-                httpOnly: true,
-                expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7d, (days/1) * (hours/day) * (minutes/hour) * (seconds/minute) * (miliseconds/second)
-                sameSite: "none",
-                secure: true,
-              })
-              .json(rest); */
-
-        const { password, ...rest } = updatedUserProfileImage._doc;
-
-        res.status(200).json({
-          success: true,
-          message: "Profile image updated",
-          rest,
-        });
-      }
+      await res.status(200).json({
+        success: true,
+        message: "Profile image updated",
+        rest,
+      });
     }
+    // }
   } catch (error) {
     next(error);
   }

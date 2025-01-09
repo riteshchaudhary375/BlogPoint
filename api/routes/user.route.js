@@ -19,7 +19,7 @@ router.put(
   updateUserProfileData
 );
 router.put("/updateUserPassword/:userId", verifyToken, updateUserPassword);
-router.put(
+router.post(
   "/updateUserProfileImage/:userId",
   upload.single("image"),
   verifyToken,
