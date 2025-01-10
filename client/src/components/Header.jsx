@@ -117,7 +117,7 @@ const Header = () => {
                         {currentUser.isAdmin && (
                           <>
                             <Link
-                              to={"/admin/dashboard"}
+                              to={"/dashboard"}
                               onClick={() => setToggleProfile(false)}
                             >
                               <p className="hover:bg-lightBgHover px-4 py-1.5">

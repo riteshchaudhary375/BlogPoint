@@ -52,6 +52,9 @@ import entertainment from "./entertainment.svg";
 import family from "./family.svg";
 import self_improvement from "./self_improvement.svg";
 import sport_fitness from "./sport_fitness.svg";
+import users_icon from "./users-user-svgrepo-com.svg";
+import posts_icon from "./documents-empty-svgrepo-com.svg";
+import dashboard_icon from "./pie_chart.svg";
 
 export const assets = {
   bin_icon,
@@ -75,6 +78,9 @@ export const assets = {
   man_cellular_illust,
   upload_icon,
   google,
+  users_icon,
+  posts_icon,
+  dashboard_icon,
 };
 
 export const categoryData = [
