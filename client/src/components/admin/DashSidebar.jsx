@@ -10,7 +10,8 @@ const DashSidebar = ({ tab, setTab }) => {
         <div className="flex flex-col gap-2 py-1.5 font-base text-xl border border-borderColor">
           <div
             className={`hover:bg-lightBgHover px-4 py-1.5 flex items-center gap-2 cursor-pointer ${
-              tab === "dashboard" && "bg-bgDark text-[#f4f6fc] hover:bg-bgDark"
+              tab === "dashboard" &&
+              "bg-borderColorHover  hover:bg-borderColorHover"
             }`}
             onClick={() => setTab("dashboard")}
           >
@@ -26,7 +27,8 @@ const DashSidebar = ({ tab, setTab }) => {
 
           <div
             className={`hover:bg-lightBgHover px-4 py-1.5 flex items-center gap-2 cursor-pointer ${
-              tab === "posts" && "bg-bgDark text-[#f4f6fc] hover:bg-bgDark"
+              tab === "posts" &&
+              "bg-borderColorHover  hover:bg-borderColorHover"
             }`}
             onClick={() => setTab("posts")}
           >
@@ -42,7 +44,8 @@ const DashSidebar = ({ tab, setTab }) => {
 
           <div
             className={`hover:bg-lightBgHover px-4 py-1.5 flex items-center gap-2 cursor-pointer ${
-              tab === "users" && "bg-bgDark text-[#f4f6fc] hover:bg-bgDark"
+              tab === "users" &&
+              "bg-borderColorHover  hover:bg-borderColorHover"
             }`}
             onClick={() => setTab("users")}
           >
