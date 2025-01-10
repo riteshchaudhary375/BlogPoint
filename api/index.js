@@ -7,6 +7,7 @@ import connectCloudinary from "./utils/cloudinary.js";
 
 import userRoutes from "./routes/user.route.js";
 import authRoutes from "./routes/auth.route.js";
+import postRoutes from "./routes/post.route.js";
 
 dotenv.config();
 
@@ -35,6 +36,7 @@ app.listen(port, () => {
 // API endpoint
 app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/post", postRoutes);
 
 // Middleware for error handle
 app.use((err, req, res, next) => {
