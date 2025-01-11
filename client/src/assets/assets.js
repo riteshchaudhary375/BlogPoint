@@ -47,6 +47,7 @@ import error from "./error-standard-svgrepo-com.svg";
 import profile_picture_blank from "./profile_picture_blank.png";
 import crossmark from "./crossmark.svg";
 import checkmark from "./checkmark.svg";
+import exclamation from "./exclamation.svg";
 
 // Category
 import cpu from "./cpu.svg";
@@ -92,6 +93,7 @@ export const assets = {
   profile_picture_blank,
   crossmark,
   checkmark,
+  exclamation,
 };
 
 export const categoryData = [

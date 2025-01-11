@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
@@ -17,10 +18,10 @@ import PrivateRoute from "./components/PrivateRoute";
 import UpdateUserPassword from "./pages/UpdateUserPassword";
 import PrivateRouteForAdmin from "./components/PrivateRouteForAdmin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
-import DashPosts from "./pages/admin/DashPosts";
-import DashUsers from "./pages/admin/DashUsers";
 
 function App() {
+  const [showModal, setShowModal] = useState(false);
+
   return (
     <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
       <BrowserRouter>
@@ -46,13 +47,21 @@ function App() {
 
           {/* Admin Route */}
           <Route element={<PrivateRouteForAdmin />}>
-            <Route path="/dashboard" element={<AdminDashboard />} />
+            <Route
+              path="/dashboard"
+              element={
+                <AdminDashboard
+                  showModal={showModal}
+                  setShowModal={setShowModal}
+                />
+              }
+            />
             <Route path="/create-post" element={<CreatePost />} />
           </Route>
           <Route path="/update-post/:postId" element={<UpdatePost />} />
         </Routes>
 
-        <Footer />
+        <Footer showModal={showModal} />
       </BrowserRouter>
 
       <Toaster position="bottom-right" reverseOrder={false} />

@@ -28,6 +28,10 @@ body {
   height: 100vh;
 }
 
+.bodyFixed {
+  position: fixed;
+}
+
 @media (max-width: 768px) {
   a.active {
     background-color: #101720;

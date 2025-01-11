@@ -211,7 +211,7 @@ export const updateUserProfileImage = async (req, res, next) => {
   }
 };
 
-// Get users list
+// Get users list for Admin dashboard
 export const getUsers = async (req, res, next) => {
   const validUser = await User.findById(req.user.id);
   if (!validUser.isAdmin)
@@ -251,6 +251,21 @@ export const getUsers = async (req, res, next) => {
       totalUsers,
       lastMonthUsers,
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Delete users by admin in admin dashboard
+export const deleteUser = async (req, res, next) => {
+  try {
+    const validAdmin = await User.findById(req.user.id);
+    if (!validAdmin.isAdmin)
+      return next(errorHandler(403, "You are not allowed to delete users!"));
+
+    await User.findByIdAndDelete(req.params.userId);
+
+    res.status(200).json({ message: "User deleted!" });
   } catch (error) {
     next(error);
   }

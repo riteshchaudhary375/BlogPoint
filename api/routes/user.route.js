@@ -8,6 +8,7 @@ import {
   updateUserProfileData,
   updateUserProfileImage,
   getUsers,
+  deleteUser,
 } from "../controllers/user.controller.js";
 
 const router = express.Router();
@@ -28,5 +29,6 @@ router.post(
 );
 
 router.get("/getUsers", verifyToken, getUsers);
+router.delete("/deleteUser/:userId", verifyToken, deleteUser);
 
 export default router;

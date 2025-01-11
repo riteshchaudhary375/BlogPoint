@@ -4,14 +4,16 @@ import { toast } from "react-hot-toast";
 import LoaderSpinner from "../../components/LoaderSpinner";
 import Notification from "../../components/Notification";
 import ListItem from "../../components/admin/ListItem";
+import Modal from "../../components/Modal";
 
-const DashUsers = () => {
+const DashUsers = ({ showModal, setShowModal }) => {
   const { currentUser } = useSelector((state) => state.user);
   const [users, setUsers] = useState([]);
   // console.log(users);
 
   const [fetching, setFetching] = useState(false);
   const [showMore, setShowMore] = useState(true);
+  const [userIdToDelete, setUserIdToDelete] = useState("");
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -70,6 +72,30 @@ const DashUsers = () => {
     }
   };
 
+  const handleDeleteUser = async () => {
+    try {
+      const res = await fetch(`/api/user/deleteUser/${userIdToDelete}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setShowModal(false);
+        // console.log(data.message);
+        toast.error(data.message);
+        return;
+      }
+      if (res.ok) {
+        setShowModal(false);
+        setUsers((prev) => prev.filter((user) => user._id !== userIdToDelete));
+        toast.success(data.message);
+      }
+    } catch (error) {
+      setShowModal(false);
+      // console.log(error.message);
+      toast.error(error.message);
+    }
+  };
+
   return (
     <>
       {fetching && <LoaderSpinner />}
@@ -84,7 +110,15 @@ const DashUsers = () => {
           users={users}
           showMore={showMore}
           showMoreClick={handleShowMore}
+          showModal={showModal}
+          setShowModal={setShowModal}
+          setUserIdToDelete={setUserIdToDelete}
         />
+      )}
+
+      {/* Delete Modal Popup */}
+      {showModal && (
+        <Modal setShowModal={setShowModal} onDeleteUser={handleDeleteUser} />
       )}
     </>
   );

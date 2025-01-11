@@ -2,7 +2,14 @@ import React from "react";
 import { assets } from "../../assets/assets";
 import Button from "../Button";
 
-const ListItem = ({ users, showMore, showMoreClick }) => {
+const ListItem = ({
+  users,
+  showMore,
+  showMoreClick,
+  showModal,
+  setShowModal,
+  setUserIdToDelete,
+}) => {
   return (
     <div className="flex flex-col gap-6">
       <table className="table-auto w-full border border-borderColor rounded-sm text-left">
@@ -52,7 +59,13 @@ const ListItem = ({ users, showMore, showMoreClick }) => {
                   )}
                 </td>
                 <td className="p-4 text-base font-light">
-                  <p className="w-fit text-red-500 hover:underline cursor-pointer">
+                  <p
+                    className="w-fit text-red-500 hover:underline cursor-pointer"
+                    onClick={() => {
+                      setShowModal(true);
+                      setUserIdToDelete(user._id);
+                    }}
+                  >
                     Delete
                   </p>
                 </td>
