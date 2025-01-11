@@ -49,6 +49,27 @@ const DashUsers = () => {
     }
   }, [currentUser._id]);
 
+  const handleShowMore = async () => {
+    const startIndex = users.length;
+    try {
+      const res = await fetch(`/api/user/getUsers?startIndex=${startIndex}`);
+      const data = await res.json();
+      if (!res.ok) {
+        console.log(data.message);
+        return;
+      }
+      if (res.ok) {
+        setUsers((prevState) => [...prevState, ...data.users]);
+        if (data.users.length < 9) {
+          setShowMore(false);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      // toast.error(error.message);
+    }
+  };
+
   return (
     <>
       {fetching && <LoaderSpinner />}
@@ -59,7 +80,11 @@ const DashUsers = () => {
         users.length === 0 && <Notification text={"User Not Found!"} />}
 
       {!fetching && currentUser && currentUser.isAdmin && users.length > 0 && (
-        <ListItem users={users} showMore={showMore} />
+        <ListItem
+          users={users}
+          showMore={showMore}
+          showMoreClick={handleShowMore}
+        />
       )}
     </>
   );

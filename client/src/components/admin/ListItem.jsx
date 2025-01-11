@@ -2,7 +2,7 @@ import React from "react";
 import { assets } from "../../assets/assets";
 import Button from "../Button";
 
-const ListItem = ({ users, showMore }) => {
+const ListItem = ({ users, showMore, showMoreClick }) => {
   return (
     <div className="flex flex-col gap-6">
       <table className="table-auto w-full border border-borderColor rounded-sm text-left">
@@ -68,7 +68,7 @@ const ListItem = ({ users, showMore }) => {
             type={"button"}
             text={"Show More"}
             className={"border border-bgDark hover:bg-lightBgHover"}
-            handleClick={() => alert("Processing...")}
+            handleClick={showMoreClick}
           />
         </div>
       )}
