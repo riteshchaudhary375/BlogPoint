@@ -7,6 +7,7 @@ import {
   updateUserPassword,
   updateUserProfileData,
   updateUserProfileImage,
+  getUsers,
 } from "../controllers/user.controller.js";
 
 const router = express.Router();
@@ -25,5 +26,7 @@ router.post(
   verifyToken,
   updateUserProfileImage
 );
+
+router.get("/getUsers", verifyToken, getUsers);
 
 export default router;

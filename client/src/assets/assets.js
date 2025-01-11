@@ -39,6 +39,15 @@ import cyber_security_img from "./cyber_security.png";
 import data_science_img from "./data_science.jpg";
 import programming_img from "./programming.jpg";
 
+import users_icon from "./users-user-svgrepo-com.svg";
+import posts_icon from "./documents-empty-svgrepo-com.svg";
+import dashboard_icon from "./pie_chart.svg";
+import spinner from "./tube-spinner.svg";
+import error from "./error-standard-svgrepo-com.svg";
+import profile_picture_blank from "./profile_picture_blank.png";
+import crossmark from "./crossmark.svg";
+import checkmark from "./checkmark.svg";
+
 // Category
 import cpu from "./cpu.svg";
 import health from "./health.svg";
@@ -52,9 +61,6 @@ import entertainment from "./entertainment.svg";
 import family from "./family.svg";
 import self_improvement from "./self_improvement.svg";
 import sport_fitness from "./sport_fitness.svg";
-import users_icon from "./users-user-svgrepo-com.svg";
-import posts_icon from "./documents-empty-svgrepo-com.svg";
-import dashboard_icon from "./pie_chart.svg";
 
 export const assets = {
   bin_icon,
@@ -81,6 +87,11 @@ export const assets = {
   users_icon,
   posts_icon,
   dashboard_icon,
+  spinner,
+  error,
+  profile_picture_blank,
+  crossmark,
+  checkmark,
 };
 
 export const categoryData = [

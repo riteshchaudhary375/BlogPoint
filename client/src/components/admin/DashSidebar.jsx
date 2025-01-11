@@ -1,5 +1,4 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
 import { assets } from "../../assets/assets";
 import HorizontalLine from "../HorizontalLine";
 

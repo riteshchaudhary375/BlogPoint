@@ -15,7 +15,7 @@ const AdminDashboard = () => {
           <DashSidebar tab={tab} setTab={setTab} />
         </div>
 
-        <div className="pt-2 sm:pt-6 md:pt-8">
+        <div className="pt-2 sm:pt-6 md:pt-8 flex-1 overflow-scroll">
           {tab === "dashboard" && <DashboardView />}
 
           {tab === "posts" && <DashPosts />}
