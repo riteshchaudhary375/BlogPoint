@@ -9,6 +9,7 @@ const postSchema = new mongoose.Schema(
     title: {
       type: String,
       required: true,
+      unique: true,
     },
     image: {
       type: String,
@@ -18,11 +19,11 @@ const postSchema = new mongoose.Schema(
     content: {
       type: String,
       required: true,
-      unique: true,
     },
     category: {
       type: String,
-      required: true,
+      // required: true,
+      default: "uncategorized",
     },
     slug: {
       type: String,
@@ -33,7 +34,7 @@ const postSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    updatedDate: {
+    updateDate: {
       type: Number,
       default: null,
     },

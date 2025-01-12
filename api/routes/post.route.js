@@ -1,10 +1,18 @@
 import express from "express";
 import { verifyToken } from "../utils/verifyUser.js";
 import upload from "../utils/multer.js";
-import { create } from "../controllers/post.controller.js";
+import {
+  create,
+  deletePost,
+  getAllPostsForAdmin,
+  getPosts,
+} from "../controllers/post.controller.js";
 
 const router = express.Router();
 
+router.get("/getAllPostsForAdmin", verifyToken, getAllPostsForAdmin);
+router.get("/get", getPosts);
+router.delete("/delete/:postId/:userId", verifyToken, deletePost);
 router.post("/create", upload.single("image"), verifyToken, create);
 
 export default router;

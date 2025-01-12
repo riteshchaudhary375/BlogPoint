@@ -19,7 +19,9 @@ const AdminDashboard = ({ showModal, setShowModal }) => {
           <div className="pt-2 sm:pt-6 md:pt-8 flex-1 overflow-scroll">
             {tab === "dashboard" && <DashboardView />}
 
-            {tab === "posts" && <DashPosts />}
+            {tab === "posts" && (
+              <DashPosts showModal={showModal} setShowModal={setShowModal} />
+            )}
 
             {tab === "users" && (
               <DashUsers showModal={showModal} setShowModal={setShowModal} />

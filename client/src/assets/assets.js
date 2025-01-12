@@ -48,6 +48,8 @@ import profile_picture_blank from "./profile_picture_blank.png";
 import crossmark from "./crossmark.svg";
 import checkmark from "./checkmark.svg";
 import exclamation from "./exclamation.svg";
+import add from "./add.svg";
+import no_document from "./no_document.svg";
 
 // Category
 import cpu from "./cpu.svg";
@@ -94,6 +96,8 @@ export const assets = {
   crossmark,
   checkmark,
   exclamation,
+  add,
+  no_document,
 };
 
 export const categoryData = [

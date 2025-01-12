@@ -1,15 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
+
 import LoaderSpinner from "../../components/LoaderSpinner";
 import Notification from "../../components/Notification";
-import ListItem from "../../components/admin/ListItem";
+import UserListItem from "../../components/admin/UserListItem";
 import Modal from "../../components/Modal";
 
 const DashUsers = ({ showModal, setShowModal }) => {
   const { currentUser } = useSelector((state) => state.user);
   const [users, setUsers] = useState([]);
   // console.log(users);
+
+  const userListTitle = [
+    "date_created",
+    "user_image",
+    "username",
+    "email",
+    "admin",
+    "action",
+  ];
 
   const [fetching, setFetching] = useState(false);
   const [showMore, setShowMore] = useState(true);
@@ -57,7 +67,8 @@ const DashUsers = ({ showModal, setShowModal }) => {
       const res = await fetch(`/api/user/getUsers?startIndex=${startIndex}`);
       const data = await res.json();
       if (!res.ok) {
-        console.log(data.message);
+        // console.log(data.message);
+        toast.error(data.message);
         return;
       }
       if (res.ok) {
@@ -67,8 +78,8 @@ const DashUsers = ({ showModal, setShowModal }) => {
         }
       }
     } catch (error) {
-      console.log(error);
-      // toast.error(error.message);
+      // console.log(error);
+      toast.error(error.message);
     }
   };
 
@@ -106,19 +117,24 @@ const DashUsers = ({ showModal, setShowModal }) => {
         users.length === 0 && <Notification text={"User Not Found!"} />}
 
       {!fetching && currentUser && currentUser.isAdmin && users.length > 0 && (
-        <ListItem
-          users={users}
+        <UserListItem
+          listTitle={userListTitle}
+          data={users}
           showMore={showMore}
           showMoreClick={handleShowMore}
           showModal={showModal}
           setShowModal={setShowModal}
-          setUserIdToDelete={setUserIdToDelete}
+          idToDelete={setUserIdToDelete}
         />
       )}
 
       {/* Delete Modal Popup */}
       {showModal && (
-        <Modal setShowModal={setShowModal} onDeleteUser={handleDeleteUser} />
+        <Modal
+          text={"Are you sure you want to delete this user?"}
+          setShowModal={setShowModal}
+          onDeleteUser={handleDeleteUser}
+        />
       )}
     </>
   );
