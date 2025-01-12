@@ -73,7 +73,9 @@ const ListItem = ({
                   </p> */}
                   <button
                     disabled={data.username === "admin"}
-                    title={data.username === "admin" && "Not Allowed"}
+                    title={
+                      data.username === "admin" ? "Not Allowed" : undefined
+                    }
                     className={
                       data.username === "admin"
                         ? "text-red-900"

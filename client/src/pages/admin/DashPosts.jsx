@@ -28,7 +28,13 @@ const DashPosts = ({ showModal, setShowModal }) => {
     const fetchPosts = async () => {
       try {
         setFetching(true);
-        const res = await fetch(`/api/post/get?userId=${currentUser._id}`);
+
+        const controller = new AbortController();
+        const signal = controller.signal;
+
+        const res = await fetch(`/api/post/get?userId=${currentUser._id}`, {
+          signal,
+        });
         const data = await res.json();
         if (!res.ok) {
           setFetching(false);
@@ -43,6 +49,12 @@ const DashPosts = ({ showModal, setShowModal }) => {
           }
           setFetching(false);
         }
+
+        // Aborting useEffect for unnecessary fetch
+        return () => {
+          console.log("Cleaning up useEffect.");
+          controller.abort();
+        };
       } catch (error) {
         console.log(error);
         toast.error(error.message);
