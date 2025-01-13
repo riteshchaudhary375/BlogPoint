@@ -2,7 +2,7 @@ import React from "react";
 import { assets } from "../../assets/assets";
 import Button from "../Button";
 
-const ListItem = ({
+const UserListItem = ({
   listTitle,
   data,
   showMore,
@@ -45,7 +45,9 @@ const ListItem = ({
                   />
                 </td>
                 <td className="p-4 text-base font-medium">{data.username}</td>
-                <td className="p-4 text-base font-light">{data.email}</td>
+                <td className="p-4 text-base font-light line-clamp-1">
+                  {data.email}
+                </td>
                 <td className="p-4 text-base font-light">
                   {data.isAdmin ? (
                     <img
@@ -109,4 +111,4 @@ const ListItem = ({
   );
 };
 
-export default ListItem;
+export default UserListItem;

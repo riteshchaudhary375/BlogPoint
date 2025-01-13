@@ -2,7 +2,7 @@ import React from "react";
 import Button from "../Button";
 import Badge from "../Badge";
 
-const ListItem = ({
+const PostListItem = ({
   listTitle,
   data,
   showMore,
@@ -40,7 +40,9 @@ const ListItem = ({
                   />
                 </td>
 
-                <td className="p-4 text-base font-medium">{data.title}</td>
+                <td className="p-4 text-base font-medium line-clamp-1">
+                  {data.title}
+                </td>
 
                 <td className="p-4 text-base font-light">
                   <Badge
@@ -107,4 +109,4 @@ const ListItem = ({
   );
 };
 
-export default ListItem;
+export default PostListItem;
