@@ -26,12 +26,12 @@ const DashUsers = ({ showModal, setShowModal }) => {
   const [userIdToDelete, setUserIdToDelete] = useState("");
 
   useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
     const fetchUsers = async () => {
       try {
         setFetching(true);
-
-        const controller = new AbortController();
-        const signal = controller.signal;
 
         const res = await fetch(`/api/user/getUsers`, { signal });
         const data = await res.json();
@@ -44,12 +44,6 @@ const DashUsers = ({ showModal, setShowModal }) => {
         } else {
           setFetching(false);
         }
-
-        // Aborting useEffect for unnecessary fetch
-        return () => {
-          console.log("Cleaning up useEffect.");
-          controller.abort();
-        };
       } catch (error) {
         setFetching(false);
         toast.error(error.message);
@@ -59,6 +53,12 @@ const DashUsers = ({ showModal, setShowModal }) => {
     if (currentUser.isAdmin) {
       fetchUsers();
     }
+
+    // Aborting useEffect for unnecessary fetch
+    return () => {
+      console.log("Cleaning up useEffect of fetching users list.");
+      controller.abort();
+    };
   }, [currentUser._id]);
 
   const handleShowMore = async () => {

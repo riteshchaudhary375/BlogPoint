@@ -25,12 +25,12 @@ const DashPosts = ({ showModal, setShowModal }) => {
   const [postIdToEdit, setPostIdToEdit] = useState("");
 
   useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
     const fetchPosts = async () => {
       try {
         setFetching(true);
-
-        const controller = new AbortController();
-        const signal = controller.signal;
 
         const res = await fetch(`/api/post/get?userId=${currentUser._id}`, {
           signal,
@@ -49,12 +49,6 @@ const DashPosts = ({ showModal, setShowModal }) => {
           }
           setFetching(false);
         }
-
-        // Aborting useEffect for unnecessary fetch
-        return () => {
-          console.log("Cleaning up useEffect.");
-          controller.abort();
-        };
       } catch (error) {
         console.log(error);
         toast.error(error.message);
@@ -65,6 +59,12 @@ const DashPosts = ({ showModal, setShowModal }) => {
     if (currentUser.isAdmin) {
       fetchPosts();
     }
+
+    // Aborting useEffect for unnecessary fetch
+    return () => {
+      console.log("Cleaning up useEffect of fetching posts list.");
+      controller.abort();
+    };
   }, [currentUser._id]);
 
   /* useEffect(() => {

@@ -50,6 +50,7 @@ import checkmark from "./checkmark.svg";
 import exclamation from "./exclamation.svg";
 import add from "./add.svg";
 import no_document from "./no_document.svg";
+import arrow_up_navigation from "./arrow_up_navigation.svg";
 
 // Category
 import cpu from "./cpu.svg";
@@ -98,6 +99,7 @@ export const assets = {
   exclamation,
   add,
   no_document,
+  arrow_up_navigation,
 };
 
 export const categoryData = [
