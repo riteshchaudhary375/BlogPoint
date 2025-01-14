@@ -5,6 +5,7 @@ import DashSidebar from "../../components/admin/DashSidebar";
 import DashboardView from "./DashboardView";
 import DashPosts from "./DashPosts";
 import DashUsers from "./DashUsers";
+import DashProfile from "./DashProfile";
 
 const AdminDashboard = ({ showModal, setShowModal }) => {
   const location = useLocation();
@@ -31,6 +32,10 @@ const AdminDashboard = ({ showModal, setShowModal }) => {
 
           <div className="pt-2 sm:pt-6 md:pt-8 flex-1 overflow-scroll">
             {tab === "dashboard" && <DashboardView />}
+
+            {tab === "profile" && (
+              <DashProfile showModal={showModal} setShowModal={setShowModal} />
+            )}
 
             {tab === "posts" && (
               <DashPosts showModal={showModal} setShowModal={setShowModal} />

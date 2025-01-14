@@ -103,17 +103,32 @@ const Header = () => {
                           {currentUser.email}
                         </p>
                       </div>
+
                       <HorizontalLine />
+
                       <div className="flex flex-col gap-1 my-1 cursor-pointer font-light text-base">
-                        <Link
-                          to={"/profile"}
-                          onClick={() => setToggleProfile(false)}
-                        >
-                          <p className="hover:bg-lightBgHover px-4 py-1.5">
-                            Profile
-                          </p>
-                        </Link>
+                        {currentUser.isAdmin ? (
+                          <Link
+                            to={"/dashboard?tab=profile"}
+                            onClick={() => setToggleProfile(false)}
+                          >
+                            <p className="hover:bg-lightBgHover px-4 py-1.5">
+                              Profile
+                            </p>
+                          </Link>
+                        ) : (
+                          <Link
+                            to={"/profile"}
+                            onClick={() => setToggleProfile(false)}
+                          >
+                            <p className="hover:bg-lightBgHover px-4 py-1.5">
+                              Profile
+                            </p>
+                          </Link>
+                        )}
+
                         <HorizontalLine />
+
                         {currentUser.isAdmin && (
                           <>
                             <Link

@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 
 import { assets } from "../../assets/assets";
 import HorizontalLine from "../HorizontalLine";
+import Badge from "../Badge";
 
 // const DashSidebar = ({ tab, setTab }) => {
 const DashSidebar = () => {
@@ -40,6 +41,32 @@ const DashSidebar = () => {
           </Link>
 
           <HorizontalLine />
+
+          <Link to={"/dashboard?tab=profile"}>
+            <div
+              className={`px-4 py-1.5 flex justify-between cursor-pointer ${
+                tab === "profile" ? "bg-lightBgHover" : "hover:bg-lightBgHover"
+              }`}
+            >
+              <span className="flex gap-2">
+                <img
+                  src={assets.id_card}
+                  alt="dashboard_icon"
+                  className="w-6 h-6 md:w-7 md:h-7"
+                />
+                <p>Profile</p>
+              </span>
+              <Badge
+                badgeTitle={"Admin"}
+                textSize={"xs"}
+                paddingX={"2"}
+                paddingY={"0.5"}
+              />
+            </div>
+          </Link>
+
+          <HorizontalLine />
+
           <Link to={"/dashboard?tab=posts"}>
             <div
               className={`px-4 py-1.5 flex items-center gap-2 cursor-pointer ${

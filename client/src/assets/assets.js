@@ -51,6 +51,8 @@ import exclamation from "./exclamation.svg";
 import add from "./add.svg";
 import no_document from "./no_document.svg";
 import arrow_up_navigation from "./arrow_up_navigation.svg";
+import id_wallet from "./id_wallet.svg";
+import id_card from "./id_card.svg";
 
 // Category
 import cpu from "./cpu.svg";
@@ -100,6 +102,8 @@ export const assets = {
   add,
   no_document,
   arrow_up_navigation,
+  id_wallet,
+  id_card,
 };
 
 export const categoryData = [
