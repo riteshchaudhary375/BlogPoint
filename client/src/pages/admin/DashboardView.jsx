@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 import { assets } from "../../assets/assets";
 import TotalDataCard from "../../components/admin/TotalDataCard";
@@ -132,14 +133,16 @@ const DashboardView = () => {
                     <Title2 text1={"Recent"} text2={"Users"} />
                   </div>
 
-                  <Button
-                    type={"button"}
-                    text={"See All"}
-                    className={
-                      "border border-bgDark hover:bg-lightBgHover text-xs"
-                    }
-                    handleClick={() => alert("Processing...")}
-                  />
+                  <Link to={"/dashboard?tab=users"}>
+                    <Button
+                      type={"button"}
+                      text={"See All"}
+                      className={
+                        "border border-bgDark hover:bg-lightBgHover text-xs"
+                      }
+                      // handleClick={() => alert("Processing...")}
+                    />
+                  </Link>
                 </div>
                 <table className="table-auto w-full border border-borderColor rounded-sm text-left">
                   <thead className="bg-lightBgHover border-b border-borderColorHover uppercase text-textColor2">
@@ -217,14 +220,16 @@ const DashboardView = () => {
                   <Title2 text1={"Recent"} text2={"Posts"} />
                 </div>
 
-                <Button
-                  type={"button"}
-                  text={"See All"}
-                  className={
-                    "border border-bgDark hover:bg-lightBgHover text-xs"
-                  }
-                  handleClick={() => alert("Processing...")}
-                />
+                <Link to={"/dashboard?tab=posts"}>
+                  <Button
+                    type={"button"}
+                    text={"See All"}
+                    className={
+                      "border border-bgDark hover:bg-lightBgHover text-xs"
+                    }
+                    // handleClick={() => alert("Processing...")}
+                  />
+                </Link>
               </div>
               <table className="table-auto w-full border border-borderColor rounded-sm text-left">
                 <thead className="bg-lightBgHover border-b border-borderColorHover uppercase text-textColor2">

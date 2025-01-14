@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 import DashSidebar from "../../components/admin/DashSidebar";
 import DashboardView from "./DashboardView";
@@ -6,7 +7,19 @@ import DashPosts from "./DashPosts";
 import DashUsers from "./DashUsers";
 
 const AdminDashboard = ({ showModal, setShowModal }) => {
-  const [tab, setTab] = useState("dashboard");
+  const location = useLocation();
+  // const [tab, setTab] = useState("dashboard");
+  const [tab, setTab] = useState("/dashboard?tab=dashboard");
+
+  useEffect(() => {
+    // Tab => 3:56:17
+    const urlParams = new URLSearchParams(location.search);
+    const tabFromUrl = urlParams.get("tab");
+    // console.log(tabFromUrl);
+    if (tabFromUrl) {
+      setTab(tabFromUrl);
+    }
+  }, [location.search]);
 
   return (
     <div className="min-h-screen">
