@@ -18,6 +18,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import UpdateUserPassword from "./pages/UpdateUserPassword";
 import PrivateRouteForAdmin from "./components/PrivateRouteForAdmin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import DashPasswordChange from "./pages/admin/DashPasswordChange";
 
 function App() {
   const [showModal, setShowModal] = useState(false);
@@ -56,6 +57,7 @@ function App() {
                 />
               }
             />
+            <Route path="/profile/password" element={<DashPasswordChange />} />
             <Route path="/create-post" element={<CreatePost />} />
           </Route>
           <Route path="/update-post/:postId" element={<UpdatePost />} />

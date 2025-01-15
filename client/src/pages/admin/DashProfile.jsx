@@ -424,7 +424,7 @@ const DashProfile = () => {
               </div>
 
               <div className="flex items-center justify-center sm:justify-start -mt-4">
-                <Link to={"/profile/update-password"}>
+                <Link to={"/profile/password"}>
                   <Button
                     disabled={loading || isEditProfile || isEdit}
                     type={"button"}
