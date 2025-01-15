@@ -6,11 +6,12 @@ import DashboardView from "./DashboardView";
 import DashPosts from "./DashPosts";
 import DashUsers from "./DashUsers";
 import DashProfile from "./DashProfile";
+import CreatePost from "./CreatePost";
 
 const AdminDashboard = ({ showModal, setShowModal }) => {
   const location = useLocation();
   // const [tab, setTab] = useState("dashboard");
-  const [tab, setTab] = useState("/dashboard?tab=dashboard");
+  const [tab, setTab] = useState("");
 
   useEffect(() => {
     // Tab => 3:56:17
@@ -36,6 +37,8 @@ const AdminDashboard = ({ showModal, setShowModal }) => {
             {tab === "profile" && (
               <DashProfile showModal={showModal} setShowModal={setShowModal} />
             )}
+
+            {tab === "create" && <CreatePost />}
 
             {tab === "posts" && (
               <DashPosts showModal={showModal} setShowModal={setShowModal} />

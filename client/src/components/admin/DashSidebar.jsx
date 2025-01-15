@@ -67,6 +67,24 @@ const DashSidebar = () => {
 
           <HorizontalLine />
 
+          <Link to={"/dashboard?tab=create"}>
+            <div
+              className={`px-4 py-1.5 flex items-center gap-2 cursor-pointer ${
+                tab === "create" ? "bg-lightBgHover" : "hover:bg-lightBgHover"
+              }`}
+              // onClick={() => setTab("posts")}
+            >
+              <img
+                src={assets.posts_icon}
+                alt="dashboard_icon"
+                className="w-6 h-6 md:w-7 md:h-7"
+              />
+              <p>Create</p>
+            </div>
+          </Link>
+
+          <HorizontalLine />
+
           <Link to={"/dashboard?tab=posts"}>
             <div
               className={`px-4 py-1.5 flex items-center gap-2 cursor-pointer ${

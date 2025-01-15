@@ -38,6 +38,7 @@ import ai_img from "./ai.jpg";
 import cyber_security_img from "./cyber_security.png";
 import data_science_img from "./data_science.jpg";
 import programming_img from "./programming.jpg";
+import upload_img from "./upload_img.png";
 
 import users_icon from "./users-user-svgrepo-com.svg";
 import posts_icon from "./documents-empty-svgrepo-com.svg";
@@ -104,6 +105,7 @@ export const assets = {
   arrow_up_navigation,
   id_wallet,
   id_card,
+  upload_img,
 };
 
 export const categoryData = [
