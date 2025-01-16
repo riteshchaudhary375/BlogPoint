@@ -190,3 +190,69 @@ export const create = async (req, res, next) => {
     next(error);
   }
 };
+
+// Update post
+export const update = async (req, res, next) => {
+  try {
+    const userValid = await User.findById(req.user.id);
+    // console.log(userValid);
+
+    if (req.params.userId !== userValid.id && !userValid.isAdmin) {
+      return next(
+        errorHandler(403, "You are not allowed to update this post!")
+      );
+    }
+
+    const imageFile = req.file;
+
+    let imageURL;
+
+    // if (!imageFile) return next(errorHandler(400, "Error on uploading image!"));
+    if (imageFile) {
+      const imageUpload = await cloudinary.uploader.upload(
+        imageFile.path,
+        {
+          allowed_formats: ["png", "jpg", "jpeg", "svg", "ico", "jfif", "webp"],
+          resource_type: "image",
+        }
+        /* function (error, result) {
+        if (error) {
+          next(errorHandler(error.message));
+          return;
+        }
+      } */
+      );
+      imageURL = imageUpload.secure_url;
+    }
+
+    let slug;
+    if (req.body.title) {
+      slug = req.body.title
+        .split(" ")
+        .join("-")
+        .toLowerCase()
+        .replace(/[^a-zA-Z0-9-]/g, "");
+    }
+
+    const updatedPost = await Post.findByIdAndUpdate(
+      req.params.postId,
+      {
+        $set: {
+          title: req.body.title,
+          content: req.body.content,
+          category: req.body.category,
+          slug,
+          image: imageURL,
+          updateDate: new Date(Date.now()),
+        },
+      },
+      { new: true }
+    );
+
+    res
+      .status(200)
+      .json({ success: true, message: "Post updated", updatedPost });
+  } catch (error) {
+    next(error);
+  }
+};
