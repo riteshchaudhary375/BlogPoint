@@ -8,7 +8,7 @@ import Blogs from "./pages/Blogs";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import CreatePost from "./pages/admin/CreatePost";
-import UpdatePost from "./pages/UpdatePost";
+import UpdatePost from "./pages/admin/UpdatePost";
 import PostPage from "./pages/PostPage";
 import Header from "./components/Header";
 import Contact from "./pages/Contact";
@@ -59,8 +59,8 @@ function App() {
             />
             <Route path="/profile/password" element={<DashPasswordChange />} />
             <Route path="/create-post" element={<CreatePost />} />
+            <Route path="/update-post/:postId" element={<UpdatePost />} />
           </Route>
-          <Route path="/update-post/:postId" element={<UpdatePost />} />
         </Routes>
 
         <Footer showModal={showModal} />

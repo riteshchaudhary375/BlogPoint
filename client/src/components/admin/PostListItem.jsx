@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "../Button";
 import Badge from "../Badge";
+import { Link } from "react-router-dom";
 
 const PostListItem = ({
   listTitle,
@@ -69,15 +70,12 @@ const PostListItem = ({
 
                 <td className="p-4 text-base font-light">
                   <div className="flex items-center justify-center gap-2 text-sm">
-                    <p
-                      className="w-fit text-green-600 hover:underline cursor-pointer"
-                      onClick={() => {
-                        setShowModal(true);
-                        idToEdit(data._id);
-                      }}
-                    >
-                      Edit
-                    </p>
+                    <Link to={`/update-post/${data._id}`}>
+                      <p className="w-fit text-green-600 hover:underline cursor-pointer">
+                        Edit
+                      </p>
+                    </Link>
+
                     <p
                       className="w-fit text-red-600 hover:underline cursor-pointer"
                       onClick={() => {
