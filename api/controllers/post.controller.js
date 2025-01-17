@@ -94,6 +94,23 @@ export const getPosts = async (req, res, next) => {
   }
 };
 
+// Get slug post
+export const getSlugPost = async (req, res, next) => {
+  try {
+    const slugedPost = await Post.findById(req.params.postId);
+    // console.log(slugedPost);
+
+    const slugedPostUser = await User.findById(slugedPost.userId);
+    const { password, ...rest } = await slugedPostUser._doc;
+    // console.log(rest);
+
+    // res.status(200).json({ success: true, creatorData: rest });
+    res.status(200).json(rest);
+  } catch (error) {
+    next(error);
+  }
+};
+
 // Delete post
 export const deletePost = async (req, res, next) => {
   try {

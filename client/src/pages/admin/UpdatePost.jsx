@@ -78,10 +78,8 @@ const UpdatePost = () => {
       }
       if (res.ok) {
         toast.success(data.message);
-        navigate("/dashboard?tab=posts");
-        /*  setTitle("");
-        setContent("");
-        setImage(false); */
+        // navigate("/dashboard?tab=posts");
+        navigate(`/post/${data.slug}`);
       }
     } catch (error) {
       // toast.error(error.message);

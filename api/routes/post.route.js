@@ -6,6 +6,7 @@ import {
   deletePost,
   getAllPostsForAdmin,
   getPosts,
+  getSlugPost,
   update,
 } from "../controllers/post.controller.js";
 
@@ -13,6 +14,7 @@ const router = express.Router();
 
 router.get("/getAllPostsForAdmin", verifyToken, getAllPostsForAdmin);
 router.get("/get", getPosts);
+router.get("/getSlugPost/:postId", getSlugPost);
 router.delete("/delete/:postId/:userId", verifyToken, deletePost);
 router.post("/create", upload.single("image"), verifyToken, create);
 router.put(

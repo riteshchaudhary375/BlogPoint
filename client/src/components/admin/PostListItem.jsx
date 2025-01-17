@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "../Button";
 import Badge from "../Badge";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const PostListItem = ({
   listTitle,
@@ -12,6 +12,8 @@ const PostListItem = ({
   setShowModal,
   idToDelete,
 }) => {
+  const navigate = useNavigate();
+
   return (
     <div className="flex flex-col gap-6">
       <table className="table-auto w-full border border-borderColor rounded-sm text-left">
@@ -41,7 +43,10 @@ const PostListItem = ({
                   />
                 </td>
 
-                <td className="p-4 text-base font-medium line-clamp-1">
+                <td
+                  className="p-4 text-base font-medium line-clamp-1 cursor-pointer hover:underline"
+                  onClick={() => navigate(`/post/${data.slug}`)}
+                >
                   {data.title}
                 </td>
 

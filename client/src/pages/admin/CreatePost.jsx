@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 
@@ -17,9 +18,12 @@ const CreatePost = () => {
 
   const [publishError, setPublishError] = useState(null);
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
+      setPublishError(null);
 
       const formData = new FormData();
 
@@ -34,16 +38,19 @@ const CreatePost = () => {
         body: formData,
       });
       const data = await res.json();
+
       if (!res.ok || data.success === false) {
         // toast.error(data.message);
         setPublishError(data.message);
         return;
       }
       if (res.ok) {
+        setPublishError(null);
         toast.success(data.message);
-        setTitle("");
+        navigate(`/post/${data.savedPost.slug}`);
+        /* setTitle("");
         setContent("");
-        setImage(false);
+        setImage(false); */
       }
     } catch (error) {
       // toast.error(error.message);

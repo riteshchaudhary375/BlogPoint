@@ -7,7 +7,7 @@ import Button from "./Button";
 
 const RelatedPosts = ({ category }) => {
   const [relatedPosts, setRelatedPosts] = useState([]);
-  console.log(relatedPosts);
+  // console.log(relatedPosts);
   const navigate = useNavigate();
 
   useEffect(() => {
