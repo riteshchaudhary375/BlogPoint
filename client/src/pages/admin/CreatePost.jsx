@@ -13,7 +13,7 @@ const CreatePost = () => {
   const filePickerRef = useRef();
 
   const [title, setTitle] = useState("");
-  const [category, setCategory] = useState("uncategorized");
+  const [category, setCategory] = useState("Uncategorized");
   const [content, setContent] = useState("");
 
   const [publishError, setPublishError] = useState(null);

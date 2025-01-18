@@ -256,6 +256,26 @@ export const getUsers = async (req, res, next) => {
   }
 };
 
+// Get all users list
+export const getAllUsers = async (req, res, next) => {
+  try {
+    const users = await User.find();
+    // console.log(users);
+
+    const userWithoutPassword = users.map((user) => {
+      const { password, ...rest } = user._doc;
+      return rest;
+    });
+
+    res.status(200).json({
+      success: true,
+      users: userWithoutPassword,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // Delete users by admin in admin dashboard
 export const deleteUser = async (req, res, next) => {
   try {
