@@ -6,9 +6,9 @@ import RelatedPostCard from "./RelatedPostCard";
 import Button from "./Button";
 import toast from "react-hot-toast";
 
-const RelatedPosts = ({ category }) => {
+const RelatedPosts = ({ category, currentPostDataID }) => {
   const [relatedPosts, setRelatedPosts] = useState([]);
-  // console.log(relatedPosts);
+  console.log(relatedPosts);
 
   useEffect(() => {
     /* if (posts.length > 0) {
@@ -27,7 +27,10 @@ const RelatedPosts = ({ category }) => {
           return;
         }
         if (res.ok) {
-          setRelatedPosts(data.posts);
+          const exceptCurrentPost = data.posts.filter(
+            (post) => post._id !== currentPostDataID
+          );
+          setRelatedPosts(exceptCurrentPost);
         }
       } catch (error) {
         toast.error(error.message);
@@ -37,7 +40,7 @@ const RelatedPosts = ({ category }) => {
     fetchRelatedPosts();
   }, [category]);
 
-  return (
+  return relatedPosts.length > 0 ? (
     <div className="my-20 md:my-24 w-full overflow-scroll">
       <div className="flex items-center justify-between">
         <Title2 text1={"Related"} text2={"Articles"} />
@@ -73,6 +76,8 @@ const RelatedPosts = ({ category }) => {
         ))}
       </div>
     </div>
+  ) : (
+    <div className="opacity-0"></div>
   );
 };
 

@@ -178,7 +178,10 @@ const PostPage = () => {
               </div>
 
               {/* Related posts */}
-              <RelatedPosts category={postData.category} />
+              <RelatedPosts
+                category={postData.category}
+                currentPostDataID={postDataID}
+              />
             </div>
           )}
         </div>
