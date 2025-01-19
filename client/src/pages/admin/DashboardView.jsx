@@ -255,7 +255,11 @@ const DashboardView = () => {
                         </td>
 
                         <td className="p-4 pb-0 mt-2 text-base font-medium line-clamp-1">
-                          <p className="">{data.title}</p>
+                          <Link to={`/post/${data.slug}`}>
+                            <p className="cursor-pointer hover:underline">
+                              {data.title}
+                            </p>
+                          </Link>
                         </td>
 
                         <td className="p-4 text-base font-light">

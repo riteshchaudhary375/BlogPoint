@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 
 const RelatedPosts = ({ category, currentPostDataID }) => {
   const [relatedPosts, setRelatedPosts] = useState([]);
-  console.log(relatedPosts);
+  // console.log(relatedPosts);
 
   useEffect(() => {
     /* if (posts.length > 0) {
