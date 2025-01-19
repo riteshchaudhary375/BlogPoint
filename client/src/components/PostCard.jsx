@@ -4,18 +4,18 @@ import Badge from "./Badge";
 
 const PostCard = ({
   id,
+  postSlug,
   title,
-  description,
+  content,
   category,
   image,
   date,
   postCreatorProfile,
   postCreatorName,
-  read,
 }) => {
   return (
     <div className="w-full border border-borderColor hover:border-borderColorHover rounded-sm h-[430px] overflow-hidden transition-all duration-300 ease-in">
-      <Link to={`/post/${id}`}>
+      <Link to={`/post/${postSlug}`}>
         <img
           src={image}
           alt={title}
@@ -26,9 +26,15 @@ const PostCard = ({
           <div className="text-textColor3 flex items-center justify-between">
             {/* Created Date */}
             <div className="flex items-center gap-1 text-sm font-medium">
-              <p className="text-textColor2">{date}</p>
+              <p className="text-textColor2">
+                {" "}
+                {new Date(date).toLocaleDateString()}
+              </p>
               <span className="text-xl">•</span>
-              <p className="text-xs">{read}</p>
+              <p className="text-xs">
+                {(content.length / 1000).toFixed(0)}{" "}
+                {(content.length / 1000).toFixed(0) > 0 ? "mins" : "min"} read
+              </p>
             </div>
             {/* Category */}
             {/*  <span className="text-xs inline-flex flex-nowrap items-center bg-lightBgHover px-1 py-0.5 ring-1 ring-inset ring-borderColor rounded-sm">
@@ -47,8 +53,14 @@ const PostCard = ({
             {title}
           </p>
 
-          {/* Description */}
-          <p className="text-sm text-textColor3 line-clamp-2">{description}</p>
+          {/* Content */}
+          {/* <p className="text-sm text-textColor3 line-clamp-2">{content}</p> */}
+          <p
+            className="text-sm text-textColor3 line-clamp-2 post-content" // 'post-content' is a custom css written in 'index.css'
+            dangerouslySetInnerHTML={{
+              __html: content,
+            }}
+          ></p>
 
           {/* Created Profile */}
           <div className="flex gap-1 mt-4">

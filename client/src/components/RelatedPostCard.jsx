@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import Badge from "./Badge";
-import toast from "react-hot-toast";
 
 const RelatedPostCard = ({
   postId,

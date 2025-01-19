@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 // import { posts } from "../assets/assets";
 import Title2 from "./Title2";
 import RelatedPostCard from "./RelatedPostCard";
 import Button from "./Button";
-import toast from "react-hot-toast";
 
 const RelatedPosts = ({ category, currentPostDataID }) => {
+  const navigate = useNavigate();
   const [relatedPosts, setRelatedPosts] = useState([]);
   // console.log(relatedPosts);
 

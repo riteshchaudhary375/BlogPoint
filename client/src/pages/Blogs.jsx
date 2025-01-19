@@ -1,12 +1,45 @@
-import React, { useState } from "react";
-import { assets, posts } from "../assets/assets";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
+
+// import { assets, posts } from "../assets/assets";
+import { assets } from "../assets/assets";
 import Title2 from "../components/Title2";
 import Title from "../components/Title";
 import Button from "../components/Button";
 import PostCard from "../components/PostCard";
+import LoaderSpinner from "../components/LoaderSpinner";
+import Notification from "../components/Notification";
 
 const Blogs = () => {
   const [showFilter, setShowFilter] = useState(false);
+
+  const [posts, setPosts] = useState([]);
+  // console.log(posts);
+
+  const [fetching, setFetching] = useState(false);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        setFetching(true);
+        const res = await fetch(`/api/post/get`);
+        const data = await res.json();
+        if (!res.ok) {
+          toast.error(data.message);
+          setFetching(false);
+          return;
+        }
+        if (res.ok) {
+          setPosts(data.posts);
+          setFetching(false);
+        }
+      } catch (error) {
+        toast.error(error.message);
+        setFetching(false);
+      }
+    };
+    fetchPosts();
+  }, []);
 
   return (
     <div className="pt-2 sm:pt-6 md:pt-8 flex flex-col sm:flex-row gap-10 sm:gap-4">
@@ -155,35 +188,43 @@ const Blogs = () => {
           </select>
         </div>
 
-        {/* {Map Blogs} */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 gap-y-6 -mt-1">
-          {posts.slice(0, 9).map((item, index) => (
-            <PostCard
-              key={index}
-              id={item._id}
-              title={item.title}
-              description={item.description}
-              category={item.category}
-              image={item.image}
-              date={item.date}
-              postCreatorProfile={item.postCreatorProfile}
-              postCreatorName={item.postCreatorName}
-              read={item.read}
-            />
-          ))}
-        </div>
+        {fetching && <LoaderSpinner />}
 
-        {/* More button */}
-        <div className="text-center mt-6">
-          <Button
-            type={"button"}
-            text={"More"}
-            className={
-              // "text-textLight bg-bgDark border-none outline-none bg-opacity-95 hover:bg-opacity-100"
-              "text-textLight bg-bgDark border-none outline-none hover:bg-opacity-[93%]"
-            }
-          />
-        </div>
+        {!fetching && posts.length === 0 && (
+          <Notification text={"Post Not Found!"} />
+        )}
+
+        {!fetching && posts.length > 0 && (
+          <>
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 gap-y-6 -mt-1">
+              {posts.slice(0, 9).map((item, index) => (
+                <PostCard
+                  key={index}
+                  id={item._id}
+                  postSlug={item.slug}
+                  title={item.title}
+                  content={item.content}
+                  category={item.category}
+                  image={item.image}
+                  date={item.updateDate ? item.updateDate : item.createdDate}
+                  postCreatorProfile={item.userData.profilePicture}
+                  postCreatorName={item.userData.username}
+                />
+              ))}
+            </div>
+
+            <div className="text-center mt-6">
+              <Button
+                type={"button"}
+                text={"More"}
+                className={
+                  // "text-textLight bg-bgDark border-none outline-none bg-opacity-95 hover:bg-opacity-100"
+                  "text-textLight bg-bgDark border-none outline-none hover:bg-opacity-[93%]"
+                }
+              />
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
