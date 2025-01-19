@@ -16,7 +16,7 @@ router.get("/getAllPostsForAdmin", verifyToken, getAllPostsForAdmin);
 router.get("/get", getPosts);
 router.get("/getSlugPost/:postId", getSlugPost);
 router.delete("/delete/:postId/:userId", verifyToken, deletePost);
-router.post("/create", upload.single("image"), verifyToken, create);
+router.post("/create/:creatorId", upload.single("image"), verifyToken, create);
 router.put(
   "/update/:postId/:userId",
   upload.single("image"),

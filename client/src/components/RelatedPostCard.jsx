@@ -11,49 +11,8 @@ const RelatedPostCard = ({
   category,
   image,
   date,
-  postUserId,
+  postCreatorData,
 }) => {
-  const [usersList, setUsersList] = useState([]);
-  const [userProfile, setUserProfile] = useState(null);
-  console.log(userProfile);
-  const [userProfileId, setUserProfileId] = useState(null);
-
-  /* if (usersList) {
-    const postProfile = usersList.filter((user) => user._id === postUserId);
-    setUserProfile(postProfile[0]);
-  } */
-
-  useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        const postProfile =
-          usersList && usersList.filter((user) => user._id === postUserId);
-        setUserProfile(postProfile[0]);
-        setUserProfileId(postProfile[0]._id);
-      } catch (error) {
-        // toast.error(error.message);
-      }
-    };
-
-    const fetchUsers = async () => {
-      try {
-        const res = await fetch(`/api/user/getAllUsers`);
-        const data = await res.json();
-        if (!res.ok) {
-          toast.error(data.message);
-          return;
-        }
-        if (res.ok) {
-          setUsersList(data.users);
-        }
-      } catch (error) {
-        toast.error(error.message);
-      }
-    };
-
-    fetchUsers();
-    fetchUserProfile();
-  }, [postUserId, userProfileId, userProfile]);
   return (
     <div className="w-[320px] border border-borderColor hover:border-borderColorHover rounded-sm overflow-hidden transition-all duration-300 ease-in">
       <Link to={`/post/${postSlug}`}>
@@ -105,12 +64,12 @@ const RelatedPostCard = ({
           {/* Created Profile */}
           <div className="flex gap-1 mt-2">
             <img
-              src={userProfile && userProfile.profilePicture}
+              src={postCreatorData.profilePicture}
               alt="Creator profile"
               className="w-6 h-6 rounded-full"
             />
             <p className="text-base font-medium text-textColor3">
-              {userProfile && userProfile.username}
+              {postCreatorData.username}
             </p>
           </div>
         </div>

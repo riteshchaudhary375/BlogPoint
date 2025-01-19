@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
@@ -9,6 +10,8 @@ import Button from "../../components/Button";
 import toast from "react-hot-toast";
 
 const CreatePost = () => {
+  const { currentUser } = useSelector((state) => state.user);
+
   const [image, setImage] = useState(false);
   const filePickerRef = useRef();
 
@@ -33,7 +36,7 @@ const CreatePost = () => {
 
       image && formData.append("image", image);
 
-      const res = await fetch(`/api/post/create`, {
+      const res = await fetch(`/api/post/create/${currentUser._id}`, {
         method: "POST",
         body: formData,
       });

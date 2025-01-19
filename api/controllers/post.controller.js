@@ -128,6 +128,8 @@ export const deletePost = async (req, res, next) => {
 
 // Create post
 export const create = async (req, res, next) => {
+  const postCreatorId = req.params.creatorId;
+
   // console.log(req.user);
   const userVerified = await User.findById(req.user.id);
   // console.log(userAdmin);
@@ -185,10 +187,15 @@ export const create = async (req, res, next) => {
 
   // 3. update profile image into database
 
+  const postCreatorData = await User.findById(postCreatorId).select(
+    "-password"
+  );
+
   const newPost = new Post({
     // userId: req.user.id, // user from token for filtering admin for their particular post
     userId: userVerified.id, // user from token for filtering admin for their particular post
     //   ...req.body, // all from body
+    userData: postCreatorData,
     title: req.body.title,
     image: imageURL,
     content: req.body.content,

@@ -67,7 +67,7 @@ const RelatedPosts = ({ category }) => {
               date={
                 item.updateDate === null ? item.createdDate : item.updateDate
               }
-              postUserId={item.userId}
+              postCreatorData={item.userData}
             />
           </div>
         ))}
