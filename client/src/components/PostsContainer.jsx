@@ -1,17 +1,41 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+
 import Title from "./Title";
 import PostCard from "./PostCard";
 import Button from "./Button";
-import { posts } from "../assets/assets";
+// import { posts } from "../assets/assets";
 
 const PostsContainer = () => {
   const navigate = useNavigate();
-  const [postList, setPostList] = useState([]);
+  /*   const [postList, setPostList] = useState([]);
 
   useEffect(() => {
     setPostList(posts);
-  }, [posts]);
+  }, [posts]); */
+
+  const [posts, setPosts] = useState([]);
+  // console.log(posts);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const res = await fetch(`/api/post/get`);
+        const data = await res.json();
+        if (!res.ok) {
+          toast.error(data.message);
+          return;
+        }
+        if (res.ok) {
+          setPosts(data.posts);
+        }
+      } catch (error) {
+        toast.error(error.message);
+      }
+    };
+    fetchPosts();
+  }, []);
 
   return (
     <>
@@ -24,21 +48,21 @@ const PostsContainer = () => {
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 gap-y-6">
-          {postList &&
-            postList
+          {posts &&
+            posts
               .slice(0, 6)
               .map((item, index) => (
                 <PostCard
                   key={index}
                   id={item._id}
+                  postSlug={item.slug}
                   title={item.title}
-                  description={item.description}
+                  content={item.content}
                   category={item.category}
                   image={item.image}
-                  date={item.date}
-                  postCreatorProfile={item.postCreatorProfile}
-                  postCreatorName={item.postCreatorName}
-                  read={item.read}
+                  date={item.updateDate ? item.updateDate : item.createdDate}
+                  postCreatorProfile={item.userData.profilePicture}
+                  postCreatorName={item.userData.username}
                 />
               ))}
         </div>
