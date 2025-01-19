@@ -19,8 +19,10 @@ const UpdatePost = () => {
   const [publishError, setPublishError] = useState(null);
 
   const { currentUser, loading } = useSelector((state) => state.user);
+
   const [postData, setPostData] = useState({});
   const [postTitle, setPostTitle] = useState("");
+  const [postCategory, setPostCategory] = useState("Uncategorized");
   const [postImage, setPostImage] = useState(null);
   // console.log(postData);
 
@@ -50,9 +52,9 @@ const UpdatePost = () => {
     }
   }, [postId]);
 
-  const handleChange = (e) => {
+  /* const handleChange = (e) => {
     setPostData({ ...postData, [e.target.id]: e.target.value });
-  };
+  }; */
 
   const handleSubmit = async (e) => {
     try {
@@ -71,6 +73,8 @@ const UpdatePost = () => {
         body: formData,
       });
       const data = await res.json();
+      // console.log(data);
+
       if (!res.ok || data.success === false) {
         // toast.error(data.message);
         setPublishError(data.message);
@@ -79,7 +83,7 @@ const UpdatePost = () => {
       if (res.ok) {
         toast.success(data.message);
         // navigate("/dashboard?tab=posts");
-        navigate(`/post/${data.slug}`);
+        navigate(`/post/${data.updatedPost.slug}`);
       }
     } catch (error) {
       // toast.error(error.message);
@@ -102,11 +106,14 @@ const UpdatePost = () => {
                 placeholder="Title of the post"
                 id="title"
                 className="bg-inherit border border-borderColor outline-borderColorHover rounded-sm px-2 py-1"
-                defaultValue={postTitle}
+                // onChange={handleChange}
+                // defaultValue={postTitle}
+                // value={postData.title}
                 /* onChange={(e) =>
-                    setPostData({ ...postData, title: e.target.value })
+                  setPostData({ ...postData, title: e.target.value })
                   } */
-                onChange={handleChange}
+                value={postTitle}
+                onChange={(e) => setPostTitle(e.target.value)}
               />
 
               <div className="flex justify-end">
@@ -115,10 +122,14 @@ const UpdatePost = () => {
                   id="category"
                   value={postData.category}
                   onChange={(e) =>
-                    setPostData({ ...postData, category: e.target.value })
+                    setPostData({
+                      ...postData,
+                      category: e.target.value,
+                    })
                   }
                 >
                   <option value={"Uncategorized"}>Select a category</option>
+                  {/* <option>Select a category</option> */}
                   <option value={"Technology"}>Technology</option>
                   <option value={"Health"}>Health</option>
                   <option value={"Finance"}>Finance</option>

@@ -254,8 +254,8 @@ const DashboardView = () => {
                           />
                         </td>
 
-                        <td className="p-4 text-base font-medium line-clamp-1">
-                          {data.title}
+                        <td className="p-4 pb-0 mt-2 text-base font-medium line-clamp-1">
+                          <p className="">{data.title}</p>
                         </td>
 
                         <td className="p-4 text-base font-light">
