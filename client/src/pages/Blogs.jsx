@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 
 // import { assets, posts } from "../assets/assets";
@@ -9,15 +10,127 @@ import Button from "../components/Button";
 import PostCard from "../components/PostCard";
 import LoaderSpinner from "../components/LoaderSpinner";
 import Notification from "../components/Notification";
+import HorizontalLine from "../components/HorizontalLine";
 
 const Blogs = () => {
   const [showFilter, setShowFilter] = useState(false);
 
   const [posts, setPosts] = useState([]);
   // console.log(posts);
-
   const [fetching, setFetching] = useState(false);
 
+  // 11:08:05 => searchTerm
+  const [sidebarData, setSidebarData] = useState({
+    searchTerm: "",
+    sort: "desc",
+    category: "Uncategorized",
+  });
+  console.log(sidebarData);
+
+  const [filteredPosts, setFilteredPosts] = useState([]);
+  const [showMore, setShowMore] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  /*   const categoryTitle = [
+    "Uncategorized",
+    "Technology",
+    "Health",
+    "Finance",
+    "Travel",
+    "Lifestyle",
+    "Food",
+    "Education",
+    "Business & Entrepreneurship",
+    "Entertainment",
+    "Parenting & Family",
+    "Self-Improvement",
+    "Sports & Fitness",
+  ]; */
+
+  const categoryTitle = [
+    "Uncategorized",
+    "Technology",
+    "Health",
+    "Travel",
+    "Food",
+    "Education",
+    "Business",
+    "Entertainment",
+    "Parenting & Family",
+    "Self-Improvement",
+    "Sports",
+  ];
+
+  const handleChange = (e) => {
+    if (e.target.id === "searchTerm") {
+      setSidebarData({ ...sidebarData, searchTerm: e.target.value });
+    }
+    if (e.target.id === "sort") {
+      const order = e.target.value || "desc";
+      setSidebarData({ ...sidebarData, sort: order });
+    }
+    if (e.target.id === "category") {
+      const category = e.target.value || "Uncategorized";
+      setSidebarData({ ...sidebarData, category });
+    }
+  };
+
+  // useEffect for filtered posts
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+
+    const searchTermFromUrl = urlParams.get("searchTerm");
+    const sortFromUrl = urlParams.get("sort");
+    const categoryFromUrl = urlParams.get("category");
+    if (searchTermFromUrl || sortFromUrl || categoryFromUrl) {
+      setSidebarData({
+        ...sidebarData,
+        searchTerm: searchTermFromUrl,
+        sort: sortFromUrl,
+        category: categoryFromUrl,
+      });
+    }
+
+    // Fetching filter post
+    const fetchFilterPosts = async () => {
+      setFetching(true);
+      const searchQuery = urlParams.toString();
+      const res = await fetch(`/api/post/get?${searchQuery}`);
+      if (!res.ok) {
+        // toast.error(data.message)
+        setFetching(false);
+        return;
+      }
+      if (res.ok) {
+        const data = await res.json();
+        setFilteredPosts(data.posts);
+        setFetching(false);
+        if (data.posts.length === 9) {
+          setShowMore(true);
+        } else {
+          setShowMore(false);
+        }
+      }
+    };
+
+    fetchFilterPosts();
+  }, [location.search]);
+
+  const handleSubmitFilter = async (e) => {
+    e.preventDefault();
+
+    const urlParams = new URLSearchParams(location.search);
+
+    urlParams.set("searchTerm", sidebarData.searchTerm);
+    urlParams.set("sort", sidebarData.sort);
+    urlParams.set("category", sidebarData.category);
+
+    const searchQuery = urlParams.toString();
+    navigate(`/blogs?${searchQuery}`);
+  };
+
+  // useEffect for all posts
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -44,9 +157,9 @@ const Blogs = () => {
   return (
     <div className="pt-2 sm:pt-6 md:pt-8 flex flex-col sm:flex-row gap-10 sm:gap-4">
       {/* Left - Filter options */}
-      <div className="">
+      <form onSubmit={handleSubmitFilter}>
         <div
-          className="flex gap-2 sm:gap-0 cursor-pointer w-fit pr-2"
+          className="flex gap-2 sm:gap-0 max-sm:cursor-pointer w-fit pr-2"
           onClick={() => setShowFilter(!showFilter)}
         >
           <Title2 text1={"Filters"} />
@@ -66,112 +179,89 @@ const Blogs = () => {
             <div>
               <input
                 type="text"
+                id="searchTerm"
                 placeholder="Search term..."
-                className="w-full bg-inherit border border-textColor3 outline-borderColorHover rounded-sm px-2.5 py-1"
+                className="w-full bg-inherit border border-borderColor outline-borderColorHover rounded-sm px-2.5 py-1"
+                value={sidebarData.searchTerm}
+                onChange={handleChange}
               />
             </div>
 
+            {/* Product sort */}
+            <select
+              id="sort"
+              onChange={handleChange}
+              value={sidebarData.sort}
+              className="bg-inherit border border-borderColor outline-borderColorHover rounded-sm text-textColor2 font-light text-sm px-2 h-10 cursor-pointer"
+            >
+              <option value="desc">Sort by: Latest</option>
+              <option value="asc">Sort by: Oldest</option>
+            </select>
+
             {/* Category filter */}
-            <div>
-              <p className="text-base font-medium text-textColor1 mb-4">
+            <div className="whitespace-nowrap">
+              <p className="text-base font-medium text-textColor2 mb-2">
                 CATEGORIES
               </p>
 
+              {/* <div className="text-textColor3 font-light text-sm flex flex-col gap-2">
+                {categoryTitle.map((item, index) => (
+                  <p className="flex gap-2 cursor-pointer" key={index}>
+                    <input
+                      type="checkbox"
+                      id="category"
+                      value={sidebarData.category}
+                      // checked={sidebarData.category}
+                      onChange={handleChange}
+                      className="w-3 cursor-pointer"
+                    />
+                    {item}
+                  </p>
+                ))}
+              </div> */}
+
+              {/* <div className="text-textColor3 font-light text-sm flex flex-col gap-2">
+                {categoryTitle.map((item, index) => (
+                  <>
+                    <p
+                      className="cursor-pointer px-2 py-1 hover:bg-lightBgHover"
+                      key={index}
+                    >
+                      {item}
+                    </p>
+                    <HorizontalLine />
+                  </>
+                ))}
+              </div> */}
+
               <div className="text-textColor3 font-light text-sm flex flex-col gap-2">
-                <p className="flex gap-2">
-                  <input type="checkbox" value={"Technology"} className="w-3" />
-                  Technology
-                </p>
-
-                <p className="flex gap-2">
-                  <input type="checkbox" value={"Health"} className="w-3" />
-                  Health
-                </p>
-
-                <p className="flex gap-2">
-                  <input type="checkbox" value={"Finance"} className="w-3" />
-                  Finance
-                </p>
-
-                <p className="flex gap-2">
-                  <input type="checkbox" value={"Travel"} className="w-3" />
-                  Travel
-                </p>
-
-                <p className="flex gap-2">
-                  <input type="checkbox" value={"Lifestyle"} className="w-3" />
-                  Lifestyle
-                </p>
-
-                <p className="flex gap-2">
-                  <input type="checkbox" value={"Food"} className="w-3" />
-                  Food
-                </p>
-
-                <p className="flex gap-2">
-                  <input type="checkbox" value={"Education"} className="w-3" />
-                  Education
-                </p>
-
-                <p className="flex gap-2">
-                  <input
-                    type="checkbox"
-                    value={"Business & Entrepreneurship"}
-                    className="w-3"
-                  />
-                  Business & Entrepreneurship
-                </p>
-
-                <p className="flex gap-2">
-                  <input
-                    type="checkbox"
-                    value={"Entertainment"}
-                    className="w-3"
-                  />
-                  Entertainment
-                </p>
-
-                <p className="flex gap-2">
-                  <input
-                    type="checkbox"
-                    value={"Parenting & Family"}
-                    className="w-3"
-                  />
-                  Parenting & Family
-                </p>
-
-                <p className="flex gap-2">
-                  <input
-                    type="checkbox"
-                    value={"Self-Improvement"}
-                    className="w-3"
-                  />
-                  Self-Improvement
-                </p>
-
-                <p className="flex gap-2">
-                  <input
-                    type="checkbox"
-                    value={"Sports & Fitness"}
-                    className="w-3"
-                  />
-                  Sports & Fitness
-                </p>
+                <select
+                  id="category"
+                  onChange={handleChange}
+                  value={sidebarData.category}
+                  className="bg-inherit border border-borderColor outline-borderColorHover rounded-sm text-sm px-2 h-10 cursor-pointer"
+                >
+                  {categoryTitle &&
+                    categoryTitle.map((item, index) => (
+                      <option key={index} value={item}>
+                        {item}
+                      </option>
+                    ))}
+                </select>
               </div>
             </div>
 
             {/* Search button */}
             <div className="text-center">
               <Button
-                type={"button"}
+                type={"submit"}
                 text={"Apply Filters"}
                 className={"border border-bgDark hover:bg-lightBgHover"}
-                handleClick={() => alert("Processing...")}
               />
             </div>
           </div>
         </div>
-      </div>
+      </form>
 
       {/* Right - All blogs */}
       <div className="flex-1">
@@ -181,11 +271,11 @@ const Blogs = () => {
           </div>
 
           {/* Product sort */}
-          <select className="bg-inherit border border-borderColor outline-borderColorHover rounded-sm text-sm px-2 h-10">
+          {/* <select className="bg-inherit border border-borderColor outline-borderColorHover rounded-sm text-sm px-2 h-10 cursor-pointer">
             <option value="relavent">Sort by: Relavent</option>
             <option value="old-new">Sort by: Old to New</option>
             <option value="new-old">Sort by: New to Old</option>
-          </select>
+          </select> */}
         </div>
 
         {fetching && <LoaderSpinner />}
