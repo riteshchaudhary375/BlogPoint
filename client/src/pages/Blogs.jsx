@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { toast } from "react-hot-toast";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+// import { toast } from "react-hot-toast";
 
 // import { assets, posts } from "../assets/assets";
 import { assets } from "../assets/assets";
@@ -10,7 +10,7 @@ import Button from "../components/Button";
 import PostCard from "../components/PostCard";
 import LoaderSpinner from "../components/LoaderSpinner";
 import Notification from "../components/Notification";
-import HorizontalLine from "../components/HorizontalLine";
+// import HorizontalLine from "../components/HorizontalLine";
 
 const Blogs = () => {
   const [showFilter, setShowFilter] = useState(false);
@@ -23,11 +23,14 @@ const Blogs = () => {
   const [sidebarData, setSidebarData] = useState({
     searchTerm: "",
     sort: "desc",
-    category: "Uncategorized",
+    // category: "Uncategorized",
+    category: "",
   });
-  console.log(sidebarData);
+  // console.log(sidebarData);
 
-  const [filteredPosts, setFilteredPosts] = useState([]);
+  // const [filteredPosts, setFilteredPosts] = useState([]);
+  // console.log(filteredPosts);
+
   const [showMore, setShowMore] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -71,7 +74,8 @@ const Blogs = () => {
       setSidebarData({ ...sidebarData, sort: order });
     }
     if (e.target.id === "category") {
-      const category = e.target.value || "Uncategorized";
+      // const category = e.target.value || "Uncategorized";
+      const category = e.target.value;
       setSidebarData({ ...sidebarData, category });
     }
   };
@@ -104,7 +108,8 @@ const Blogs = () => {
       }
       if (res.ok) {
         const data = await res.json();
-        setFilteredPosts(data.posts);
+        // setFilteredPosts(data.posts);
+        setPosts(data.posts);
         setFetching(false);
         if (data.posts.length === 9) {
           setShowMore(true);
@@ -130,8 +135,39 @@ const Blogs = () => {
     navigate(`/blogs?${searchQuery}`);
   };
 
+  // Handle show more button
+  const handleShowMoreClick = async () => {
+    try {
+      const numberOfPosts = posts.length;
+      const startIndex = numberOfPosts;
+
+      const urlParams = new URLSearchParams(location.search);
+      urlParams.set("startIndex", startIndex);
+
+      const searchQuery = urlParams.toString();
+
+      const res = await fetch(`/api/post/get?${searchQuery}`);
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.log(data.message);
+        return;
+      }
+      if (res.ok) {
+        setPosts([...posts, ...data.posts]);
+        if (data.posts.length === 9) {
+          setShowMore(true);
+        } else {
+          setShowMore(false);
+        }
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   // useEffect for all posts
-  useEffect(() => {
+  /* useEffect(() => {
     const fetchPosts = async () => {
       try {
         setFetching(true);
@@ -143,7 +179,7 @@ const Blogs = () => {
           return;
         }
         if (res.ok) {
-          setPosts(data.posts);
+          // setPosts(data.posts);
           setFetching(false);
         }
       } catch (error) {
@@ -152,7 +188,7 @@ const Blogs = () => {
       }
     };
     fetchPosts();
-  }, []);
+  }, []); */
 
   return (
     <div className="pt-2 sm:pt-6 md:pt-8 flex flex-col sm:flex-row gap-10 sm:gap-4">
@@ -241,6 +277,7 @@ const Blogs = () => {
                   value={sidebarData.category}
                   className="bg-inherit border border-borderColor outline-borderColorHover rounded-sm text-sm px-2 h-10 cursor-pointer"
                 >
+                  <option value={""}>Select Category:</option>
                   {categoryTitle &&
                     categoryTitle.map((item, index) => (
                       <option key={index} value={item}>
@@ -258,6 +295,17 @@ const Blogs = () => {
                 text={"Apply Filters"}
                 className={"border border-bgDark hover:bg-lightBgHover"}
               />
+            </div>
+
+            {/* Clear button */}
+            <div className="text-center">
+              <Link to={"/blogs"}>
+                <Button
+                  type={"submit"}
+                  text={"Clear Filters"}
+                  className={"border border-bgDark hover:bg-lightBgHover"}
+                />
+              </Link>
             </div>
           </div>
         </div>
@@ -280,39 +328,44 @@ const Blogs = () => {
 
         {fetching && <LoaderSpinner />}
 
-        {!fetching && posts.length === 0 && (
+        {!fetching && posts && posts.length === 0 && (
           <Notification text={"Post Not Found!"} />
         )}
 
-        {!fetching && posts.length > 0 && (
+        {!fetching && posts && posts.length > 0 && (
           <>
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 gap-y-6 -mt-1">
-              {posts.slice(0, 9).map((item, index) => (
-                <PostCard
-                  key={index}
-                  id={item._id}
-                  postSlug={item.slug}
-                  title={item.title}
-                  content={item.content}
-                  category={item.category}
-                  image={item.image}
-                  date={item.updateDate ? item.updateDate : item.createdDate}
-                  postCreatorProfile={item.userData.profilePicture}
-                  postCreatorName={item.userData.username}
-                />
-              ))}
+              {/* {posts.slice(0, 9).map((item, index) => ( */}
+              {posts &&
+                posts.map((item, index) => (
+                  <PostCard
+                    key={index}
+                    id={item._id}
+                    postSlug={item.slug}
+                    title={item.title}
+                    content={item.content}
+                    category={item.category}
+                    image={item.image}
+                    date={item.updateDate ? item.updateDate : item.createdDate}
+                    postCreatorProfile={item.userData.profilePicture}
+                    postCreatorName={item.userData.username}
+                  />
+                ))}
             </div>
 
-            <div className="text-center mt-6">
-              <Button
-                type={"button"}
-                text={"More"}
-                className={
-                  // "text-textLight bg-bgDark border-none outline-none bg-opacity-95 hover:bg-opacity-100"
-                  "text-textLight bg-bgDark border-none outline-none hover:bg-opacity-[93%]"
-                }
-              />
-            </div>
+            {showMore && (
+              <div className="text-center mt-6">
+                <Button
+                  type={"button"}
+                  text={"More"}
+                  className={
+                    // "text-textLight bg-bgDark border-none outline-none bg-opacity-95 hover:bg-opacity-100"
+                    "text-textLight bg-bgDark border-none outline-none hover:bg-opacity-[93%]"
+                  }
+                  handleClick={handleShowMoreClick}
+                />
+              </div>
+            )}
           </>
         )}
       </div>
