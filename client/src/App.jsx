@@ -19,6 +19,7 @@ import UpdateUserPassword from "./pages/UpdateUserPassword";
 import PrivateRouteForAdmin from "./components/PrivateRouteForAdmin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import DashPasswordChange from "./pages/admin/DashPasswordChange";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   const [showModal, setShowModal] = useState(false);
@@ -27,6 +28,8 @@ function App() {
     // <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
     // <div className="">
     <BrowserRouter>
+      {/* Scroll to top */}
+      <ScrollToTop />
       <Header />
 
       <Routes>
