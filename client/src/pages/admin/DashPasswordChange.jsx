@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
+import { assets } from "../../assets/assets.js";
 import Title from "../../components/Title";
 import Button from "../../components/Button";
 import {
@@ -17,6 +18,10 @@ const DashPasswordChange = () => {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confNewPassword, setConfNewPassword] = useState("");
+
+  const [showPassword1, setShowPassword1] = useState(false);
+  const [showPassword2, setShowPassword2] = useState(false);
+  const [showPassword3, setShowPassword3] = useState(false);
 
   const handleUpdateUserPassword = async (e) => {
     e.preventDefault();
@@ -76,29 +81,118 @@ const DashPasswordChange = () => {
               className="flex flex-col gap-4"
               onSubmit={handleUpdateUserPassword}
             >
-              <input
-                type="password"
-                className="bg-inherit border border-borderColor outline-borderColorHover rounded-sm px-2 py-1"
-                placeholder="Old Password"
-                onChange={(e) => setOldPassword(e.target.value)}
-                required
-              />
+              {/* Old Password */}
+              <div className="flex flex-col gap-1">
+                <label
+                  htmlFor="oldPassword"
+                  className="text-sm cursor-pointer w-fit"
+                >
+                  Old Password
+                </label>
+                <div className="relative flex items-center bg-inherit w-full border border-borderColor outline-borderColorHover rounded-sm">
+                  <input
+                    type={showPassword1 ? "text" : "password"}
+                    id="oldPassword"
+                    placeholder="your old password"
+                    required
+                    className="w-full p-2 text-sm bg-inherit"
+                    onChange={(e) => setOldPassword(e.target.value)}
+                  />
+                  {!showPassword1 ? (
+                    <img
+                      src={assets.eye}
+                      alt="icon"
+                      className="absolute w-5 h-5 object-cover object-center cursor-pointer right-2"
+                      onClick={() => setShowPassword1((prev) => !prev)}
+                    />
+                  ) : (
+                    <img
+                      src={assets.eye_closed}
+                      alt="icon"
+                      className="absolute w-5 h-5 object-cover object-center cursor-pointer right-2"
+                      onClick={() => setShowPassword1((prev) => !prev)}
+                    />
+                  )}
+                </div>
+              </div>
 
-              <input
-                type="password"
-                className="bg-inherit border border-borderColor outline-borderColorHover rounded-sm px-2 py-1"
-                placeholder="New Password"
-                onChange={(e) => setNewPassword(e.target.value)}
-                required
-              />
+              {/* New Password */}
+              <div className="flex flex-col gap-1">
+                <label
+                  htmlFor="newPassword"
+                  className="text-sm cursor-pointer w-fit"
+                >
+                  New Password
+                </label>
+                <div className="relative flex items-center bg-inherit w-full border border-borderColor outline-borderColorHover rounded-sm">
+                  <input
+                    type={showPassword2 ? "text" : "password"}
+                    id="newPassword"
+                    placeholder="your new password"
+                    required
+                    className="w-full p-2 text-sm bg-inherit"
+                    onChange={(e) => setNewPassword(e.target.value)}
+                  />
+                  {!showPassword2 ? (
+                    <img
+                      src={assets.eye}
+                      alt="icon"
+                      className="absolute w-5 h-5 object-cover object-center cursor-pointer right-2"
+                      onClick={() => setShowPassword2((prev) => !prev)}
+                    />
+                  ) : (
+                    <img
+                      src={assets.eye_closed}
+                      alt="icon"
+                      className="absolute w-5 h-5 object-cover object-center cursor-pointer right-2"
+                      onClick={() => setShowPassword2((prev) => !prev)}
+                    />
+                  )}
+                </div>
+              </div>
 
-              <input
+              {/* Confirm Password */}
+              <div className="flex flex-col gap-1">
+                <label
+                  htmlFor="newPassword"
+                  className="text-sm cursor-pointer w-fit"
+                >
+                  Confirm Password
+                </label>
+                <div className="relative flex items-center bg-inherit w-full border border-borderColor outline-borderColorHover rounded-sm">
+                  <input
+                    type={showPassword3 ? "text" : "password"}
+                    id="newPassword"
+                    placeholder="confirm new password"
+                    required
+                    className="w-full p-2 text-sm bg-inherit"
+                    onChange={(e) => setConfNewPassword(e.target.value)}
+                  />
+                  {!showPassword3 ? (
+                    <img
+                      src={assets.eye}
+                      alt="icon"
+                      className="absolute w-5 h-5 object-cover object-center cursor-pointer right-2"
+                      onClick={() => setShowPassword3((prev) => !prev)}
+                    />
+                  ) : (
+                    <img
+                      src={assets.eye_closed}
+                      alt="icon"
+                      className="absolute w-5 h-5 object-cover object-center cursor-pointer right-2"
+                      onClick={() => setShowPassword3((prev) => !prev)}
+                    />
+                  )}
+                </div>
+              </div>
+
+              {/* <input
                 type="password"
                 className="bg-inherit border border-borderColor outline-borderColorHover rounded-sm px-2 py-1"
                 placeholder="Confirm New Password"
                 onChange={(e) => setConfNewPassword(e.target.value)}
                 required
-              />
+              /> */}
 
               <div className="w-full flex items-center justify-center gap-2 -mt-2">
                 <Link to={"/dashboard?tab=profile"}>

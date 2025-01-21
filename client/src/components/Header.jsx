@@ -35,11 +35,11 @@ const Header = () => {
   };
 
   return (
-    <nav className="mb-20 md:mb-24 z-40">
+    <nav className="mb-20 md:mb-24">
       {/* Desktop view */}
-      <div className="fixed left-0 top-0 right-0 px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
+      <div className="container bg-bgLight fixed top-0 left-0 right-0 z-50">
         {/* <div className="flex items-center justify-between py-3 md:py-4 font-medium bg-bgLight border-gray-400 border-b-2 "> */}
-        <div className="flex items-center justify-between py-3 md:py-4 font-medium bg-bgLight">
+        <div className="flex items-center justify-between py-3 md:py-4 font-medium">
           <Link to={"/"}>
             <img
               src={assets.logo_light}
@@ -48,7 +48,7 @@ const Header = () => {
             />
           </Link>
 
-          <ul className="hidden md:flex gap-5 text-sm lg:text-md text-textColor1 uppercase font-medium">
+          <ul className="hidden md:flex gap-5 text-sm lg:text-md text-textColor1 uppercase font-medium mt-2">
             <NavLink to={"/"} className="flex flex-col items-center gap-1">
               <p>Home</p>
               <hr className="w-2/4 border-none h-[1.5px] bg-bgDark opacity-0" />

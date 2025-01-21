@@ -18,6 +18,11 @@
   font-family: "Outfit", serif;
 }
 
+.container {
+  /* @apply px-6 py-12 max-w-7xl mt-16 mx-auto lg:px-8 lg:mt-10; */
+  @apply max-w-7xl mx-auto px-4 sm:px-6;
+}
+
 a.active hr {
   /* display: block; */
   opacity: 100;

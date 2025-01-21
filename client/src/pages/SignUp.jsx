@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
+import { assets } from "../assets/assets.js";
 import Title from "../components/Title";
 import Button from "../components/Button";
 import OAuth from "../components/OAuth";
 
 const SignUp = () => {
+  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({});
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -64,21 +66,24 @@ const SignUp = () => {
           <div className="">
             <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
               <div className="flex flex-col gap-1">
-                <label htmlFor="username" className="text-sm">
-                  Your name
+                <label
+                  htmlFor="username"
+                  className="text-sm cursor-pointer w-fit"
+                >
+                  Your username
                 </label>
                 <input
                   type="text"
                   id="username"
-                  placeholder="full name"
+                  placeholder="username"
                   required
-                  className="border border-bgDark/30 rounded-sm w-full p-2 outline-bgDark/50 text-sm bg-inherit"
+                  className="border border-borderColor outline-borderColorHover rounded-sm w-full p-2 text-sm bg-inherit"
                   onChange={handleChange}
                 />
               </div>
 
               <div className="flex flex-col gap-1">
-                <label htmlFor="email" className="text-sm">
+                <label htmlFor="email" className="text-sm cursor-pointer w-fit">
                   Your email
                 </label>
                 <input
@@ -86,23 +91,44 @@ const SignUp = () => {
                   id="email"
                   placeholder="name@email.com"
                   required
-                  className="border border-bgDark/30 rounded-sm w-full p-2 outline-bgDark/50 text-sm bg-inherit"
+                  className="border border-borderColor outline-borderColorHover rounded-sm w-full p-2 text-sm bg-inherit"
                   onChange={handleChange}
                 />
               </div>
 
+              {/* Password box */}
               <div className="flex flex-col gap-1">
-                <label htmlFor="password" className="text-sm">
+                <label
+                  htmlFor="password"
+                  className="text-sm cursor-pointer w-fit"
+                >
                   Your password
                 </label>
-                <input
-                  type="password"
-                  id="password"
-                  placeholder="⁎⁎⁎⁎⁎⁎⁎"
-                  required
-                  className="border border-bgDark/30 rounded-sm w-full p-2 outline-bgDark/50 text-sm bg-inherit"
-                  onChange={handleChange}
-                />
+                <div className="relative flex items-center bg-inherit w-full border border-borderColor outline-borderColorHover rounded-sm">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    id="password"
+                    placeholder="⁎⁎⁎⁎⁎⁎⁎"
+                    required
+                    className="w-full p-2 text-sm bg-inherit"
+                    onChange={handleChange}
+                  />
+                  {!showPassword ? (
+                    <img
+                      src={assets.eye}
+                      alt="icon"
+                      className="absolute w-5 h-5 object-cover object-center cursor-pointer right-2"
+                      onClick={() => setShowPassword((prev) => !prev)}
+                    />
+                  ) : (
+                    <img
+                      src={assets.eye_closed}
+                      alt="icon"
+                      className="absolute w-5 h-5 object-cover object-center cursor-pointer right-2"
+                      onClick={() => setShowPassword((prev) => !prev)}
+                    />
+                  )}
+                </div>
               </div>
 
               <div className="flex items-center justify-between text-sm">

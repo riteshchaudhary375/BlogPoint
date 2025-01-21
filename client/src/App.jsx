@@ -24,50 +24,52 @@ function App() {
   const [showModal, setShowModal] = useState(false);
 
   return (
-    <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
-      <BrowserRouter>
-        <Header />
+    // <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
+    // <div className="">
+    <BrowserRouter>
+      <Header />
 
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/blogs" element={<Blogs />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/sign-in" element={<SignIn />} />
-          <Route path="/sign-up" element={<SignUp />} />
-          <Route path="/post/:postSlug" element={<PostPage />} />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/blogs" element={<Blogs />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/sign-in" element={<SignIn />} />
+        <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/post/:postSlug" element={<PostPage />} />
 
-          {/* Private Route */}
-          <Route element={<PrivateRoute />}>
-            <Route path="/profile" element={<Profile />} />
-            <Route
-              path="/profile/update-password"
-              element={<UpdateUserPassword />}
-            />
-          </Route>
+        {/* Private Route */}
+        <Route element={<PrivateRoute />}>
+          <Route path="/profile" element={<Profile />} />
+          <Route
+            path="/profile/update-password"
+            element={<UpdateUserPassword />}
+          />
+        </Route>
 
-          {/* Admin Route */}
-          <Route element={<PrivateRouteForAdmin />}>
-            <Route
-              path="/dashboard"
-              element={
-                <AdminDashboard
-                  showModal={showModal}
-                  setShowModal={setShowModal}
-                />
-              }
-            />
-            <Route path="/profile/password" element={<DashPasswordChange />} />
-            <Route path="/create-post" element={<CreatePost />} />
-            <Route path="/update-post/:postId" element={<UpdatePost />} />
-          </Route>
-        </Routes>
+        {/* Admin Route */}
+        <Route element={<PrivateRouteForAdmin />}>
+          <Route
+            path="/dashboard"
+            element={
+              <AdminDashboard
+                showModal={showModal}
+                setShowModal={setShowModal}
+              />
+            }
+          />
+          <Route path="/profile/password" element={<DashPasswordChange />} />
+          <Route path="/create-post" element={<CreatePost />} />
+          <Route path="/update-post/:postId" element={<UpdatePost />} />
+        </Route>
+      </Routes>
 
-        <Footer showModal={showModal} />
-      </BrowserRouter>
+      <Footer showModal={showModal} />
 
       <Toaster position="bottom-right" reverseOrder={false} />
-    </div>
+    </BrowserRouter>
+
+    // </div>
   );
 }
 
