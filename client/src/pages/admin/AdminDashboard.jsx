@@ -24,7 +24,7 @@ const AdminDashboard = ({ showModal, setShowModal }) => {
   }, [location.search]);
 
   return (
-    <div className="min-h-screen">
+    <div className="container min-h-screen">
       <div className={showModal ? "bodyFixed" : undefined}>
         <div className="flex flex-col md:flex-row gap-8">
           <div className="md:w-56">

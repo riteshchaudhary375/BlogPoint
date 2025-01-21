@@ -7,7 +7,7 @@ import { assets } from "../assets/assets";
 
 const Contact = () => {
   return (
-    <div className="pt-2 sm:pt-6 md:pt-8">
+    <div className="container pt-2 sm:pt-6 md:pt-8">
       <Title text1={"contact"} text2={"us"} />
 
       <div className="my-8 sm:my-12 md:my-14 flex flex-col md:flex-row gap-10">

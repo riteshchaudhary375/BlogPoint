@@ -92,8 +92,8 @@ const UpdatePost = () => {
   };
 
   return (
-    <div className="pt-2 sm:pt-6 md:pt-8">
-      <div className="w-full lg:w-[800px] mx-auto">
+    <div className="container pt-2 sm:pt-6 md:pt-8">
+      <div className="w-full lg:w-[920px] mx-auto">
         <div className="text-center">
           <Title text1={"Update a"} text2={"Post"} />
         </div>

@@ -66,6 +66,7 @@ function App() {
 
       <Footer showModal={showModal} />
 
+      {/* the circle container on body is of react-hot-toast */}
       <Toaster position="bottom-right" reverseOrder={false} />
     </BrowserRouter>
 

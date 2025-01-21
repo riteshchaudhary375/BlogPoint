@@ -3,7 +3,7 @@ import { assets } from "../assets/assets";
 
 const Hero = () => {
   return (
-    <div className="pt-2 sm:pt-6 md:pt-8">
+    <div className="pt-2 sm:pt-6 md:pt-8 container">
       <div className="border border-gray-400 pt-14 md:pt-16 lg:pt-12 flex flex-col items-center gap-2 md:gap-0 md:flex-row rounded-md bg-gradient-to-b from-bgLight to-textColor2 md:bg-gradient-to-r md:from-bgLight md:to-textColor2">
         {/* Left */}
         <div className="w-full md:w-1/2 flex items-center justify-center">

@@ -107,7 +107,7 @@ const Profile = () => {
 
   return (
     currentUser && (
-      <div className="pt-2 sm:pt-6 md:pt-8">
+      <div className="container pt-2 sm:pt-6 md:pt-8">
         <div className="w-full sm:w-2/3 md:w-3/5 lg:w-2/5">
           <div className="w-full sm:w-fit">
             <Title text1={"My"} text2={"Profile"} />
@@ -143,10 +143,10 @@ const Profile = () => {
                               onClick={() => filePickerRef.current.click()}
                             />
                             {/* <img
-                    src={assets.upload_icon}
-                    alt="upload icon"
-                    className="bg-red-700 w-16 rounded-sm"
-                    /> */}
+                                  src={assets.upload_icon}
+                                  alt="upload icon"
+                                  className="bg-red-700 w-16 rounded-sm"
+                                  /> */}
 
                             {/* <div className="w-full flex items-center justify-center gap-2 -mt-2"> */}
 
@@ -317,7 +317,10 @@ const Profile = () => {
                         onChange={(e) =>
                           setFormData((prev) => ({
                             ...prev,
-                            address: { ...prev.address, line1: e.target.value },
+                            address: {
+                              ...prev.address,
+                              line1: e.target.value,
+                            },
                           }))
                         }
                         defaultValue={currentUser.address.line1}
@@ -332,7 +335,10 @@ const Profile = () => {
                         onChange={(e) =>
                           setFormData((prev) => ({
                             ...prev,
-                            address: { ...prev.address, line2: e.target.value },
+                            address: {
+                              ...prev.address,
+                              line2: e.target.value,
+                            },
                           }))
                         }
                         defaultValue={currentUser.address.line2}

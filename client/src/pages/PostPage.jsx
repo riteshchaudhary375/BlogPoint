@@ -86,104 +86,106 @@ const PostPage = () => {
     );
 
   return (
-    <div className="w-full min-h-screen">
-      <div className="pt-2 sm:pt-6 md:pt-8">
-        <div className="w-full lg:w-[800px] mx-auto">
-          {postData && (
-            <div className="pt-2 sm:pt-6 md:pt-8">
-              <div className="flex flex-col gap-6">
-                <div>
-                  <h1 className="text-textColor1 text-2xl md:text-3xl text-center font-medium">
-                    {postData.title}
-                  </h1>
-                </div>
+    <div className="container">
+      <div className="w-full min-h-screen">
+        <div className="pt-2 sm:pt-6 md:pt-8">
+          <div className="w-full lg:w-[920px] mx-auto">
+            {postData && (
+              <>
+                <div className="flex flex-col gap-6">
+                  <div>
+                    <h1 className="text-textColor1 text-2xl md:text-3xl text-center font-medium">
+                      {postData.title}
+                    </h1>
+                  </div>
 
-                <div className="flex flex-col gap-2 text-textColor3">
-                  <img
-                    src={postData.image}
-                    alt={postData.title}
-                    className="w-full h-[230px] sm:h-[250px] md:h-[300px] lg:h-[330px] xl:h-[350px] object-cover object-center rounded-sm"
-                  />
+                  <div className="flex flex-col gap-2 text-textColor3">
+                    <img
+                      src={postData.image}
+                      alt={postData.title}
+                      className="w-full h-[230px] sm:h-[250px] md:h-[300px] lg:h-[330px] xl:h-[350px] object-cover object-center rounded-sm"
+                    />
 
-                  <div className="flex flex-col px-2">
-                    <div className="flex items-center justify-between">
-                      {/* Created Date & read time */}
-                      <div className="flex items-center gap-1 text-xs md:text-sm font-medium">
+                    <div className="flex flex-col px-2">
+                      <div className="flex items-center justify-between">
+                        {/* Created Date & read time */}
+                        <div className="flex items-center gap-1 text-xs md:text-sm font-medium">
+                          <p className="text-textColor2">
+                            {new Date(postData.createdAt).toLocaleString()}
+                          </p>
+                          <span className="text-xl">•</span>
+                          <p className="text-xs">
+                            {(postData.content.length / 1000).toFixed(0)}{" "}
+                            {(postData.content.length / 1000).toFixed(0) > 0
+                              ? "mins"
+                              : "min"}{" "}
+                            read
+                          </p>
+                        </div>
+
+                        {/* Category */}
                         <p className="text-textColor2">
-                          {new Date(postData.createdAt).toLocaleString()}
-                        </p>
-                        <span className="text-xl">•</span>
-                        <p className="text-xs">
-                          {(postData.content.length / 1000).toFixed(0)}{" "}
-                          {(postData.content.length / 1000).toFixed(0) > 0
-                            ? "mins"
-                            : "min"}{" "}
-                          read
+                          <Badge
+                            badgeTitle={postData.category}
+                            textSize={"sm"}
+                            paddingX={"2"}
+                            paddingY={"1"}
+                          />
                         </p>
                       </div>
 
-                      {/* Category */}
-                      <p className="text-textColor2">
-                        <Badge
-                          badgeTitle={postData.category}
-                          textSize={"sm"}
-                          paddingX={"2"}
-                          paddingY={"1"}
-                        />
-                      </p>
+                      {postData.updateDate === null ? (
+                        <div className="opacity-0"></div>
+                      ) : (
+                        <p className="text-xs text-textColor3">
+                          <span className="underline">Updated:</span>{" "}
+                          <span className="text-textColor2 font-medium">
+                            {new Date(postData.updateDate).toLocaleString()}
+                          </span>
+                        </p>
+                      )}
                     </div>
-
-                    {postData.updateDate === null ? (
-                      <div className="opacity-0"></div>
-                    ) : (
-                      <p className="text-xs text-textColor3">
-                        <span className="underline">Updated:</span>{" "}
-                        <span className="text-textColor2 font-medium">
-                          {new Date(postData.updateDate).toLocaleString()}
-                        </span>
-                      </p>
-                    )}
                   </div>
-                </div>
 
-                <div className="flex flex-col gap-2">
-                  {/* Creator Profile */}
-                  {postCreatorProfile && (
-                    <div className="flex items-end gap-1">
-                      <img
-                        src={postCreatorProfile.profilePicture}
-                        // src={postCreatorImage}
-                        alt="Creater profile"
-                        className="w-6 h-6 rounded-full object-cover"
-                      />
+                  <div className="flex flex-col gap-2">
+                    {/* Creator Profile */}
+                    {postCreatorProfile && (
+                      <div className="flex items-end gap-1">
+                        <img
+                          src={postCreatorProfile.profilePicture}
+                          // src={postCreatorImage}
+                          alt="Creater profile"
+                          className="w-6 h-6 rounded-full object-cover"
+                        />
 
-                      <p className="font-medium text-sm text-textColor1 underline">
-                        {postCreatorProfile.username}:
-                      </p>
-                    </div>
-                  )}
+                        <p className="font-medium text-sm text-textColor1 underline">
+                          {postCreatorProfile.username}:
+                        </p>
+                      </div>
+                    )}
 
-                  {/* Post Content */}
-                  <div
-                    className="post-content" // 'post-content' is a custom css written in 'index.css'
-                    dangerouslySetInnerHTML={{
-                      __html: postData && postData.content,
-                    }}
-                  >
-                    {/*  <p className="text-base text-textColor2">
+                    {/* Post Content */}
+                    <div
+                      className="post-content" // 'post-content' is a custom css written in 'index.css'
+                      dangerouslySetInnerHTML={{
+                        __html: postData && postData.content,
+                      }}
+                    >
+                      {/*  <p className="text-base text-textColor2">
                       {postData.content}
                     </p> */}
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Related posts */}
-              <RelatedPosts
-                category={postData.category}
-                currentPostDataID={postDataID}
-              />
-            </div>
-          )}
+                {/* Related posts */}
+                <RelatedPosts
+                  category={postData.category}
+                  currentPostDataID={postDataID}
+                />
+              </>
+            )}
+          </div>
         </div>
       </div>
     </div>

@@ -68,7 +68,7 @@ const Category = () => {
   };
 
   return (
-    <div className="flex flex-col items-center gap-4 text-textColor2 my-16 sm:my-20 md:my-24">
+    <div className="container flex flex-col items-center gap-4 text-textColor2 my-16 sm:my-20 md:my-24">
       <Title text1={"Find by"} text2={"Category"} />
 
       {/* <p className="">Immerse yourself in the excellence of your top article.</p> */}

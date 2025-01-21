@@ -193,56 +193,57 @@ const Blogs = () => {
   }, []); */
 
   return (
-    <div className="pt-2 sm:pt-6 md:pt-8 flex flex-col sm:flex-row gap-10 sm:gap-4">
-      {/* Left - Filter options */}
-      <form onSubmit={handleSubmitFilter}>
-        <div
-          className="flex gap-2 sm:gap-0 max-sm:cursor-pointer w-fit pr-2"
-          onClick={() => setShowFilter(!showFilter)}
-        >
-          <Title2 text1={"Filters"} />
-          <img
-            src={assets.dropdown_icon}
-            alt="dropdown icon"
-            className={`h-3 mt-2 ${showFilter && "rotate-90"} sm:hidden`}
-          />
-        </div>
-
-        {/* Filter options */}
-        <div className={`sm:block ${showFilter ? "" : "hidden"}`}>
+    <div className="container">
+      <div className="pt-2 sm:pt-6 md:pt-8 flex flex-col sm:flex-row gap-10 sm:gap-4">
+        {/* Left - Filter options */}
+        <form onSubmit={handleSubmitFilter}>
           <div
-            className={`border border-borderColorHover px-4 py-6 rounded-sm flex flex-col gap-6 `}
+            className="flex gap-2 sm:gap-0 max-sm:cursor-pointer w-fit pr-2"
+            onClick={() => setShowFilter(!showFilter)}
           >
-            {/* Search box */}
-            <div>
-              <input
-                type="text"
-                id="searchTerm"
-                placeholder="Search term..."
-                className="w-full bg-inherit border border-borderColor outline-borderColorHover rounded-sm px-2.5 py-1"
-                value={sidebarData.searchTerm}
-                onChange={handleChange}
-              />
-            </div>
+            <Title2 text1={"Filters"} />
+            <img
+              src={assets.dropdown_icon}
+              alt="dropdown icon"
+              className={`h-3 mt-2 ${showFilter && "rotate-90"} sm:hidden`}
+            />
+          </div>
 
-            {/* Product sort */}
-            <select
-              id="sort"
-              onChange={handleChange}
-              value={sidebarData.sort}
-              className="bg-inherit border border-borderColor outline-borderColorHover rounded-sm text-textColor2 font-light text-sm px-2 h-10 cursor-pointer"
+          {/* Filter options */}
+          <div className={`sm:block ${showFilter ? "" : "hidden"}`}>
+            <div
+              className={`border border-borderColorHover px-4 py-6 rounded-sm flex flex-col gap-6 `}
             >
-              <option value="desc">Sort by: Latest</option>
-              <option value="asc">Sort by: Oldest</option>
-            </select>
+              {/* Search box */}
+              <div>
+                <input
+                  type="text"
+                  id="searchTerm"
+                  placeholder="Search term..."
+                  className="w-full bg-inherit border border-borderColor outline-borderColorHover rounded-sm px-2.5 py-1"
+                  value={sidebarData.searchTerm}
+                  onChange={handleChange}
+                />
+              </div>
 
-            {/* Category filter */}
-            <div className="whitespace-nowrap">
-              <p className="text-base font-medium text-textColor2 mb-2">
-                CATEGORIES
-              </p>
+              {/* Product sort */}
+              <select
+                id="sort"
+                onChange={handleChange}
+                value={sidebarData.sort}
+                className="bg-inherit border border-borderColor outline-borderColorHover rounded-sm text-textColor2 font-light text-sm px-2 h-10 cursor-pointer"
+              >
+                <option value="desc">Sort by: Latest</option>
+                <option value="asc">Sort by: Oldest</option>
+              </select>
 
-              {/* <div className="text-textColor3 font-light text-sm flex flex-col gap-2">
+              {/* Category filter */}
+              <div className="whitespace-nowrap">
+                <p className="text-base font-medium text-textColor2 mb-2">
+                  CATEGORIES
+                </p>
+
+                {/* <div className="text-textColor3 font-light text-sm flex flex-col gap-2">
                 {categoryTitle.map((item, index) => (
                   <p className="flex gap-2 cursor-pointer" key={index}>
                     <input
@@ -258,7 +259,7 @@ const Blogs = () => {
                 ))}
               </div> */}
 
-              {/* <div className="text-textColor3 font-light text-sm flex flex-col gap-2">
+                {/* <div className="text-textColor3 font-light text-sm flex flex-col gap-2">
                 {categoryTitle.map((item, index) => (
                   <>
                     <p
@@ -272,104 +273,107 @@ const Blogs = () => {
                 ))}
               </div> */}
 
-              <div className="text-textColor3 font-light text-sm flex flex-col gap-2">
-                <select
-                  id="category"
-                  onChange={handleChange}
-                  value={sidebarData.category}
-                  className="bg-inherit border border-borderColor outline-borderColorHover rounded-sm text-sm px-2 h-10 cursor-pointer"
-                >
-                  <option value={""}>Select Category:</option>
-                  {categoryTitle &&
-                    categoryTitle.map((item, index) => (
-                      <option key={index} value={item}>
-                        {item}
-                      </option>
-                    ))}
-                </select>
+                <div className="text-textColor3 font-light text-sm flex flex-col gap-2">
+                  <select
+                    id="category"
+                    onChange={handleChange}
+                    value={sidebarData.category}
+                    className="bg-inherit border border-borderColor outline-borderColorHover rounded-sm text-sm px-2 h-10 cursor-pointer"
+                  >
+                    <option value={""}>Select Category:</option>
+                    {categoryTitle &&
+                      categoryTitle.map((item, index) => (
+                        <option key={index} value={item}>
+                          {item}
+                        </option>
+                      ))}
+                  </select>
+                </div>
               </div>
-            </div>
 
-            {/* Search button */}
-            <div className="text-center">
-              <Button
-                type={"submit"}
-                text={"Apply Filters"}
-                className={"border border-bgDark hover:bg-lightBgHover"}
-              />
-            </div>
-
-            {/* Clear button */}
-            <div className="text-center">
-              <Link to={"/blogs"}>
+              {/* Search button */}
+              <div className="text-center">
                 <Button
                   type={"submit"}
-                  text={"Clear Filters"}
+                  text={"Apply Filters"}
                   className={"border border-bgDark hover:bg-lightBgHover"}
                 />
-              </Link>
+              </div>
+
+              {/* Clear button */}
+              <div className="text-center">
+                <Link to={"/blogs"}>
+                  <Button
+                    type={"submit"}
+                    text={"Clear Filters"}
+                    className={"border border-bgDark hover:bg-lightBgHover"}
+                  />
+                </Link>
+              </div>
             </div>
           </div>
-        </div>
-      </form>
+        </form>
 
-      {/* Right - All blogs */}
-      <div className="flex-1">
-        <div className="flex justify-between ">
-          <div>
-            <Title text1={"All"} text2={"Blogs"} />
-          </div>
+        {/* Right - All blogs */}
+        <div className="flex-1">
+          <div className="flex justify-between ">
+            <div>
+              <Title text1={"All"} text2={"Blogs"} />
+            </div>
 
-          {/* Product sort */}
-          {/* <select className="bg-inherit border border-borderColor outline-borderColorHover rounded-sm text-sm px-2 h-10 cursor-pointer">
+            {/* Product sort */}
+            {/* <select className="bg-inherit border border-borderColor outline-borderColorHover rounded-sm text-sm px-2 h-10 cursor-pointer">
             <option value="relavent">Sort by: Relavent</option>
             <option value="old-new">Sort by: Old to New</option>
             <option value="new-old">Sort by: New to Old</option>
           </select> */}
-        </div>
+          </div>
 
-        {fetching && <LoaderSpinner />}
+          {fetching && <LoaderSpinner />}
 
-        {!fetching && posts && posts.length === 0 && (
-          <Notification text={"Post Not Found!"} />
-        )}
+          {!fetching && posts && posts.length === 0 && (
+            <Notification text={"Post Not Found!"} />
+          )}
 
-        {!fetching && posts && posts.length > 0 && (
-          <>
-            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 gap-y-6 -mt-1">
-              {/* {posts.slice(0, 9).map((item, index) => ( */}
-              {posts &&
-                posts.map((item, index) => (
-                  <PostCard
-                    key={index}
-                    id={item._id}
-                    postSlug={item.slug}
-                    title={item.title}
-                    content={item.content}
-                    category={item.category}
-                    image={item.image}
-                    date={item.updateDate ? item.updateDate : item.createdDate}
-                    postCreatorProfile={item.userData.profilePicture}
-                    postCreatorName={item.userData.username}
-                  />
-                ))}
-            </div>
-
-            {showMore && (
-              <div className="text-center mt-6">
-                <Button
-                  type={"button"}
-                  text={"More"}
-                  className={
-                    // "text-textLight bg-bgDark border-none outline-none bg-opacity-95 hover:bg-opacity-100"
-                    "text-textLight bg-bgDark border-none outline-none hover:bg-opacity-[93%]"
-                  }
-                  handleClick={handleShowMoreClick}
-                />
+          {!fetching && posts && posts.length > 0 && (
+            <>
+              <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 gap-y-6 -mt-1">
+                {/* {posts.slice(0, 9).map((item, index) => ( */}
+                {posts &&
+                  posts.map((item, index) => (
+                    <PostCard
+                      key={index}
+                      id={item._id}
+                      postSlug={item.slug}
+                      title={item.title}
+                      content={item.content}
+                      category={item.category}
+                      image={item.image}
+                      date={
+                        item.updateDate ? item.updateDate : item.createdDate
+                      }
+                      postCreatorProfile={item.userData.profilePicture}
+                      postCreatorName={item.userData.username}
+                    />
+                  ))}
               </div>
-            )}
-          </>
-        )}
+
+              {showMore && (
+                <div className="text-center mt-6">
+                  <Button
+                    type={"button"}
+                    text={"More"}
+                    className={
+                      // "text-textLight bg-bgDark border-none outline-none bg-opacity-95 hover:bg-opacity-100"
+                      "text-textLight bg-bgDark border-none outline-none hover:bg-opacity-[93%]"
+                    }
+                    handleClick={handleShowMoreClick}
+                  />
+                </div>
+              )}
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

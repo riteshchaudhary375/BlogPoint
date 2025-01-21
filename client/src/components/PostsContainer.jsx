@@ -38,7 +38,7 @@ const PostsContainer = () => {
   }, []);
 
   return (
-    <>
+    <div className="container">
       <div className="flex flex-col gap-4 text-textColor2 my-24 sm:my-28 md:my-32">
         <Title text1={"Recent"} text2={"Posts"} />
 
@@ -79,7 +79,7 @@ const PostsContainer = () => {
           />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
