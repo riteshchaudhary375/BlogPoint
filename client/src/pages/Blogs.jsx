@@ -55,14 +55,16 @@ const Blogs = () => {
     "Uncategorized",
     "Technology",
     "Health",
+    "Finance",
     "Travel",
+    "Lifestyle",
     "Food",
     "Education",
-    "Business",
+    "Business & Entrepreneurship",
     "Entertainment",
     "Parenting & Family",
     "Self-Improvement",
-    "Sports",
+    "Sports & Fitness",
   ];
 
   const handleChange = (e) => {

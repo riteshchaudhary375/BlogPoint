@@ -1,9 +1,72 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 import Title from "./Title";
-import { categoryData } from "../assets/assets";
+// import { categoryData } from "../assets/assets";
+import { categoryAssets } from "../assets/assets";
 
 const Category = () => {
+  const categoryData = [
+    {
+      category: "Technology",
+      image: categoryAssets.cpu,
+    },
+    {
+      category: "Health",
+      image: categoryAssets.health,
+    },
+    {
+      category: "Finance",
+      image: categoryAssets.finance,
+    },
+    {
+      category: "Travel",
+      image: categoryAssets.travel,
+    },
+    {
+      category: "Lifestyle",
+      image: categoryAssets.lifestyle,
+    },
+    {
+      category: "Food",
+      image: categoryAssets.food,
+    },
+    {
+      category: "Education",
+      image: categoryAssets.education,
+    },
+    {
+      category: "Business & Entrepreneurship",
+      image: categoryAssets.handshake,
+    },
+    {
+      category: "Entertainment",
+      image: categoryAssets.entertainment,
+    },
+    {
+      category: "Parenting & Family",
+      image: categoryAssets.family,
+    },
+    {
+      category: "Self-Improvement",
+      image: categoryAssets.self_improvement,
+    },
+    {
+      category: "Sports & Fitness",
+      image: categoryAssets.sport_fitness,
+    },
+  ];
+
+  const navigate = useNavigate();
+
+  const filterByCategory = async (cat) => {
+    try {
+      navigate(`/blogs?searchTerm=&sort=desc&category=${cat}`);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <div className="flex flex-col items-center gap-4 text-textColor2 my-16 sm:my-20 md:my-24">
       <Title text1={"Find by"} text2={"Category"} />
@@ -17,21 +80,21 @@ const Category = () => {
       </p>
 
       <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 md:gap-8 pt-7 w-full">
-        {categoryData.map((item, index) => (
-          <Link
-            to={`/blogs/${item.category}`}
-            key={index}
-            className="flex flex-col items-center"
-            onClick={() => scrollTo(0, 0)} // when clicked then it will navigate to next page with 0,0 coordinate i.e., at top of the page
-          >
-            <img
-              src={item.image}
-              alt="category"
-              className="p-2 w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 object-cover bg-no-repeat mb-2 border border-borderColor hover:border-borderColorHover rounded-full transition-all duration-200 ease-in"
-            />
-            <p className="text-xs md:text-sm">{item.category}</p>
-          </Link>
-        ))}
+        {categoryData &&
+          categoryData.map((item, index) => (
+            <div
+              key={index}
+              className="flex flex-col items-center group cursor-pointer"
+              onClick={() => filterByCategory(item.category)}
+            >
+              <img
+                src={item.image}
+                alt="category"
+                className="p-2 w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 object-cover bg-no-repeat mb-2 border border-borderColor group-hover:border-borderColorHover rounded-full transition-all duration-200 ease-in"
+              />
+              <p className="text-xs md:text-sm">{item.category}</p>
+            </div>
+          ))}
       </div>
     </div>
   );

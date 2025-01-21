@@ -69,6 +69,21 @@ import family from "./family.svg";
 import self_improvement from "./self_improvement.svg";
 import sport_fitness from "./sport_fitness.svg";
 
+export const categoryAssets = {
+  cpu,
+  health,
+  finance,
+  travel,
+  lifestyle,
+  food,
+  education,
+  handshake,
+  entertainment,
+  family,
+  self_improvement,
+  sport_fitness,
+};
+
 export const assets = {
   bin_icon,
   logo_dark,
@@ -108,7 +123,7 @@ export const assets = {
   upload_img,
 };
 
-export const categoryData = [
+/* export const categoryData = [
   {
     category: "Technology",
     image: cpu,
@@ -157,7 +172,7 @@ export const categoryData = [
     category: "Sports & Fitness",
     image: sport_fitness,
   },
-];
+]; */
 
 export const posts = [
   {
