@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 
 import { assets } from "../../assets/assets";
@@ -7,6 +8,8 @@ import Badge from "../Badge";
 
 // const DashSidebar = ({ tab, setTab }) => {
 const DashSidebar = () => {
+  const { currentUser } = useSelector((state) => state.user);
+
   const location = useLocation();
   const [tab, setTab] = useState("");
 
@@ -57,7 +60,9 @@ const DashSidebar = () => {
                 <p>Profile</p>
               </span>
               <Badge
-                badgeTitle={"Admin"}
+                badgeTitle={
+                  currentUser && currentUser.isAdmin ? "Admin" : "Creator"
+                }
                 textSize={"xs"}
                 paddingX={"2"}
                 paddingY={"0.5"}
@@ -75,9 +80,9 @@ const DashSidebar = () => {
               // onClick={() => setTab("posts")}
             >
               <img
-                src={assets.posts_icon}
+                src={assets.document_plus}
                 alt="dashboard_icon"
-                className="w-6 h-6 md:w-7 md:h-7"
+                className="w-6 h-6 md:w-7 md:h-7 scale-x-[-1]"
               />
               <p>Create</p>
             </div>
@@ -101,23 +106,28 @@ const DashSidebar = () => {
             </div>
           </Link>
 
-          <HorizontalLine />
-
-          <Link to={"/dashboard?tab=users"}>
-            <div
-              className={`px-4 py-1.5 flex items-center gap-2 cursor-pointer ${
-                tab === "users" ? "bg-lightBgHover" : "hover:bg-lightBgHover"
-              }`}
-              // onClick={() => setTab("users")}
-            >
-              <img
-                src={assets.users_icon}
-                alt="dashboard_icon"
-                className="w-6 h-6 md:w-7 md:h-7"
-              />
-              <p>Users</p>
-            </div>
-          </Link>
+          {currentUser && currentUser.isAdmin && (
+            <>
+              <HorizontalLine />
+              <Link to={"/dashboard?tab=users"}>
+                <div
+                  className={`px-4 py-1.5 flex items-center gap-2 cursor-pointer ${
+                    tab === "users"
+                      ? "bg-lightBgHover"
+                      : "hover:bg-lightBgHover"
+                  }`}
+                  // onClick={() => setTab("users")}
+                >
+                  <img
+                    src={assets.users_icon}
+                    alt="dashboard_icon"
+                    className="w-6 h-6 md:w-7 md:h-7"
+                  />
+                  <p>Users</p>
+                </div>
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </div>

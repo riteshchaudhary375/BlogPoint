@@ -2,17 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 
-import PostListItem from "../../components/admin/PostListItem";
 import LoaderSpinner from "../../components/LoaderSpinner";
 import Notification from "../../components/Notification";
 import Modal from "../../components/Modal";
+import MyPostList from "./MyPostList";
 
-const DashPosts = ({ showModal, setShowModal }) => {
+const MyPosts = ({ showModal, setShowModal }) => {
   const postListTitle = [
     "post_image",
     "post_title",
     "category",
-    "created_by",
     "created_at",
     "updated_at",
     "actions",
@@ -35,13 +34,11 @@ const DashPosts = ({ showModal, setShowModal }) => {
     const fetchPosts = async () => {
       try {
         setFetching(true);
-        // const res = await fetch(`/api/post/get?userId=${currentUser._id}`, {
-        const res = await fetch(`/api/post/get`, {
+        const res = await fetch(`/api/post/get?userId=${currentUser._id}`, {
           signal,
         });
         const data = await res.json();
         if (!res.ok) {
-          setFetching(false);
           toast.error(data.message);
           setFetching(false);
           return;
@@ -60,7 +57,7 @@ const DashPosts = ({ showModal, setShowModal }) => {
       }
     };
 
-    if (currentUser.isAdmin) {
+    if (currentUser.isCreator) {
       fetchPosts();
     }
 
@@ -72,42 +69,41 @@ const DashPosts = ({ showModal, setShowModal }) => {
   }, [currentUser._id]);
 
   /* useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        setFetching(true);
-        const res = await fetch(`/api/post/getAllPostsForAdmin`);
-        const data = await res.json();
-        if (!res.ok) {
-          setFetching(false);
-          toast.error(data.message);
-          setFetching(false);
-          return;
-        }
-        if (res.ok) {
-          setPosts(data.posts);
-          if (data.posts.length < 9) {
-            setShowMore(false);
+        const fetchPosts = async () => {
+          try {
+            setFetching(true);
+            const res = await fetch(`/api/post/getAllPostsForAdmin`);
+            const data = await res.json();
+            if (!res.ok) {
+              setFetching(false);
+              toast.error(data.message);
+              setFetching(false);
+              return;
+            }
+            if (res.ok) {
+              setPosts(data.posts);
+              if (data.posts.length < 9) {
+                setShowMore(false);
+              }
+              setFetching(false);
+            }
+          } catch (error) {
+            console.log(error);
+            toast.error(error.message);
+            setFetching(false);
           }
-          setFetching(false);
+        };
+    
+        if (currentUser.isCreator) {
+          fetchPosts();
         }
-      } catch (error) {
-        console.log(error);
-        toast.error(error.message);
-        setFetching(false);
-      }
-    };
-
-    if (currentUser.isAdmin) {
-      fetchPosts();
-    }
-  }, [currentUser._id]); */
+      }, [currentUser._id]); */
 
   const handleShowMore = async () => {
     const startIndex = posts.length;
     try {
       const res = await fetch(
-        // `/api/post/get?userId=${currentUser._id}&startIndex=${startIndex}`
-        `/api/post/get?startIndex=${startIndex}`
+        `/api/post/get?userId=${currentUser._id}&startIndex=${startIndex}`
       );
       const data = await res.json();
       if (!res.ok) {
@@ -156,21 +152,24 @@ const DashPosts = ({ showModal, setShowModal }) => {
 
       {!fetching &&
         currentUser &&
-        currentUser.isAdmin &&
+        currentUser.isCreator &&
         posts.length === 0 && <Notification text={"Post Not Found!"} />}
 
-      {!fetching && currentUser && currentUser.isAdmin && posts.length > 0 && (
-        <PostListItem
-          listTitle={postListTitle}
-          data={posts}
-          showMore={showMore}
-          showMoreClick={handleShowMore}
-          idToDelete={setPostIdToDelete}
-          idToEdit={setPostIdToEdit}
-          showModal={showModal}
-          setShowModal={setShowModal}
-        />
-      )}
+      {!fetching &&
+        currentUser &&
+        currentUser.isCreator &&
+        posts.length > 0 && (
+          <MyPostList
+            listTitle={postListTitle}
+            data={posts}
+            showMore={showMore}
+            showMoreClick={handleShowMore}
+            idToDelete={setPostIdToDelete}
+            idToEdit={setPostIdToEdit}
+            showModal={showModal}
+            setShowModal={setShowModal}
+          />
+        )}
 
       {/* Delete Modal Popup */}
       {showModal && (
@@ -184,4 +183,4 @@ const DashPosts = ({ showModal, setShowModal }) => {
   );
 };
 
-export default DashPosts;
+export default MyPosts;

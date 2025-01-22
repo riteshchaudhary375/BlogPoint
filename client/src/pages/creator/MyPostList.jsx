@@ -1,11 +1,10 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 
-import Button from "../Button";
-import Badge from "../Badge";
+import Badge from "../../components/Badge";
+import Button from "../../components/Button";
 
-const PostListItem = ({
+const MyPostList = ({
   listTitle,
   data,
   showMore,
@@ -14,9 +13,6 @@ const PostListItem = ({
   setShowModal,
   idToDelete,
 }) => {
-  const { currentUser } = useSelector((state) => state.user);
-  // console.log(currentUser);
-
   const navigate = useNavigate();
 
   return (
@@ -66,7 +62,7 @@ const PostListItem = ({
                   />
                 </td>
 
-                <td className="p-4 text-sm font-medium w-full h-full">
+                {/* <td className="p-4 text-sm font-medium w-full h-full">
                   <div className="flex items-center gap-1 w-fit">
                     <img
                       src={data.userData.profilePicture}
@@ -75,7 +71,7 @@ const PostListItem = ({
                     />
                     <p>{data.userData.username}</p>
                   </div>
-                </td>
+                </td> */}
 
                 <td className="p-4 text-base font-light">
                   {new Date(data.createdAt).toLocaleDateString()}
@@ -93,20 +89,11 @@ const PostListItem = ({
 
                 <td className="p-4 text-base font-light">
                   <div className="flex items-center justify-center gap-2 text-sm">
-                    {data.userData._id === currentUser._id ? (
-                      <Link to={`/update-post/${data._id}`}>
-                        <p className="w-fit text-green-600 hover:underline cursor-pointer">
-                          Edit
-                        </p>
-                      </Link>
-                    ) : (
-                      <p
-                        className="w-fit text-green-900"
-                        title="For Post Owner"
-                      >
+                    <Link to={`/update-post/${data._id}`}>
+                      <p className="w-fit text-green-600 hover:underline cursor-pointer">
                         Edit
                       </p>
-                    )}
+                    </Link>
 
                     <p
                       className="w-fit text-red-600 hover:underline cursor-pointer"
@@ -139,4 +126,4 @@ const PostListItem = ({
   );
 };
 
-export default PostListItem;
+export default MyPostList;

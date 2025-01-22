@@ -1,20 +1,21 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-
-import { assets } from "../../assets/assets.js";
-import Title from "../../components/Title";
-import Button from "../../components/Button";
-import {
-  updateUserPasswordStart,
-  updateUserPasswordSuccess,
-  updateUserPasswordFailure,
-} from "../../redux/user/userSlice";
 import toast from "react-hot-toast";
 
-const DashPasswordChange = () => {
+import { assets } from "../assets/assets.js";
+import Title from "../components/Title.jsx";
+import Button from "../components/Button.jsx";
+import {
+  updatePasswordStart,
+  updatePasswordSuccess,
+  updatePasswordFailure,
+} from "../redux/user/userSlice.js";
+
+const UpdatePassword = () => {
   const dispatch = useDispatch();
   const { error, loading, currentUser } = useSelector((state) => state.user);
+
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confNewPassword, setConfNewPassword] = useState("");
@@ -23,48 +24,45 @@ const DashPasswordChange = () => {
   const [showPassword2, setShowPassword2] = useState(false);
   const [showPassword3, setShowPassword3] = useState(false);
 
-  const handleUpdateUserPassword = async (e) => {
+  const handleUpdatePassword = async (e) => {
     e.preventDefault();
     try {
       if (Object.keys(newPassword).length === 0)
         return dispatch(updateUserFailure("No change made!"));
 
       if (!oldPassword || !newPassword || !confNewPassword) {
-        dispatch(updateUserPasswordFailure("All filds required!"));
+        dispatch(updatePasswordFailure("All fields required!"));
         return;
       }
 
       if (newPassword !== confNewPassword) {
         dispatch(
-          updateUserPasswordFailure("New and confirm password not matched!")
+          updatePasswordFailure("New and confirm password not matched!")
         );
         return;
       }
 
-      dispatch(updateUserPasswordStart());
-      const res = await fetch(
-        `/api/user/updateUserPassword/${currentUser._id}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            oldPassword,
-            newPassword,
-          }),
-        }
-      );
+      dispatch(updatePasswordStart());
+      const res = await fetch(`/api/user/updatePassword/${currentUser._id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          oldPassword,
+          newPassword,
+        }),
+      });
       const data = await res.json();
       if (!res.ok) {
-        dispatch(updateUserPasswordFailure(data.message));
+        dispatch(updatePasswordFailure(data.message));
         return;
       }
       if (res.ok) {
-        dispatch(updateUserPasswordSuccess(data));
+        dispatch(updatePasswordSuccess(data));
         toast.success(data.message);
         // navigate("/sign-in");
       }
     } catch (error) {
-      dispatch(updateUserPasswordFailure(error.message));
+      dispatch(updatePasswordFailure(error.message));
     }
   };
 
@@ -79,7 +77,7 @@ const DashPasswordChange = () => {
 
             <form
               className="flex flex-col gap-4"
-              onSubmit={handleUpdateUserPassword}
+              onSubmit={handleUpdatePassword}
             >
               {/* Old Password */}
               <div className="flex flex-col gap-1">
@@ -154,7 +152,7 @@ const DashPasswordChange = () => {
               {/* Confirm Password */}
               <div className="flex flex-col gap-1">
                 <label
-                  htmlFor="newPassword"
+                  htmlFor="confPassword"
                   className="text-sm cursor-pointer w-fit"
                 >
                   Confirm Password
@@ -162,7 +160,7 @@ const DashPasswordChange = () => {
                 <div className="relative flex items-center bg-inherit w-full border border-borderColor outline-borderColorHover rounded-sm">
                   <input
                     type={showPassword3 ? "text" : "password"}
-                    id="newPassword"
+                    id="confPassword"
                     placeholder="confirm new password"
                     required
                     className="w-full p-2 text-sm bg-inherit"
@@ -186,16 +184,8 @@ const DashPasswordChange = () => {
                 </div>
               </div>
 
-              {/* <input
-                type="password"
-                className="bg-inherit border border-borderColor outline-borderColorHover rounded-sm px-2 py-1"
-                placeholder="Confirm New Password"
-                onChange={(e) => setConfNewPassword(e.target.value)}
-                required
-              /> */}
-
               <div className="w-full flex items-center justify-center gap-2 -mt-2">
-                <Link to={"/dashboard?tab=profile"}>
+                <Link to={"/profile"}>
                   <Button
                     disabled={loading}
                     type={"button"}
@@ -227,4 +217,4 @@ const DashPasswordChange = () => {
   );
 };
 
-export default DashPasswordChange;
+export default UpdatePassword;

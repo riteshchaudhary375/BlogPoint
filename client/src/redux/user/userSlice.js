@@ -41,17 +41,17 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-    updateUserPasswordStart: (state) => {
+    updatePasswordStart: (state) => {
       state.loading = true;
       state.error = null;
     },
-    updateUserPasswordSuccess: (state, action) => {
+    updatePasswordSuccess: (state, action) => {
       // state.currentUser = action.payload;
       state.currentUser = null;
       state.loading = false;
       state.error = null;
     },
-    updateUserPasswordFailure: (state, action) => {
+    updatePasswordFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
@@ -79,9 +79,9 @@ export const {
   updateUserStart,
   updateUserSuccess,
   updateUserFailure,
-  updateUserPasswordStart,
-  updateUserPasswordSuccess,
-  updateUserPasswordFailure,
+  updatePasswordStart,
+  updatePasswordSuccess,
+  updatePasswordFailure,
   updateUserProfileImageStart,
   updateUserProfileImageSuccess,
   updateUserProfileImageFailure,

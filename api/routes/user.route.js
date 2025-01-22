@@ -4,7 +4,7 @@ import upload from "../utils/multer.js";
 import {
   signout,
   test,
-  updateUserPassword,
+  updatePassword,
   updateUserProfileData,
   updateUserProfileImage,
   getUsers,
@@ -21,7 +21,7 @@ router.put(
   verifyToken,
   updateUserProfileData
 );
-router.put("/updateUserPassword/:userId", verifyToken, updateUserPassword);
+router.put("/updatePassword/:userId", verifyToken, updatePassword);
 router.post(
   "/updateUserProfileImage/:userId",
   upload.single("image"),

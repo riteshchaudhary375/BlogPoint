@@ -56,6 +56,7 @@ import id_wallet from "./id_wallet.svg";
 import id_card from "./id_card.svg";
 import eye from "./eye-svgrepo-com.svg";
 import eye_closed from "./eye-closed-svgrepo-com.svg";
+import document_plus from "./document-plus-svgrepo-com.svg";
 
 // Category
 import cpu from "./cpu.svg";
@@ -125,6 +126,7 @@ export const assets = {
   upload_img,
   eye,
   eye_closed,
+  document_plus,
 };
 
 /* export const categoryData = [

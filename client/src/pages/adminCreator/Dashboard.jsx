@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-import DashSidebar from "../../components/admin/DashSidebar";
-import DashboardView from "./DashboardView";
-import DashPosts from "./DashPosts";
-import DashUsers from "./DashUsers";
+import DashSidebar from "../../components/adminCreator/DashSidebar";
+import DashboardView from "../admin/DashboardView";
+import DashPosts from "../admin/DashPosts";
+import DashUsers from "../admin/DashUsers";
 import DashProfile from "./DashProfile";
 import CreatePost from "./CreatePost";
+import { useSelector } from "react-redux";
+import MyPosts from "../creator/MyPosts";
+import DashboardForCreator from "../creator/DashboardForCreator";
 
-const AdminDashboard = ({ showModal, setShowModal }) => {
+const Dashboard = ({ showModal, setShowModal }) => {
+  const { currentUser } = useSelector((state) => state.user);
+
   const location = useLocation();
   // const [tab, setTab] = useState("dashboard");
   const [tab, setTab] = useState("");
@@ -32,7 +37,13 @@ const AdminDashboard = ({ showModal, setShowModal }) => {
           </div>
 
           <div className="pt-2 sm:pt-6 md:pt-8 flex-1 overflow-scroll">
-            {tab === "dashboard" && <DashboardView />}
+            {tab === "dashboard" && currentUser && currentUser.isAdmin && (
+              <DashboardView />
+            )}
+
+            {tab === "dashboard" && currentUser && currentUser.isCreator && (
+              <DashboardForCreator />
+            )}
 
             {tab === "profile" && (
               <DashProfile showModal={showModal} setShowModal={setShowModal} />
@@ -40,11 +51,18 @@ const AdminDashboard = ({ showModal, setShowModal }) => {
 
             {tab === "create" && <CreatePost />}
 
-            {tab === "posts" && (
+            {/* Admin */}
+            {tab === "posts" && currentUser && currentUser.isAdmin && (
               <DashPosts showModal={showModal} setShowModal={setShowModal} />
             )}
 
-            {tab === "users" && (
+            {/* Creator */}
+            {tab === "posts" && currentUser && currentUser.isCreator && (
+              <MyPosts showModal={showModal} setShowModal={setShowModal} />
+            )}
+
+            {/* Admin */}
+            {tab === "users" && currentUser && currentUser.isAdmin && (
               <DashUsers showModal={showModal} setShowModal={setShowModal} />
             )}
           </div>
@@ -54,4 +72,4 @@ const AdminDashboard = ({ showModal, setShowModal }) => {
   );
 };
 
-export default AdminDashboard;
+export default Dashboard;

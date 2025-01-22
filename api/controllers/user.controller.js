@@ -81,52 +81,52 @@ export const updateUserProfileData = async (req, res, next) => {
   }
 };
 
-// Update user password
-export const updateUserPassword = async (req, res, next) => {
+// Update password
+export const updatePassword = async (req, res, next) => {
+  /* console.log("Token user: ", req.user);
+  console.log("Body req user: ", req.params.userId); */
+
   try {
     const { oldPassword, newPassword } = req.body;
 
     if (req.user.id !== req.params.userId) {
       return next(errorHandler(403, "Not allowed to update this user."));
-    } else {
-      const user = await User.findOne(req.user.email);
-      const decode_password = await bcryptjs.compareSync(
-        oldPassword,
-        user.password
-      );
-      if (!decode_password) {
-        return next(errorHandler(401, "Invalid old password!"));
-      } else {
-        if (oldPassword === newPassword) {
-          return next(
-            errorHandler(
-              400,
-              "Old & new password matched! Please enter different."
-            )
-          );
-        } else {
-          const salt = await bcryptjs.genSaltSync(10);
-          const hashedPassword = await bcryptjs.hashSync(newPassword, salt);
-
-          const updatedUserPassword = await User.findByIdAndUpdate(
-            req.params.userId,
-            {
-              $set: {
-                password: hashedPassword,
-              },
-            },
-            { new: true }
-          );
-
-          const { password, ...rest } = updatedUserPassword._doc;
-
-          res.clearCookie("access_token").status(200).json({
-            success: true,
-            message: "Password updated, Please login again.",
-          });
-        }
-      }
     }
+
+    const verifiedUser = await User.findById(req.params.userId);
+
+    const compareOldPass = await bcryptjs.compareSync(
+      oldPassword,
+      verifiedUser.password
+    );
+
+    if (!compareOldPass)
+      return next(errorHandler(401, "Invalid old password!"));
+
+    if (oldPassword === newPassword)
+      return next(
+        errorHandler(400, "Old & new password matched! Please enter new.")
+      );
+
+    const salt = await bcryptjs.genSaltSync(10);
+    const hashedPassword = await bcryptjs.hashSync(newPassword, salt);
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.userId,
+      {
+        $set: {
+          password: hashedPassword,
+        },
+      },
+      { new: true }
+    );
+
+    const { password, ...rest } = updatedUser._doc;
+
+    res.clearCookie("access_token").status(200).json({
+      success: true,
+      message: "Password updated, Please login again.",
+    });
   } catch (error) {
     next(error);
   }
@@ -231,8 +231,24 @@ export const getUsers = async (req, res, next) => {
       const { password, ...rest } = user._doc;
       return rest;
     });
+    // console.log(userWithoutPassword);
 
     const totalUsers = await User.countDocuments();
+    // console.log(totalUsers);
+
+    // For total-creator and total-normal-user
+    const totalCreator = await User.find({
+      isCreator: "true" || true,
+    }).countDocuments();
+    // console.log(totalCreator);
+
+    const totalAdmin = await User.find({
+      isAdmin: "true" || true,
+    }).countDocuments();
+    // console.log(totalCreator);
+
+    const totalNormalUser = totalUsers - (totalCreator + totalAdmin);
+    // console.log(totalNormalUser);
 
     const now = new Date();
 
@@ -250,6 +266,9 @@ export const getUsers = async (req, res, next) => {
       users: userWithoutPassword,
       totalUsers,
       lastMonthUsers,
+      totalNormalUser,
+      totalCreator,
+      totalAdmin,
     });
   } catch (error) {
     next(error);

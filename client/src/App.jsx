@@ -7,19 +7,19 @@ import About from "./pages/About";
 import Blogs from "./pages/Blogs";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
-import CreatePost from "./pages/admin/CreatePost";
-import UpdatePost from "./pages/admin/UpdatePost";
+import CreatePost from "./pages/adminCreator/CreatePost";
+import UpdatePost from "./pages/adminCreator/UpdatePost";
 import PostPage from "./pages/PostPage";
 import Header from "./components/Header";
 import Contact from "./pages/Contact";
 import Footer from "./components/Footer";
 import Profile from "./pages/Profile";
 import PrivateRoute from "./components/PrivateRoute";
-import UpdateUserPassword from "./pages/UpdateUserPassword";
-import PrivateRouteForAdmin from "./components/PrivateRouteForAdmin";
-import AdminDashboard from "./pages/admin/AdminDashboard";
-import DashPasswordChange from "./pages/admin/DashPasswordChange";
+import PrivateRouteForAdmin from "./components/admin/PrivateRouteForAdmin";
+import AdminDashboard from "./pages/adminCreator/Dashboard";
 import ScrollToTop from "./components/ScrollToTop";
+import PrivateRouteAdminCreator from "./components/adminCreator/PrivateRouteAdminCreator";
+import UpdatePassword from "./pages/UpdatePassword";
 
 function App() {
   const [showModal, setShowModal] = useState(false);
@@ -44,14 +44,14 @@ function App() {
         {/* Private Route */}
         <Route element={<PrivateRoute />}>
           <Route path="/profile" element={<Profile />} />
-          <Route
-            path="/profile/update-password"
-            element={<UpdateUserPassword />}
-          />
+          <Route path="/profile/update-password" element={<UpdatePassword />} />
         </Route>
 
         {/* Admin Route */}
-        <Route element={<PrivateRouteForAdmin />}>
+        <Route element={<PrivateRouteForAdmin />}></Route>
+
+        {/* Admin & Creator Route */}
+        <Route element={<PrivateRouteAdminCreator />}>
           <Route
             path="/dashboard"
             element={
@@ -61,7 +61,6 @@ function App() {
               />
             }
           />
-          <Route path="/profile/password" element={<DashPasswordChange />} />
           <Route path="/create-post" element={<CreatePost />} />
           <Route path="/update-post/:postId" element={<UpdatePost />} />
         </Route>

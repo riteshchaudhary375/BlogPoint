@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { signOutUserSuccess } from "../redux/user/userSlice.js";
-import { assets } from "../assets/assets";
-import HorizontalLine from "./HorizontalLine";
 import toast from "react-hot-toast";
+
+import { assets } from "../assets/assets";
+import { signOutUserSuccess } from "../redux/user/userSlice.js";
+import HorizontalLine from "./HorizontalLine";
+import Badge from "./Badge.jsx";
 
 const Header = () => {
   const { currentUser } = useSelector((state) => state.user);
+  // console.log(currentUser);
 
   const [visible, setVisible] = useState(false);
   const [toggleProfile, setToggleProfile] = useState(false);
@@ -107,29 +110,48 @@ const Header = () => {
                       <HorizontalLine />
 
                       <div className="flex flex-col gap-1 my-1 cursor-pointer font-light text-base">
-                        {currentUser.isAdmin ? (
+                        {currentUser.isAdmin || currentUser.isCreator ? (
                           <Link
                             to={"/dashboard?tab=profile"}
                             onClick={() => setToggleProfile(false)}
                           >
-                            <p className="hover:bg-lightBgHover px-4 py-1.5">
-                              Profile
-                            </p>
+                            <div className="flex items-center justify-between hover:bg-lightBgHover px-4 py-1.5">
+                              <p className="">Profile</p>
+                              <Badge
+                                badgeTitle={
+                                  currentUser && currentUser.isAdmin
+                                    ? "Admin"
+                                    : "Creator"
+                                }
+                                textSize={"xs"}
+                                paddingX={"1"}
+                                paddingY={"0.5"}
+                              />
+                            </div>
                           </Link>
                         ) : (
                           <Link
                             to={"/profile"}
                             onClick={() => setToggleProfile(false)}
                           >
-                            <p className="hover:bg-lightBgHover px-4 py-1.5">
+                            {/* <p className="hover:bg-lightBgHover px-4 py-1.5">
                               Profile
-                            </p>
+                            </p> */}
+                            <div className="flex items-center justify-between hover:bg-lightBgHover px-4 py-1.5">
+                              <p className="">Profile</p>
+                              <Badge
+                                badgeTitle={"User"}
+                                textSize={"xs"}
+                                paddingX={"1"}
+                                paddingY={"0.5"}
+                              />
+                            </div>
                           </Link>
                         )}
 
                         <HorizontalLine />
 
-                        {currentUser.isAdmin && (
+                        {currentUser.isAdmin || currentUser.isCreator ? (
                           <>
                             <Link
                               // to={"/dashboard"}
@@ -142,6 +164,8 @@ const Header = () => {
                             </Link>
                             <HorizontalLine />
                           </>
+                        ) : (
+                          <div className="opacity-0"></div>
                         )}
                         <p
                           className="hover:bg-lightBgHover px-4 py-1.5"

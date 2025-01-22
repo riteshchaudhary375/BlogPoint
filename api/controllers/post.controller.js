@@ -113,10 +113,28 @@ export const getSlugPost = async (req, res, next) => {
 
 // Delete post
 export const deletePost = async (req, res, next) => {
+  // console.log(req.user); // { id: '678fd92066953fc16c464cea', iat: 1737533408, exp: 1738138208 }
+
+  if (req.user.id !== req.params.userId)
+    return next(errorHandler(403, "Unauthorized user!"));
+
+  // console.log(req.params.postId); // 6790c339483cf04f088d74f2
+  const postInfo = await Post.findById(req.params.postId);
+  // console.log(postInfo);
+
+  const postOwner = await postInfo.userData;
+
+  const userValid = await User.findById(req.user.id);
+  // console.log(userValid);
+
+  // if (!userValid.isAdmin || !postOwner.isCreator)
+  if (!userValid.isAdmin && !userValid.isCreator)
+    return next(errorHandler(403, "You are not allowed to delete this post"));
+
   try {
-    const userValid = await User.findById(req.user.id);
+    /*  const userValid = await User.findById(req.user.id);
     if (!userValid.isAdmin || req.user.id !== req.params.userId)
-      return next(errorHandler(403, "You are not allowed to delete this post"));
+      return next(errorHandler(403, "You are not allowed to delete this post")); */
 
     await Post.findByIdAndDelete(req.params.postId);
 
@@ -128,16 +146,12 @@ export const deletePost = async (req, res, next) => {
 
 // Create post
 export const create = async (req, res, next) => {
-  const postCreatorId = req.params.creatorId;
-
-  // console.log(req.user);
-  const userVerified = await User.findById(req.user.id);
-  // console.log(userAdmin);
-
-  // check user is admin or not, using cookie user
-  if (!userVerified.isAdmin) {
-    return next(errorHandler(403, "You are not allowed to create the post"));
+  if (req.user.id !== req.params.userId) {
+    return next(errorHandler(403, "Not allowed to create new post."));
   }
+
+  const userVerified = await User.findById(req.params.userId);
+  // console.log(userVerified);
 
   if (!req.body.title) {
     return next(errorHandler(400, "Title of the post is required!"));
@@ -187,13 +201,11 @@ export const create = async (req, res, next) => {
 
   // 3. update profile image into database
 
-  const postCreatorData = await User.findById(postCreatorId).select(
-    "-password"
-  );
+  const postCreatorData = await User.findById(userVerified).select("-password");
 
   const newPost = new Post({
     // userId: req.user.id, // user from token for filtering admin for their particular post
-    userId: userVerified.id, // user from token for filtering admin for their particular post
+    userId: userVerified._id, // user from token for filtering admin for their particular post
     //   ...req.body, // all from body
     userData: postCreatorData,
     title: req.body.title,
@@ -221,7 +233,11 @@ export const update = async (req, res, next) => {
     const userValid = await User.findById(req.user.id);
     // console.log(userValid);
 
-    if (req.params.userId !== userValid.id && !userValid.isAdmin) {
+    if (
+      req.params.userId !== userValid.id &&
+      !userValid.isAdmin &&
+      !userValid.isCreator
+    ) {
       return next(
         errorHandler(403, "You are not allowed to update this post!")
       );

@@ -35,9 +35,13 @@ const userSchema = new mongoose.Schema(
     },
     phone: {
       type: String,
-      default: "9845123456",
+      default: "Not Available",
     },
     isAdmin: {
+      type: Boolean,
+      default: false,
+    },
+    isCreator: {
       type: Boolean,
       default: false,
     },

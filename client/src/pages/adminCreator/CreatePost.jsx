@@ -3,11 +3,11 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
+import toast from "react-hot-toast";
 
 import { assets } from "../../assets/assets";
 import Title from "../../components/Title";
 import Button from "../../components/Button";
-import toast from "react-hot-toast";
 
 const CreatePost = () => {
   const { currentUser } = useSelector((state) => state.user);

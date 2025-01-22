@@ -285,19 +285,19 @@ const DashProfile = () => {
 
                   <p className="font-medium text-textColor1">Phone:</p>
                   {isEdit ? (
-                    <div className="">
+                    <div className="relative w-full">
                       <input
                         type="text"
                         id="phone"
-                        className="bg-inherit border border-borderColor outline-borderColorHover rounded-sm px-2 py-1"
+                        className="w-full bg-inherit border border-borderColor outline-borderColorHover rounded-sm px-2 py-1"
                         placeholder="10-digits [e.g., 98(8-digits)]"
                         onChange={handleChange}
                         defaultValue={currentUser.phone}
                       />
-                      {/* <p className="absolute flex flex-col gap-1 items-center font-light text-xs w-fit px-4 py-1 bg-lightBgHover text-textColor2 rounded-sm border border-borderColor right-14 sm:right-0  -top-2">
-                      <span className="underline">Accept: 10 digits</span>
-                      <span>98(8-digits)</span>
-                    </p> */}
+                      <p className="absolute flex flex-col gap-1 items-center font-light text-xs w-fit px-4 py-1 bg-lightBgHover text-textColor2 rounded-sm border border-borderColor right-0 -top-2">
+                        <span className="underline">Accept: 10 digits</span>
+                        <span>98(8-digits)</span>
+                      </p>
                     </div>
                   ) : (
                     <p>{currentUser.phone}</p>
@@ -424,7 +424,7 @@ const DashProfile = () => {
               </div>
 
               <div className="flex items-center justify-center sm:justify-start -mt-4">
-                <Link to={"/profile/password"}>
+                <Link to={"/profile/update-password"}>
                   <Button
                     disabled={loading || isEditProfile || isEdit}
                     type={"button"}
