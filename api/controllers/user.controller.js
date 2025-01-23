@@ -309,3 +309,45 @@ export const deleteUser = async (req, res, next) => {
     next(error);
   }
 };
+
+// Post user role
+export const updateUserRole = async (req, res, next) => {
+  if (req.user.id !== req.params.adminId)
+    return next(errorHandler(403, "You are not allowed to update user role!"));
+
+  let updatedUser;
+  if (req.body.role === "User") {
+    updatedUser = await User.findByIdAndUpdate(
+      req.params.roleUserId,
+      {
+        $set: {
+          role: req.body.role,
+          // isCreator: !isCreator,
+          isCreator: false,
+        },
+      },
+      { new: true }
+    );
+  }
+  if (req.body.role === "Creator") {
+    updatedUser = await User.findByIdAndUpdate(
+      req.params.roleUserId,
+      {
+        $set: {
+          role: req.body.role,
+          // isCreator: !isCreator,
+          isCreator: true,
+        },
+      },
+      { new: true }
+    );
+  }
+
+  const { password, ...rest } = updatedUser._doc;
+
+  res.status(200).json({ user: rest, message: "Role updated" });
+  try {
+  } catch (error) {
+    next(error);
+  }
+};

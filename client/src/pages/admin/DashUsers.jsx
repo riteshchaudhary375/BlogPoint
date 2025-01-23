@@ -18,12 +18,15 @@ const DashUsers = ({ showModal, setShowModal }) => {
     "username",
     "email",
     "admin",
+    "role",
     "action",
   ];
 
   const [fetching, setFetching] = useState(false);
   const [showMore, setShowMore] = useState(true);
   const [userIdToDelete, setUserIdToDelete] = useState("");
+
+  const [userRole, setUserRole] = useState("");
 
   useEffect(() => {
     const controller = new AbortController();
@@ -35,6 +38,8 @@ const DashUsers = ({ showModal, setShowModal }) => {
 
         const res = await fetch(`/api/user/getUsers`, { signal });
         const data = await res.json();
+        // console.log(data);
+
         if (res.ok) {
           setUsers(data.users);
           if (data.users.length < 9) {
@@ -59,7 +64,7 @@ const DashUsers = ({ showModal, setShowModal }) => {
       console.log("Cleaning up useEffect of fetching users list.");
       controller.abort();
     };
-  }, [currentUser._id]);
+  }, [currentUser._id, users.role]);
 
   const handleShowMore = async () => {
     const startIndex = users.length;
@@ -125,6 +130,8 @@ const DashUsers = ({ showModal, setShowModal }) => {
           showModal={showModal}
           setShowModal={setShowModal}
           idToDelete={setUserIdToDelete}
+          userRole={userRole}
+          setUserRole={setUserRole}
         />
       )}
 

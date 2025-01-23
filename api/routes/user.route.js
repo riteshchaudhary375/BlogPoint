@@ -10,6 +10,7 @@ import {
   getUsers,
   deleteUser,
   getAllUsers,
+  updateUserRole,
 } from "../controllers/user.controller.js";
 
 const router = express.Router();
@@ -32,5 +33,6 @@ router.post(
 router.get("/getUsers", verifyToken, getUsers);
 router.get("/getAllUsers", getAllUsers);
 router.delete("/deleteUser/:userId", verifyToken, deleteUser);
+router.put("/updateUserRole/:roleUserId/:adminId", verifyToken, updateUserRole);
 
 export default router;

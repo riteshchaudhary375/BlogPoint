@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import toast from "react-hot-toast";
+
 import { assets } from "../../assets/assets";
 import Button from "../Button";
 
@@ -10,8 +13,47 @@ const UserListItem = ({
   showModal,
   setShowModal,
   idToDelete,
+  userRole,
+  setUserRole,
 }) => {
-  // console.log(users);
+  // console.log(data);
+
+  const { currentUser } = useSelector((state) => state.user);
+
+  /* const handleChange = (e) => {
+    // setUserRole({ ...userRole, role: e.target.value });
+    // setUserRole(e.target.value);
+  }; */
+
+  const [newuserRole, setNewUserRole] = useState("");
+
+  const handleUserRole = async (e, userRoleId) => {
+    // const handleUserRole = async (userRoleId) => {
+    setNewUserRole(e.target.value);
+    try {
+      const res = await fetch(
+        `/api/user/updateUserRole/${userRoleId}/${currentUser._id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ role: e.target.value }),
+          // body: JSON.stringify({ role: userRole }),
+        }
+      );
+      const data = await res.json();
+      if (!res.ok) {
+        toast.error(data.message);
+        // console.log(data.message);
+        return;
+      }
+      if (res.ok) {
+        toast.success(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+      // console.log(error);
+    }
+  };
 
   return (
     <div className="flex flex-col gap-6">
@@ -37,6 +79,7 @@ const UserListItem = ({
                 <td className="p-4 text-sm font-light">
                   {new Date(data.createdAt).toLocaleDateString()}
                 </td>
+
                 <td className="p-4 text-base font-light">
                   <img
                     src={data.profilePicture}
@@ -44,25 +87,53 @@ const UserListItem = ({
                     className="w-8 h-8 rounded-full object-cover object-center inline-block"
                   />
                 </td>
+
                 <td className="p-4 text-base font-medium">{data.username}</td>
-                <td className="p-4 text-base font-light line-clamp-1">
-                  {data.email}
+
+                <td className="p-4 text-base font-light">
+                  <p className="w-fit line-clamp-1">{data.email}</p>
                 </td>
+
+                <td className="p-4 text-base font-light">
+                  <div className=" flex items-center justify-center">
+                    {data.isAdmin ? (
+                      <img
+                        src={assets.checkmark}
+                        alt="admin_user"
+                        className="w-6 h-6 object-cover object-center"
+                      />
+                    ) : (
+                      <img
+                        src={assets.crossmark}
+                        alt="not_admin_user"
+                        className="w-4 h-4 object-cover object-center"
+                      />
+                    )}
+                  </div>
+                </td>
+
                 <td className="p-4 text-base font-light">
                   {data.isAdmin ? (
-                    <img
-                      src={assets.checkmark}
-                      alt="admin_user"
-                      className="w-6 h-6 object-cover object-center"
-                    />
+                    <select
+                      disabled
+                      title="Not Allowed"
+                      className="border border-borderColor outline-borderColorHover rounded-sm w-[100px] px-1 py-0.5 bg-inherit"
+                    >
+                      <option value="User">Admin</option>
+                    </select>
                   ) : (
-                    <img
-                      src={assets.crossmark}
-                      alt="not_admin_user"
-                      className="w-4 h-4 object-cover object-center"
-                    />
+                    <select
+                      id="role"
+                      className="border border-borderColor outline-borderColorHover rounded-sm w-[100px] px-1 py-0.5 cursor-pointer bg-inherit"
+                      value={newuserRole ? newuserRole : data.role}
+                      onChange={(e) => handleUserRole(e, data._id)}
+                    >
+                      <option value="User">User</option>
+                      <option value="Creator">Creator</option>
+                    </select>
                   )}
                 </td>
+
                 <td className="p-4 text-base font-light">
                   {/* <p
                     className={`w-fit text-red-500 hover:underline cursor-pointer`}
