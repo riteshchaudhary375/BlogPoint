@@ -72,6 +72,27 @@ import family from "./family.svg";
 import self_improvement from "./self_improvement.svg";
 import sport_fitness from "./sport_fitness.svg";
 
+// Social Share Assets
+import email_social_icon from "./email-part-2.svg";
+import faceboook_social_icon from "./facebook.svg";
+import instagram_social_icon from "./instagram.svg";
+import linkedin_social_icon from "./linkedin.svg";
+import pinterest_social_icon from "./pinterest.svg";
+import telegram_social_icon from "./telegram.svg";
+import twitter_social_icon from "./twitter.svg";
+import whatsapp_social_icon from "./whatsapp.svg";
+
+export const socialShareAssets = {
+  email_social_icon,
+  faceboook_social_icon,
+  instagram_social_icon,
+  linkedin_social_icon,
+  pinterest_social_icon,
+  telegram_social_icon,
+  twitter_social_icon,
+  whatsapp_social_icon,
+};
+
 export const categoryAssets = {
   cpu,
   health,

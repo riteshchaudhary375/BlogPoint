@@ -1,8 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
+import {
+  EmailShareButton,
+  LinkedinShareButton,
+  TwitterShareButton,
+  FacebookShareButton,
+  PinterestShareButton,
+  WhatsappShareButton,
+  InstapaperShareButton,
+  TelegramShareButton,
+} from "react-share";
+// npm install react-share
+// or, npm install react-share --force
 
 // import { posts } from "../assets/assets";
+import { socialShareAssets } from "../assets/assets.js";
 import Badge from "../components/Badge";
 import RelatedPosts from "../components/RelatedPosts";
 import LoaderSpinner from "../components/LoaderSpinner";
@@ -18,6 +31,10 @@ const PostPage = () => {
 
   const [postCreatorProfile, setPostCreatorProfile] = useState({});
   // console.log("Creator Profile Data", postCreatorProfile);
+
+  // Current page url
+  const currentPageUrl = window.location.href;
+  // console.log(currentPageUrl);
 
   const getCreatorProfile = async () => {
     try {
@@ -148,21 +165,151 @@ const PostPage = () => {
                   </div>
 
                   <div className="flex flex-col gap-2">
-                    {/* Creator Profile */}
-                    {postCreatorProfile && (
-                      <div className="flex items-end gap-1">
-                        <img
-                          src={postCreatorProfile.profilePicture}
-                          // src={postCreatorImage}
-                          alt="Creater profile"
-                          className="w-6 h-6 rounded-full object-cover"
-                        />
+                    <div className="flex items-center justify-between">
+                      {/* Creator Profile */}
+                      {postCreatorProfile && (
+                        <div className="flex items-end gap-1">
+                          <img
+                            src={postCreatorProfile.profilePicture}
+                            // src={postCreatorImage}
+                            alt="Creater profile"
+                            className="w-6 h-6 rounded-full object-cover"
+                          />
 
-                        <p className="font-medium text-sm text-textColor1 underline">
-                          {postCreatorProfile.username}:
-                        </p>
+                          <p className="font-medium text-sm text-textColor1 underline">
+                            {postCreatorProfile.username}:
+                          </p>
+                        </div>
+                      )}
+
+                      {/* Share Links */}
+                      <div className="flex gap-1.5 items-center justify-center">
+                        <EmailShareButton
+                          url={currentPageUrl}
+                          subject="New article"
+                          body="body here"
+                          hashtag="#blogpoint"
+                        >
+                          <img
+                            src={
+                              socialShareAssets &&
+                              socialShareAssets.email_social_icon
+                            }
+                            alt="email"
+                            title="Email Share"
+                            className="w-6 h-6 object-cover object-center"
+                          />
+                        </EmailShareButton>
+
+                        <LinkedinShareButton
+                          url={currentPageUrl}
+                          /* quote="New article"
+                          hashtag="#blogpoint" */
+                        >
+                          <img
+                            src={
+                              socialShareAssets &&
+                              socialShareAssets.linkedin_social_icon
+                            }
+                            alt="linkedin"
+                            title="Linkedin Share"
+                            className="w-6 h-6 object-cover object-center"
+                          />
+                        </LinkedinShareButton>
+
+                        <TwitterShareButton
+                          url={currentPageUrl}
+                          title="New article"
+                        >
+                          <img
+                            src={
+                              socialShareAssets &&
+                              socialShareAssets.twitter_social_icon
+                            }
+                            alt="twitter"
+                            title="Twitter Share"
+                            className="w-6 h-6 object-cover object-center"
+                          />
+                        </TwitterShareButton>
+
+                        <FacebookShareButton
+                          url={currentPageUrl}
+                          /* quote="New article"
+                          hashtag="#blogpoint" */
+                        >
+                          <img
+                            src={
+                              socialShareAssets &&
+                              socialShareAssets.faceboook_social_icon
+                            }
+                            alt="facebook"
+                            title="Facebook Share"
+                            className="w-6 h-6 object-cover object-center"
+                          />
+                        </FacebookShareButton>
+
+                        <WhatsappShareButton
+                          url={currentPageUrl}
+                          title={"New Post"}
+                          separator=":: "
+                        >
+                          <img
+                            src={
+                              socialShareAssets &&
+                              socialShareAssets.whatsapp_social_icon
+                            }
+                            alt="whatsapp"
+                            title="Whatsapp Share"
+                            className="w-6 h-6 object-cover object-center"
+                          />
+                        </WhatsappShareButton>
+
+                        <InstapaperShareButton
+                          url={currentPageUrl}
+                          title={"New Post"}
+                        >
+                          <img
+                            src={
+                              socialShareAssets &&
+                              socialShareAssets.instagram_social_icon
+                            }
+                            alt="instagram"
+                            title="Instagram Share"
+                            className="w-6 h-6 object-cover object-center"
+                          />
+                        </InstapaperShareButton>
+
+                        <TelegramShareButton
+                          url={currentPageUrl}
+                          title={"New Post"}
+                        >
+                          <img
+                            src={
+                              socialShareAssets &&
+                              socialShareAssets.telegram_social_icon
+                            }
+                            alt="telegram"
+                            title="Telegram Share"
+                            className="w-6 h-6 object-cover object-center"
+                          />
+                        </TelegramShareButton>
+
+                        <PinterestShareButton
+                          url={String(currentPageUrl)}
+                          media={`${String(window.location)}/${postData.image}`}
+                        >
+                          <img
+                            src={
+                              socialShareAssets &&
+                              socialShareAssets.pinterest_social_icon
+                            }
+                            alt="pinterest"
+                            title="Pinterest Share"
+                            className="w-6 h-6 object-cover object-center"
+                          />
+                        </PinterestShareButton>
                       </div>
-                    )}
+                    </div>
 
                     {/* Post Content */}
                     <div
