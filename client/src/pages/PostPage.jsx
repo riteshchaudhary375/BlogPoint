@@ -19,6 +19,7 @@ import { socialShareAssets } from "../assets/assets.js";
 import Badge from "../components/Badge";
 import RelatedPosts from "../components/RelatedPosts";
 import LoaderSpinner from "../components/LoaderSpinner";
+import CommentSection from "../components/CommentSection.jsx";
 
 const PostPage = () => {
   const { postSlug } = useParams();
@@ -103,7 +104,7 @@ const PostPage = () => {
     );
 
   return (
-    <div className="container">
+    <main className="container">
       <div className="w-full min-h-screen">
         <div className="pt-2 sm:pt-6 md:pt-8">
           <div className="w-full lg:w-[920px] mx-auto">
@@ -164,7 +165,7 @@ const PostPage = () => {
                     </div>
                   </div>
 
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-6 my-8">
                     <div className="flex items-center justify-between">
                       {/* Creator Profile */}
                       {postCreatorProfile && (
@@ -325,6 +326,9 @@ const PostPage = () => {
                   </div>
                 </div>
 
+                {/* Comment Section */}
+                <CommentSection />
+
                 {/* Related posts */}
                 <RelatedPosts
                   category={postData.category}
@@ -335,7 +339,7 @@ const PostPage = () => {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 
