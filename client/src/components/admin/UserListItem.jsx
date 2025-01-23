@@ -13,8 +13,6 @@ const UserListItem = ({
   showModal,
   setShowModal,
   idToDelete,
-  userRole,
-  setUserRole,
 }) => {
   // console.log(data);
 

@@ -26,8 +26,6 @@ const DashUsers = ({ showModal, setShowModal }) => {
   const [showMore, setShowMore] = useState(true);
   const [userIdToDelete, setUserIdToDelete] = useState("");
 
-  const [userRole, setUserRole] = useState("");
-
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
@@ -130,8 +128,6 @@ const DashUsers = ({ showModal, setShowModal }) => {
           showModal={showModal}
           setShowModal={setShowModal}
           idToDelete={setUserIdToDelete}
-          userRole={userRole}
-          setUserRole={setUserRole}
         />
       )}
 
