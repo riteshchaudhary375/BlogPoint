@@ -1,9 +1,11 @@
 import React from "react";
+
 import Title from "../components/Title";
 import Button from "../components/Button";
 import NewsLetterBox from "../components/NewsLetterBox";
 
 import { assets } from "../assets/assets";
+import ContactForm from "../components/ContactForm";
 
 const Contact = () => {
   return (
@@ -49,6 +51,9 @@ const Contact = () => {
           />
         </div>
       </div>
+
+      {/* Contact send message */}
+      <ContactForm />
 
       {/* News-Letter Box */}
       <NewsLetterBox />

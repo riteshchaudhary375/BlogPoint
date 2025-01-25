@@ -3,6 +3,7 @@ import NewsLetterBox from "../components/NewsLetterBox";
 import Hero from "../components/Hero";
 import Category from "../components/Category";
 import PostsContainer from "../components/PostsContainer";
+import ContactForm from "../components/ContactForm";
 
 const Home = () => {
   return (
@@ -10,6 +11,9 @@ const Home = () => {
       <Hero />
       <Category />
       <PostsContainer />
+      <div className="container">
+        <ContactForm />
+      </div>
       <NewsLetterBox />
     </main>
   );

@@ -59,6 +59,7 @@ import eye_closed from "./eye-closed-svgrepo-com.svg";
 import document_plus from "./document-plus-svgrepo-com.svg";
 import mern_stack from "./mern_stack.jpg";
 import message from "./message-svgrepo-com.svg";
+import contact_form_msg_icon from "./contact_form_msg_icon.png";
 
 // Category
 import cpu from "./cpu.svg";
@@ -152,6 +153,7 @@ export const assets = {
   document_plus,
   mern_stack,
   message,
+  contact_form_msg_icon,
 };
 
 /* export const categoryData = [
