@@ -119,7 +119,7 @@ const DashSidebar = () => {
                   // onClick={() => setTab("users")}
                 >
                   <img
-                    src={assets.users_icon}
+                    src={assets.message}
                     alt="dashboard_icon"
                     className="w-6 h-6 md:w-7 md:h-7"
                   />

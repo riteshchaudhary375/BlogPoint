@@ -25,6 +25,11 @@ const DashboardView = () => {
   const [totalCreators, setTotalCreators] = useState(0);
   const [totalNormalUsers, setTotalNormalUsers] = useState(0);
 
+  // 10:22:26
+  const [comments, setComments] = useState([]);
+  const [totalComments, setTotalComments] = useState(0);
+  const [lastMonthComments, setLastMonthComments] = useState(0);
+
   const [fetching, setFetching] = useState(false);
 
   useEffect(() => {
@@ -80,9 +85,24 @@ const DashboardView = () => {
       }
     };
 
+    const fetchComments = async () => {
+      try {
+        const res = await fetch(`/api/comment/getComments?limit=5`);
+        const data = await res.json();
+        if (res.ok) {
+          setComments(data.comments);
+          setTotalComments(data.totalComments);
+          setLastMonthComments(data.lastMonthComments);
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+
     if (currentUser.isAdmin) {
       fetchUsers();
       fetchPosts();
+      fetchComments();
     }
 
     // Aborting useEffect for unnecessary fetch
@@ -93,7 +113,7 @@ const DashboardView = () => {
   }, [currentUser]);
 
   // Users status and count
- /*  const userStatus = {
+  /*  const userStatus = {
     creator: 5,
     user: 10,
   }; */
@@ -180,9 +200,9 @@ const DashboardView = () => {
             {/* Total Comments */}
             <TotalDataCard
               title={"Total Comments"}
-              totalData={"54"}
-              // icon={assets.posts_icon}
-              lastMonthData={"17"}
+              totalData={totalComments}
+              icon={assets.message}
+              lastMonthData={lastMonthComments}
             />
 
             {/* Total Posts */}
@@ -262,14 +282,15 @@ const DashboardView = () => {
                   <Title2 text1={"Recent"} text2={"Comments"} />
                 </div>
 
-                <Button
-                  type={"button"}
-                  text={"See All"}
-                  className={
-                    "border border-bgDark hover:bg-lightBgHover text-xs"
-                  }
-                  handleClick={() => alert("Processing...")}
-                />
+                <Link to={"/dashboard?tab=comments"}>
+                  <Button
+                    type={"button"}
+                    text={"See All"}
+                    className={
+                      "border border-bgDark hover:bg-lightBgHover text-xs"
+                    }
+                  />
+                </Link>
               </div>
               <table className="table-auto w-full border border-borderColor rounded-sm text-left">
                 <thead className="bg-lightBgHover border-b border-borderColorHover uppercase text-textColor2">
@@ -279,14 +300,20 @@ const DashboardView = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="hover:bg-lightBgHover border-b border-borderColor text-textColor3">
-                    <td className="p-4 text-base font-medium">nice post</td>
-                    <td className="p-4 text-base font-medium">7</td>
-                  </tr>
-                  <tr className="hover:bg-lightBgHover border-b border-borderColor text-textColor3">
-                    <td className="p-4 text-base font-medium">Informative</td>
-                    <td className="p-4 text-base font-medium">2</td>
-                  </tr>
+                  {comments &&
+                    comments.map((comment, index) => (
+                      <tr
+                        key={index}
+                        className="hover:bg-lightBgHover border-b border-borderColor text-textColor3"
+                      >
+                        <td className="p-4 text-base font-medium">
+                          {comment.content}
+                        </td>
+                        <td className="p-4 text-base font-medium">
+                          {comment.numberOfLikes}
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>
@@ -364,7 +391,7 @@ const DashboardView = () => {
                 )}
               </tbody>
             </table>
-          </div> 
+          </div>
         </div>
       )}
     </>
