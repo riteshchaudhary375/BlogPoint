@@ -20,8 +20,9 @@ import Badge from "../components/Badge";
 import RelatedPosts from "../components/RelatedPosts";
 import LoaderSpinner from "../components/LoaderSpinner";
 import CommentSection from "../components/CommentSection.jsx";
+import CallToAction from "../components/CallToAction.jsx";
 
-const PostPage = () => {
+const PostPage = ({ showModal, setShowModal }) => {
   const { postSlug } = useParams();
 
   const [loading, setLoading] = useState(false);
@@ -104,13 +105,14 @@ const PostPage = () => {
     );
 
   return (
-    <main className="container">
+    <main className={`container`}>
       <div className="w-full min-h-screen">
         <div className="pt-2 sm:pt-6 md:pt-8">
           <div className="w-full lg:w-[920px] mx-auto">
             {postData && (
               <>
-                <div className="flex flex-col gap-6">
+                <div className={`flex flex-col gap-6`}>
+                  {/* Post title */}
                   <div>
                     <h1 className="text-textColor1 text-2xl md:text-3xl text-center font-medium">
                       {postData.title}
@@ -118,6 +120,7 @@ const PostPage = () => {
                   </div>
 
                   <div className="flex flex-col gap-2 text-textColor3">
+                    {/* Post image */}
                     <img
                       src={postData.image}
                       alt={postData.title}
@@ -152,6 +155,7 @@ const PostPage = () => {
                         </p>
                       </div>
 
+                      {/* Post updated */}
                       {postData.updateDate === null ? (
                         <div className="opacity-0"></div>
                       ) : (
@@ -325,9 +329,15 @@ const PostPage = () => {
                     </div>
                   </div>
                 </div>
+                {/* Call to action */}
+                <CallToAction />
 
-                {/* Comment Section */}
-                <CommentSection />
+                {/* Comment Section = 8:22:54 */}
+                <CommentSection
+                  postDataID={postDataID}
+                  showModal={showModal}
+                  setShowModal={setShowModal}
+                />
 
                 {/* Related posts */}
                 <RelatedPosts

@@ -11,6 +11,7 @@ import {
   deleteUser,
   getAllUsers,
   updateUserRole,
+  getuser,
 } from "../controllers/user.controller.js";
 
 const router = express.Router();
@@ -34,5 +35,8 @@ router.get("/getUsers", verifyToken, getUsers);
 router.get("/getAllUsers", getAllUsers);
 router.delete("/deleteUser/:userId", verifyToken, deleteUser);
 router.put("/updateUserRole/:roleUserId/:adminId", verifyToken, updateUserRole);
+
+// Get user for comment component
+router.get("/:userId", getuser);
 
 export default router;

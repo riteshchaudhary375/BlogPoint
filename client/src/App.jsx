@@ -28,7 +28,7 @@ function App() {
     // <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
     // <div className="">
     <BrowserRouter>
-      {/* Scroll to top */}
+      {/* Scroll to top = 8:28:05 */}
       <ScrollToTop />
       <Header />
 
@@ -39,7 +39,12 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<SignUp />} />
-        <Route path="/post/:postSlug" element={<PostPage />} />
+        <Route
+          path="/post/:postSlug"
+          element={
+            <PostPage showModal={showModal} setShowModal={setShowModal} />
+          }
+        />
 
         {/* Private Route */}
         <Route element={<PrivateRoute />}>

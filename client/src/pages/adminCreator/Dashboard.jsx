@@ -10,6 +10,7 @@ import CreatePost from "./CreatePost";
 import { useSelector } from "react-redux";
 import MyPosts from "../creator/MyPosts";
 import DashboardForCreator from "../creator/DashboardForCreator";
+import DashComments from "../../components/admin/DashComments";
 
 const Dashboard = ({ showModal, setShowModal }) => {
   const { currentUser } = useSelector((state) => state.user);
@@ -59,6 +60,11 @@ const Dashboard = ({ showModal, setShowModal }) => {
             {/* Creator */}
             {tab === "posts" && currentUser && currentUser.isCreator && (
               <MyPosts showModal={showModal} setShowModal={setShowModal} />
+            )}
+
+            {/* Admin */}
+            {tab === "comments" && currentUser && currentUser.isAdmin && (
+              <DashComments showModal={showModal} setShowModal={setShowModal} />
             )}
 
             {/* Admin */}
