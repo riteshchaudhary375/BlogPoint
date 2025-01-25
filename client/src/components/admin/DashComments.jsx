@@ -10,7 +10,7 @@ import CommentListItem from "./CommentListItem";
 const DashComments = ({ showModal, setShowModal }) => {
   const { currentUser } = useSelector((state) => state.user);
   const [comments, setComments] = useState([]);
-  // console.log(users);
+  // console.log(comments);
 
   const commentListTitle = [
     "date_updated",
@@ -25,6 +25,7 @@ const DashComments = ({ showModal, setShowModal }) => {
   const [showMore, setShowMore] = useState(true);
   const [commentIdToDelete, setCommentIdToDelete] = useState("");
 
+  // Fetch all comments
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
@@ -32,11 +33,9 @@ const DashComments = ({ showModal, setShowModal }) => {
     const fetchComments = async () => {
       try {
         setFetching(true);
-
-        const res = await fetch(`/api/comment/getComments`, { signal });
+        const res = await fetch(`/api/comment/getcomments`, { signal });
         const data = await res.json();
         // console.log(data);
-
         if (res.ok) {
           setComments(data.comments);
           if (data.comments.length < 9) {
@@ -51,7 +50,6 @@ const DashComments = ({ showModal, setShowModal }) => {
         toast.error(error.message);
       }
     };
-
     if (currentUser.isAdmin) {
       fetchComments();
     }
@@ -63,10 +61,13 @@ const DashComments = ({ showModal, setShowModal }) => {
     };
   }, [currentUser._id]);
 
+  // Show more comment
   const handleShowMore = async () => {
     const startIndex = comments.length;
     try {
-      const res = await fetch(`/api/comment/getComments?startIndex=${startIndex}`);
+      const res = await fetch(
+        `/api/comment/getComments?startIndex=${startIndex}`
+      );
       const data = await res.json();
       if (!res.ok) {
         // console.log(data.message);
@@ -85,6 +86,7 @@ const DashComments = ({ showModal, setShowModal }) => {
     }
   };
 
+  // Delete comment
   const handleDeleteComment = async () => {
     try {
       const res = await fetch(

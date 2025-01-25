@@ -1,4 +1,5 @@
 import Comment from "../models/comment.model.js";
+import User from "../models/user.model.js";
 import { errorHandler } from "../utils/error.js";
 
 // Create new comment
@@ -108,9 +109,13 @@ export const deleteComment = async (req, res, next) => {
   }
 };
 
-// Get comments
+// Get comments for Admin panel
 export const getcomments = async (req, res, next) => {
-  if (!req.user.isAdmin)
+  // console.log(req.user);
+  const verifiedUser = await User.findById(req.user.id);
+  // console.log(verifiedUser);
+
+  if (!verifiedUser.isAdmin)
     return next(errorHandler(403, "You are not allowed to get all comments"));
 
   try {

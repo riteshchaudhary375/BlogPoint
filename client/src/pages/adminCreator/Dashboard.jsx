@@ -62,7 +62,7 @@ const Dashboard = ({ showModal, setShowModal }) => {
               <MyPosts showModal={showModal} setShowModal={setShowModal} />
             )}
 
-            {/* Admin */}
+            {/* Admin = 10:08:16 */}
             {tab === "comments" && currentUser && currentUser.isAdmin && (
               <DashComments showModal={showModal} setShowModal={setShowModal} />
             )}
