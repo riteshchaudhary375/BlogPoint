@@ -24,6 +24,7 @@ const DashMessages = ({
     "message",
     "email",
     "contact",
+    "action",
   ];
 
   const [fetching, setFetching] = useState(false);
@@ -33,6 +34,7 @@ const DashMessages = ({
   //   const [showMessageModal, setShowMessageModal] = useState(false);
   const [messageItemData, setMessageItemData] = useState({});
   //   console.log(messageItemData);
+  const [messageIdToDelete, setMessageIdToDelete] = useState("");
 
   useEffect(() => {
     const controller = new AbortController();
@@ -99,27 +101,53 @@ const DashMessages = ({
   };
 
   // Handle delete message
-  const handleDeleteUser = async () => {
+  const handleDeleteMessage = async () => {
+    setShowMessageModal(false);
+    setShowModal(false);
     try {
-      const res = await fetch(`/api/user/deleteUser/${userIdToDelete}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        `/api/message/deleteMessage/${messageIdToDelete}`,
+        {
+          method: "DELETE",
+        }
+      );
       const data = await res.json();
       if (!res.ok) {
-        setShowModal(false);
-        // console.log(data.message);
         toast.error(data.message);
         return;
       }
       if (res.ok) {
-        setShowModal(false);
-        setUsers((prev) => prev.filter((user) => user._id !== userIdToDelete));
+        setMessages((prev) =>
+          prev.filter((message) => message._id !== messageIdToDelete)
+        );
         toast.success(data.message);
       }
     } catch (error) {
-      setShowModal(false);
-      // console.log(error.message);
       toast.error(error.message);
+      console.log(error);
+    }
+  };
+
+  const handleDeleteMessageFromModal = async (msgId) => {
+    setShowMessageModal(false);
+    try {
+      const res = await fetch(`/api/message/deleteMessage/${msgId}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        toast.error(data.message);
+        return;
+      }
+      if (res.ok) {
+        setMessages((prev) =>
+          prev.filter((message) => message._id !== messageIdToDelete)
+        );
+        toast.success(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+      console.log(error);
     }
   };
 
@@ -151,7 +179,7 @@ const DashMessages = ({
             showMoreClick={handleShowMore}
             showModal={showModal}
             setShowModal={setShowModal}
-            idToDelete={setUserIdToDelete}
+            setMessageIdToDelete={setMessageIdToDelete}
             onClickMessageItem={handleClickMessageItem}
           />
         )}
@@ -161,7 +189,7 @@ const DashMessages = ({
         <Modal
           text={"Are you sure you want to delete this message?"}
           setShowModal={setShowModal}
-          onDeleteUser={handleDeleteUser}
+          onDeleteUser={handleDeleteMessage}
         />
       )}
 
@@ -169,8 +197,8 @@ const DashMessages = ({
       {showMessageModal && (
         // <div className="fixed top-20 left-0 right-0 overflow-scroll">
         <MessageModal
-          setShowMessageModal={setShowMessageModal}
           messageItemData={messageItemData}
+          onDeleteMessage={handleDeleteMessageFromModal}
         />
         // </div>
       )}

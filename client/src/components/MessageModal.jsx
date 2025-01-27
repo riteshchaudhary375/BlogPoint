@@ -1,8 +1,14 @@
 import React from "react";
 import Button from "./Button";
 import Title2 from "./Title2";
+import toast from "react-hot-toast";
+import { data } from "react-router-dom";
 
-const MessageModal = ({ setShowMessageModal, messageItemData }) => {
+const MessageModal = ({
+  setShowMessageModal,
+  messageItemData,
+  onDeleteMessage,
+}) => {
   return (
     messageItemData && (
       <div className="fixed inset-0 bg-opacity-5 backdrop-blur-sm flex items-center justify-center">
@@ -143,6 +149,15 @@ const MessageModal = ({ setShowMessageModal, messageItemData }) => {
                 "w-[120px] text-center border border-bgDark hover:bg-borderColorHover/20 text-xs"
               }
               handleClick={() => setShowMessageModal(false)}
+            />
+
+            <Button
+              type={"button"}
+              text={"Delete"}
+              className={
+                "ml-3 w-[120px] text-center bg-red-600 text-textLight hover:bg-red-700 text-xs"
+              }
+              handleClick={() => onDeleteMessage(messageItemData._id)}
             />
           </div>
         </div>

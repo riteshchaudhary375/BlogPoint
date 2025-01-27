@@ -10,7 +10,7 @@ const MessageListItem = ({
   showMoreClick,
   showModal,
   setShowModal,
-  idToDelete,
+  setMessageIdToDelete,
   onClickMessageItem,
 }) => {
   // console.log(data);
@@ -33,6 +33,7 @@ const MessageListItem = ({
             data.map((data, index) => (
               <tr
                 key={index}
+                title="Click message content to view full"
                 className="hover:bg-lightBgHover border-b border-borderColor text-textColor3"
               >
                 <td className="p-4 text-sm font-light">
@@ -56,6 +57,18 @@ const MessageListItem = ({
 
                 <td className="p-4 text-base font-light">
                   <p className="w-fit">{data.contact}</p>
+                </td>
+
+                <td className="p-4 text-base font-light">
+                  <p
+                    className="w-fit text-red-600 hover:underline cursor-pointer"
+                    onClick={() => {
+                      setMessageIdToDelete(data._id);
+                      setShowModal(true);
+                    }}
+                  >
+                    Delete
+                  </p>
                 </td>
               </tr>
             ))}

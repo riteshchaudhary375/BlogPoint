@@ -84,3 +84,17 @@ export const getMessages = async (req, res, next) => {
     next(error);
   }
 };
+
+export const deleteMessage = async (req, res, next) => {
+  const verifiedUser = await User.findById(req.user.id);
+  if (!verifiedUser.isAdmin)
+    return next(errorHandler(401, "Authorized for admin only!"));
+
+  try {
+    await Message.findByIdAndDelete(req.params.messageId);
+
+    res.json({ success: true, message: "Message deleted!" });
+  } catch (error) {
+    next(error);
+  }
+};
