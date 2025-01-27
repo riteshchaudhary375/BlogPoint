@@ -132,6 +132,29 @@ const DashSidebar = () => {
           {currentUser && currentUser.isAdmin && (
             <>
               <HorizontalLine />
+              <Link to={"/dashboard?tab=messages"}>
+                <div
+                  className={`px-4 py-1.5 flex items-center gap-2 cursor-pointer ${
+                    tab === "messages"
+                      ? "bg-lightBgHover"
+                      : "hover:bg-lightBgHover"
+                  }`}
+                  // onClick={() => setTab("users")}
+                >
+                  <img
+                    src={assets.message_icon}
+                    alt="message_icon"
+                    className="w-6 h-6 md:w-7 md:h-7"
+                  />
+                  <p>Messages</p>
+                </div>
+              </Link>
+            </>
+          )}
+
+          {currentUser && currentUser.isAdmin && (
+            <>
+              <HorizontalLine />
               <Link to={"/dashboard?tab=users"}>
                 <div
                   className={`px-4 py-1.5 flex items-center gap-2 cursor-pointer ${

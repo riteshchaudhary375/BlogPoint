@@ -30,6 +30,10 @@ const DashboardView = () => {
   const [totalComments, setTotalComments] = useState(0);
   const [lastMonthComments, setLastMonthComments] = useState(0);
 
+  const [messages, setMessages] = useState([]);
+  const [totalMessages, setTotalMessages] = useState(0);
+  const [lastMonthMessages, setLastMonthMessages] = useState(0);
+
   const [fetching, setFetching] = useState(false);
 
   useEffect(() => {
@@ -99,10 +103,25 @@ const DashboardView = () => {
       }
     };
 
+    const fetchMessages = async () => {
+      try {
+        const res = await fetch(`/api/message/getMessages?limit=5`);
+        const data = await res.json();
+        if (res.ok) {
+          setMessages(data.messages);
+          setTotalMessages(data.totalMessages);
+          setLastMonthMessages(data.lastMonthMessages);
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+
     if (currentUser.isAdmin) {
       fetchUsers();
       fetchPosts();
       fetchComments();
+      fetchMessages();
     }
 
     // Aborting useEffect for unnecessary fetch
@@ -196,6 +215,14 @@ const DashboardView = () => {
                 </div>
               </div>
             </div>
+
+            {/* Total Messages */}
+            <TotalDataCard
+              title={"Total Messages"}
+              totalData={totalMessages}
+              icon={assets.message_icon}
+              lastMonthData={lastMonthMessages}
+            />
 
             {/* Total Comments */}
             <TotalDataCard
@@ -315,6 +342,64 @@ const DashboardView = () => {
                       </tr>
                     ))}
                 </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-12 xl:flex-row">
+            {/* Message Table */}
+            <div className="flex-1">
+              <div className="flex items-center justify-between">
+                <div className="font-light -mb-4">
+                  <Title2 text1={"Recent"} text2={"Messages"} />
+                </div>
+
+                <Link to={"/dashboard?tab=messages"}>
+                  <Button
+                    type={"button"}
+                    text={"See All"}
+                    className={
+                      "border border-bgDark hover:bg-lightBgHover text-xs"
+                    }
+                    // handleClick={() => alert("Processing...")}
+                  />
+                </Link>
+              </div>
+              <table className="table-auto w-full border border-borderColor rounded-sm text-left">
+                <thead className="bg-lightBgHover border-b border-borderColorHover uppercase text-textColor2">
+                  <tr>
+                    <th className="p-4 font-medium">full_name</th>
+                    <th className="p-4 font-medium">Message</th>
+                    {/* <th className="p-4 font-medium">Email</th> */}
+                  </tr>
+                </thead>
+                {messages && messages.length < 1 ? (
+                  <tbody>
+                    <tr className="border-b border-borderColor text-textColor3 text-center">
+                      <td className="p-4 text-base font-light" colSpan="2">
+                        No Data Found!
+                      </td>
+                    </tr>
+                  </tbody>
+                ) : (
+                  <tbody>
+                    {messages &&
+                      messages.map((data, index) => (
+                        <tr
+                          key={index}
+                          className="hover:bg-lightBgHover border-b border-borderColor text-textColor3"
+                        >
+                          <td className="p-4 text-base font-light">
+                            <p>{data.fullname}</p>
+                          </td>
+                          <td className="p-4 text-base font-medium">
+                            {data.message}
+                          </td>
+                          {/* <td className="p-4 text-base font-light">{data.email}</td> */}
+                        </tr>
+                      ))}
+                  </tbody>
+                )}
               </table>
             </div>
           </div>

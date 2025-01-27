@@ -23,6 +23,7 @@ import UpdatePassword from "./pages/UpdatePassword";
 
 function App() {
   const [showModal, setShowModal] = useState(false);
+  const [showMessageModal, setShowMessageModal] = useState(false);
 
   return (
     // <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
@@ -63,6 +64,8 @@ function App() {
               <AdminDashboard
                 showModal={showModal}
                 setShowModal={setShowModal}
+                showMessageModal={showMessageModal}
+                setShowMessageModal={setShowMessageModal}
               />
             }
           />
@@ -71,7 +74,7 @@ function App() {
         </Route>
       </Routes>
 
-      <Footer showModal={showModal} />
+      <Footer showModal={showModal} showMessageModal={showMessageModal} />
 
       {/* the circle container on body is of react-hot-toast */}
       <Toaster position="bottom-right" reverseOrder={false} />

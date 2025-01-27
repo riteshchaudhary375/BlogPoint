@@ -11,8 +11,14 @@ import { useSelector } from "react-redux";
 import MyPosts from "../creator/MyPosts";
 import DashboardForCreator from "../creator/DashboardForCreator";
 import DashComments from "../../components/admin/DashComments";
+import DashMessages from "../../components/admin/DashMessages";
 
-const Dashboard = ({ showModal, setShowModal }) => {
+const Dashboard = ({
+  showModal,
+  setShowModal,
+  showMessageModal,
+  setShowMessageModal,
+}) => {
   const { currentUser } = useSelector((state) => state.user);
 
   const location = useLocation();
@@ -31,7 +37,7 @@ const Dashboard = ({ showModal, setShowModal }) => {
 
   return (
     <div className="container min-h-screen">
-      <div className={showModal ? "bodyFixed" : undefined}>
+      <div className={showModal || showMessageModal ? "bodyFixed" : undefined}>
         <div className="flex flex-col md:flex-row gap-8">
           <div className="md:w-56">
             <DashSidebar tab={tab} setTab={setTab} />
@@ -65,6 +71,16 @@ const Dashboard = ({ showModal, setShowModal }) => {
             {/* Admin = 10:08:16 */}
             {tab === "comments" && currentUser && currentUser.isAdmin && (
               <DashComments showModal={showModal} setShowModal={setShowModal} />
+            )}
+
+            {/* Admin */}
+            {tab === "messages" && currentUser && currentUser.isAdmin && (
+              <DashMessages
+                showModal={showModal}
+                setShowModal={setShowModal}
+                showMessageModal={showMessageModal}
+                setShowMessageModal={setShowMessageModal}
+              />
             )}
 
             {/* Admin */}

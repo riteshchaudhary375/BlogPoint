@@ -60,6 +60,7 @@ import document_plus from "./document-plus-svgrepo-com.svg";
 import mern_stack from "./mern_stack.jpg";
 import message from "./message-svgrepo-com.svg";
 import contact_form_msg_icon from "./contact_form_msg_icon.png";
+import message_icon from "./speech-bubble-svgrepo-com.svg";
 
 // Category
 import cpu from "./cpu.svg";
@@ -154,6 +155,7 @@ export const assets = {
   mern_stack,
   message,
   contact_form_msg_icon,
+  message_icon,
 };
 
 /* export const categoryData = [
