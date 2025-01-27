@@ -61,6 +61,7 @@ import mern_stack from "./mern_stack.jpg";
 import message from "./message-svgrepo-com.svg";
 import contact_form_msg_icon from "./contact_form_msg_icon.png";
 import message_icon from "./speech-bubble-svgrepo-com.svg";
+import subscribers from "./subscribers.svg";
 
 // Category
 import cpu from "./cpu.svg";
@@ -156,6 +157,7 @@ export const assets = {
   message,
   contact_form_msg_icon,
   message_icon,
+  subscribers,
 };
 
 /* export const categoryData = [

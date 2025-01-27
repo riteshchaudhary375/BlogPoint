@@ -155,6 +155,29 @@ const DashSidebar = () => {
           {currentUser && currentUser.isAdmin && (
             <>
               <HorizontalLine />
+              <Link to={"/dashboard?tab=subscribers"}>
+                <div
+                  className={`px-4 py-1.5 flex items-center gap-2 cursor-pointer ${
+                    tab === "subscribers"
+                      ? "bg-lightBgHover"
+                      : "hover:bg-lightBgHover"
+                  }`}
+                  // onClick={() => setTab("users")}
+                >
+                  <img
+                    src={assets.subscribers}
+                    alt="message_icon"
+                    className="w-6 h-6 md:w-7 md:h-7"
+                  />
+                  <p>Subscribers</p>
+                </div>
+              </Link>
+            </>
+          )}
+
+          {currentUser && currentUser.isAdmin && (
+            <>
+              <HorizontalLine />
               <Link to={"/dashboard?tab=users"}>
                 <div
                   className={`px-4 py-1.5 flex items-center gap-2 cursor-pointer ${

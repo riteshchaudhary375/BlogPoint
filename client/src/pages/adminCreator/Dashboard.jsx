@@ -12,6 +12,7 @@ import MyPosts from "../creator/MyPosts";
 import DashboardForCreator from "../creator/DashboardForCreator";
 import DashComments from "../../components/admin/DashComments";
 import DashMessages from "../../components/admin/DashMessages";
+import DashSubscribers from "../../components/admin/DashSubscribers";
 
 const Dashboard = ({
   showModal,
@@ -80,6 +81,14 @@ const Dashboard = ({
                 setShowModal={setShowModal}
                 showMessageModal={showMessageModal}
                 setShowMessageModal={setShowMessageModal}
+              />
+            )}
+
+            {/* Admin */}
+            {tab === "subscribers" && currentUser && currentUser.isAdmin && (
+              <DashSubscribers
+                showModal={showModal}
+                setShowModal={setShowModal}
               />
             )}
 

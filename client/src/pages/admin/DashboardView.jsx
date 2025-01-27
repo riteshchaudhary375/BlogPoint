@@ -34,6 +34,10 @@ const DashboardView = () => {
   const [totalMessages, setTotalMessages] = useState(0);
   const [lastMonthMessages, setLastMonthMessages] = useState(0);
 
+  const [subscribers, setSubscribers] = useState([]);
+  const [totalSubscribers, setTotalSubscribers] = useState(0);
+  const [lastMonthSubscribers, setLastMonthSubscribers] = useState(0);
+
   const [fetching, setFetching] = useState(false);
 
   useEffect(() => {
@@ -117,11 +121,26 @@ const DashboardView = () => {
       }
     };
 
+    const fetchSubscribers = async () => {
+      try {
+        const res = await fetch(`/api/subscriber/getSubscribers?limit=5`);
+        const data = await res.json();
+        if (res.ok) {
+          setSubscribers(data.subscribers);
+          setTotalSubscribers(data.totalSubscribers);
+          setLastMonthSubscribers(data.lastMonthSubscribers);
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+
     if (currentUser.isAdmin) {
       fetchUsers();
       fetchPosts();
       fetchComments();
       fetchMessages();
+      fetchSubscribers();
     }
 
     // Aborting useEffect for unnecessary fetch
@@ -162,6 +181,7 @@ const DashboardView = () => {
               totalCreators={totalCreators}
             /> */}
 
+            {/* Total Users */}
             <div className="w-full md:w-72 rounded-sm shadow-md border border-borderColor p-4">
               <div className="flex flex-col gap-5">
                 <div className="flex justify-between">
@@ -215,6 +235,14 @@ const DashboardView = () => {
                 </div>
               </div>
             </div>
+
+            {/* Total Subscriber */}
+            <TotalDataCard
+              title={"Total Subscribers"}
+              totalData={totalSubscribers}
+              icon={assets.subscribers}
+              lastMonthData={lastMonthSubscribers}
+            />
 
             {/* Total Messages */}
             <TotalDataCard
@@ -347,6 +375,63 @@ const DashboardView = () => {
           </div>
 
           <div className="flex flex-col gap-12 xl:flex-row">
+            {/* Subscribers Table */}
+            <div className="flex-1">
+              <div className="flex items-center justify-between">
+                <div className="font-light -mb-4">
+                  <Title2 text1={"Recent"} text2={"Subscribers"} />
+                </div>
+
+                <Link to={"/dashboard?tab=subscribers"}>
+                  <Button
+                    type={"button"}
+                    text={"See All"}
+                    className={
+                      "border border-bgDark hover:bg-lightBgHover text-xs"
+                    }
+                    // handleClick={() => alert("Processing...")}
+                  />
+                </Link>
+              </div>
+              <table className="table-auto w-full border border-borderColor rounded-sm text-left">
+                <thead className="bg-lightBgHover border-b border-borderColorHover uppercase text-textColor2">
+                  <tr>
+                    <th className="p-4 font-medium">Subscribed_At</th>
+                    <th className="p-4 font-medium">Email</th>
+                    {/* <th className="p-4 font-medium">Email</th> */}
+                  </tr>
+                </thead>
+                {subscribers && subscribers.length < 1 ? (
+                  <tbody>
+                    <tr className="border-b border-borderColor text-textColor3 text-center">
+                      <td className="p-4 text-base font-light" colSpan="2">
+                        No Data Found!
+                      </td>
+                    </tr>
+                  </tbody>
+                ) : (
+                  <tbody>
+                    {subscribers &&
+                      subscribers.map((data, index) => (
+                        <tr
+                          key={index}
+                          className="hover:bg-lightBgHover border-b border-borderColor text-textColor3"
+                        >
+                          <td className="p-4 text-base font-light">
+                            <p>
+                              {new Date(data.createdAt).toLocaleDateString()}
+                            </p>
+                          </td>
+                          <td className="p-4 text-base font-medium">
+                            {data.email}
+                          </td>
+                          {/* <td className="p-4 text-base font-light">{data.email}</td> */}
+                        </tr>
+                      ))}
+                  </tbody>
+                )}
+              </table>
+            </div>
             {/* Message Table */}
             <div className="flex-1">
               <div className="flex items-center justify-between">
