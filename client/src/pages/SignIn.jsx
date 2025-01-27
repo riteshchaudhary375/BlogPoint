@@ -115,7 +115,10 @@ const SignIn = () => {
               </div>
 
               <div className="flex items-center justify-between text-sm">
-                <p className="cursor-pointer hover:underline">
+                <p
+                  className="cursor-pointer hover:underline"
+                  onClick={() => navigate("/forgot-password")}
+                >
                   Forgot password?
                 </p>
                 {/* <p

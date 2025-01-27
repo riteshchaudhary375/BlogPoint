@@ -20,6 +20,7 @@ import AdminDashboard from "./pages/adminCreator/Dashboard";
 import ScrollToTop from "./components/ScrollToTop";
 import PrivateRouteAdminCreator from "./components/adminCreator/PrivateRouteAdminCreator";
 import UpdatePassword from "./pages/UpdatePassword";
+import ForgotPassword from "./pages/ForgotPassword";
 
 function App() {
   const [showModal, setShowModal] = useState(false);
@@ -40,6 +41,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route
           path="/post/:postSlug"
           element={
