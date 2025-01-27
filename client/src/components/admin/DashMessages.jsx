@@ -29,13 +29,13 @@ const DashMessages = ({
 
   const [fetching, setFetching] = useState(false);
   const [showMore, setShowMore] = useState(true);
-  const [userIdToDelete, setUserIdToDelete] = useState("");
 
   //   const [showMessageModal, setShowMessageModal] = useState(false);
   const [messageItemData, setMessageItemData] = useState({});
   //   console.log(messageItemData);
   const [messageIdToDelete, setMessageIdToDelete] = useState("");
 
+  //   Fetch messages
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
@@ -79,9 +79,11 @@ const DashMessages = ({
 
   // Handle show more message
   const handleShowMore = async () => {
-    const startIndex = users.length;
+    const startIndex = messages.length;
     try {
-      const res = await fetch(`/api/user/getUsers?startIndex=${startIndex}`);
+      const res = await fetch(
+        `/api/message/getMessages?startIndex=${startIndex}`
+      );
       const data = await res.json();
       if (!res.ok) {
         // console.log(data.message);
@@ -89,8 +91,8 @@ const DashMessages = ({
         return;
       }
       if (res.ok) {
-        setUsers((prevState) => [...prevState, ...data.users]);
-        if (data.users.length < 9) {
+        setMessages((prevState) => [...prevState, ...data.messages]);
+        if (data.messages.length < 9) {
           setShowMore(false);
         }
       }

@@ -61,8 +61,26 @@ const DashSubscribers = ({ showModal, setShowModal }) => {
 
   // Handle show more subscribers
   const handleShowMore = async () => {
+    const startIndex = subscribers.length;
+
     try {
-    } catch (error) {}
+      const res = await fetch(
+        `/api/subscriber/getSubscribers?startIndex=${startIndex}`
+      );
+      const data = await res.json();
+      if (!res.ok) {
+        toast.error(data.message);
+        return;
+      }
+      if (res.ok) {
+        setSubscribers((prev) => [...prev, ...data.subscribers]);
+        if (data.subscribers.length < 9) {
+          setShowMore(false);
+        }
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   // Handle delete subscribers
