@@ -11,6 +11,25 @@ const ContactForm = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const web3formApiKey = import.meta.env.VITE_WEB3FORMS_PUBLIC_ACCESS_KEY;
+
+  const submitWeb3Form = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    formData.append("access_key", web3formApiKey);
+    const response = await fetch(`https://api.web3forms.com/submit`, {
+      method: "POST",
+      body: formData,
+    });
+    const data = await response.json();
+    if (data.success) {
+      toast.success("Data submitted on web3form");
+      // e.target.reset();
+    } else {
+      toast.error(data.message);
+    }
+  };
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   };
@@ -40,6 +59,7 @@ const ContactForm = () => {
         setError(null);
         setFormData(e.target.reset());
         toast.success(data.message);
+        // submitWeb3Form();
       }
     } catch (error) {
       setLoading(false);
@@ -75,7 +95,13 @@ const ContactForm = () => {
         </div>
 
         <div className="flex-1">
-          <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
+          <form
+            className="flex flex-col gap-3"
+            onSubmit={(e) => {
+              handleSubmit(e);
+              submitWeb3Form(e);
+            }}
+          >
             <div className="flex flex-col gap-1">
               <label
                 htmlFor="fullname"
@@ -86,6 +112,7 @@ const ContactForm = () => {
               <input
                 type="text"
                 id="fullname"
+                name="fullname"
                 placeholder="your full name"
                 minLength={"7"}
                 maxLength={"30"}
@@ -102,6 +129,7 @@ const ContactForm = () => {
               <input
                 type="email"
                 id="email"
+                name="email"
                 placeholder="name@email.com"
                 className="border border-borderColor outline-borderColorHover rounded-sm w-full p-2 text-sm bg-inherit"
                 onChange={handleChange}
@@ -116,6 +144,7 @@ const ContactForm = () => {
               <input
                 type="text"
                 id="contact"
+                name="contact"
                 placeholder="your phone no."
                 className="border border-borderColor outline-borderColorHover rounded-sm w-full p-2 text-sm bg-inherit"
                 onChange={handleChange}
@@ -130,6 +159,7 @@ const ContactForm = () => {
               <textarea
                 type="text"
                 id="message"
+                name="message"
                 placeholder="Add a message..."
                 rows={"4"}
                 minLength={"5"}
