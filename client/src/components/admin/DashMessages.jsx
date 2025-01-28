@@ -199,6 +199,7 @@ const DashMessages = ({
       {showMessageModal && (
         // <div className="fixed top-20 left-0 right-0 overflow-scroll">
         <MessageModal
+          setShowMessageModal={setShowMessageModal}
           messageItemData={messageItemData}
           onDeleteMessage={handleDeleteMessageFromModal}
         />

@@ -362,9 +362,11 @@ const DashboardView = () => {
                         className="hover:bg-lightBgHover border-b border-borderColor text-textColor3"
                       >
                         <td className="p-4 text-base font-medium">
-                          {comment.content}
+                          <p className="w-fit whitespace-nowrap line-clamp-1">
+                            {comment.content}
+                          </p>
                         </td>
-                        <td className="p-4 text-base font-medium">
+                        <td className="p-4 text-base font-light">
                           {comment.numberOfLikes}
                         </td>
                       </tr>
@@ -422,7 +424,7 @@ const DashboardView = () => {
                               {new Date(data.createdAt).toLocaleDateString()}
                             </p>
                           </td>
-                          <td className="p-4 text-base font-medium">
+                          <td className="p-4 text-base font-medium line-clamp-1">
                             {data.email}
                           </td>
                           {/* <td className="p-4 text-base font-light">{data.email}</td> */}
@@ -432,6 +434,7 @@ const DashboardView = () => {
                 )}
               </table>
             </div>
+
             {/* Message Table */}
             <div className="flex-1">
               <div className="flex items-center justify-between">
@@ -475,10 +478,12 @@ const DashboardView = () => {
                           className="hover:bg-lightBgHover border-b border-borderColor text-textColor3"
                         >
                           <td className="p-4 text-base font-light">
-                            <p>{data.fullname}</p>
+                            <p className="whitespace-nowrap line-clamp-1">
+                              {data.fullname}
+                            </p>
                           </td>
                           <td className="p-4 text-base font-medium">
-                            {data.message}
+                            <p className="line-clamp-1">{data.message}</p>
                           </td>
                           {/* <td className="p-4 text-base font-light">{data.email}</td> */}
                         </tr>

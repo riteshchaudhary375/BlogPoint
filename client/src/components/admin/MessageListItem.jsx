@@ -39,7 +39,7 @@ const MessageListItem = ({
                   {new Date(data.createdAt).toLocaleDateString()}
                 </td>
 
-                <td className="p-4 text-base font-light">{data.fullname}</td>
+                <td className="p-4 text-base font-light whitespace-nowrap">{data.fullname}</td>
 
                 <td className="p-4 text-base font-medium">
                   <p

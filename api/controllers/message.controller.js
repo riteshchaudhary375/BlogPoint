@@ -58,10 +58,11 @@ export const getMessages = async (req, res, next) => {
   try {
     const startIndex = parseInt(req.query.startIndex) || 0;
     const limit = parseInt(req.query.limit) || 9;
-    const sortDirection = req.query.sort === "desc" ? -1 : 1;
+    // const sortDirection = req.query.sort === "desc" ? -1 : 1;
 
     const messages = await Message.find()
-      .sort({ createdAt: sortDirection })
+      // .sort({ createdAt: sortDirection })
+      .sort({ createdAt: -1 })
       .skip(startIndex)
       .limit(limit);
 
