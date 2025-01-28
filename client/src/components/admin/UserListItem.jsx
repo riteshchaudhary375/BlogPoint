@@ -13,21 +13,13 @@ const UserListItem = ({
   showModal,
   setShowModal,
   idToDelete,
+  fetchUsers,
 }) => {
   // console.log(data);
 
   const { currentUser } = useSelector((state) => state.user);
 
-  /* const handleChange = (e) => {
-    // setUserRole({ ...userRole, role: e.target.value });
-    // setUserRole(e.target.value);
-  }; */
-
-  const [newuserRole, setNewUserRole] = useState("");
-
   const handleUserRole = async (e, userRoleId) => {
-    // const handleUserRole = async (userRoleId) => {
-    setNewUserRole(e.target.value);
     try {
       const res = await fetch(
         `/api/user/updateUserRole/${userRoleId}/${currentUser._id}`,
@@ -39,12 +31,16 @@ const UserListItem = ({
         }
       );
       const data = await res.json();
+      // console.log("data", data);
+      // console.log("users", users);
+
       if (!res.ok) {
         toast.error(data.message);
         // console.log(data.message);
         return;
       }
       if (res.ok) {
+        await fetchUsers();
         toast.success(data.message);
       }
     } catch (error) {
@@ -123,7 +119,7 @@ const UserListItem = ({
                     <select
                       id="role"
                       className="border border-borderColor outline-borderColorHover rounded-sm w-[100px] px-1 py-0.5 cursor-pointer bg-inherit"
-                      value={newuserRole ? newuserRole : data.role}
+                      value={data.role}
                       onChange={(e) => handleUserRole(e, data._id)}
                     >
                       <option value="User">User</option>
