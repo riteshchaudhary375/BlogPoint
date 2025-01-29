@@ -21,6 +21,8 @@ import ScrollToTop from "./components/ScrollToTop";
 import PrivateRouteAdminCreator from "./components/adminCreator/PrivateRouteAdminCreator";
 import UpdatePassword from "./pages/UpdatePassword";
 import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import PageNotFound from "./pages/PageNotFound";
 
 function App() {
   const [showModal, setShowModal] = useState(false);
@@ -42,6 +44,11 @@ function App() {
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route
+          path="/reset-password/:userId/:token"
+          element={<ResetPassword />}
+        />
+        <Route path="/page-not-found" element={<PageNotFound />} />
         <Route
           path="/post/:postSlug"
           element={

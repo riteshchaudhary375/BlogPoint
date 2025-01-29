@@ -155,7 +155,7 @@ export const forgotPassword = async (req, res, next) => {
   try {
     // const existUser = await User.findOne(email); // error bcz findOne takes only one
     const existUser = await User.findOne(req.body); // error bcz findOne takes only one
-    console.log(existUser);
+    // console.log(existUser);
 
     if (!existUser) return next(errorHandler(404, "User not found!"));
 
@@ -176,14 +176,14 @@ export const forgotPassword = async (req, res, next) => {
 
     if (setUserToken) {
       // Construct new-password page url
-      const newPasswordUrl = `${process.env.FRONTEND_URL}/new-password/${newToken}`;
+      const newPasswordUrl = `${process.env.FRONTEND_URL}/reset-password/${existUser._id}/${setUserToken.verifyToken}`;
       // console.log("newPasswordUrl: ", newPasswordUrl);
 
       // Send email
       const sent_from = process.env.EMAIL_USER;
       const send_to = existUser.email;
       const reply_to = "noreply@blogpoint.com";
-      const subject = "Reset Password - blogpoint.";
+      const subject = "blogpoint. - Reset Password";
       const template = "forgotPasswordEmailTemplate";
       const name = existUser.username;
       const link = newPasswordUrl;
@@ -199,10 +199,75 @@ export const forgotPassword = async (req, res, next) => {
         link
       );
 
-      res.status(200).json({
+      await res.status(200).json({
         success: true,
         message: "Reset password link sent to your email.",
       });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Reset password
+export const resetPassword = async (req, res, next) => {
+  const { id, token } = req.params;
+
+  try {
+    const validUser = await User.findOne({ _id: id, verifyToken: token });
+    // console.log("validUser", validUser);
+
+    // Validation for token verify
+    const verifyToken = jwt.verify(token, process.env.JWT_SECRET);
+    // console.log("verifyToken", verifyToken);
+
+    if (validUser && verifyToken) {
+      res.status(200).json({ success: true, validUser });
+    } else {
+      return res
+        .status(401)
+        .json({ success: false, message: "User not found" });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+// New password
+export const newPassword = async (req, res, next) => {
+  const { id, token } = req.params;
+
+  const { password } = req.body;
+
+  try {
+    const validUser = await User.findOne({ _id: id, verifyToken: token });
+    // console.log(validUser);
+
+    // validate for token verify
+    const verifyToken = jwt.verify(token, process.env.JWT_SECRET);
+
+    if (validUser && verifyToken) {
+      const salt = bcryptjs.genSaltSync(10);
+      const newHashedPassword = bcryptjs.hashSync(password, salt);
+
+      // set new password
+      const setUserNewPassword = await User.findByIdAndUpdate(
+        { _id: id },
+        { password: newHashedPassword }
+      );
+
+      await setUserNewPassword.save();
+
+      res
+        .status(200)
+        .json({
+          success: true,
+          message: "Password updated. Please login your account",
+        });
+    } else {
+      return res
+        .status(401)
+        .json({ success: false, message: "Token expired! Please try again" });
     }
   } catch (error) {
     next(error);
