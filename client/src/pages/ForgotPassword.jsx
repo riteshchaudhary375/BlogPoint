@@ -36,6 +36,7 @@ const ForgotPassword = () => {
       if (res.ok) {
         setError(null);
         setLoading(false);
+        setNewEmail(e.target.reset());
         toast.success(data.message);
       }
     } catch (error) {

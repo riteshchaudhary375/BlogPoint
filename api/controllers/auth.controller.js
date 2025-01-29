@@ -253,17 +253,21 @@ export const newPassword = async (req, res, next) => {
       // set new password
       const setUserNewPassword = await User.findByIdAndUpdate(
         { _id: id },
-        { password: newHashedPassword }
+        // { password: newHashedPassword }
+        {
+          $set: {
+            password: newHashedPassword,
+            verifyToken: null,
+          },
+        }
       );
 
       await setUserNewPassword.save();
 
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "Password updated. Please login your account",
-        });
+      res.status(200).json({
+        success: true,
+        message: "Password updated. Please login your account",
+      });
     } else {
       return res
         .status(401)
