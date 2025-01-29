@@ -49,6 +49,9 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "User",
     },
+    verifyToken: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

@@ -1,8 +1,9 @@
+import User from "../models/user.model.js";
 import bcryptjs from "bcryptjs";
 import validator from "validator";
 import jwt from "jsonwebtoken";
 
-import User from "../models/user.model.js";
+import sendEmail from "../utils/sendEmail.js";
 import { errorHandler } from "../utils/error.js";
 
 export const signup = async (req, res, next) => {
@@ -139,6 +140,69 @@ export const google = async (req, res, next) => {
         })
         .status(201)
         .json(rest);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Forgot password
+export const forgotPassword = async (req, res, next) => {
+  if (!req.body.email) return next(errorHandler(400, "Email required!"));
+
+  // const { email } = req.body;
+
+  try {
+    // const existUser = await User.findOne(email); // error bcz findOne takes only one
+    const existUser = await User.findOne(req.body); // error bcz findOne takes only one
+    console.log(existUser);
+
+    if (!existUser) return next(errorHandler(404, "User not found!"));
+
+    // Generate new token for user forgotten password
+    const newToken = jwt.sign({ id: existUser._id }, process.env.JWT_SECRET, {
+      // expiresIn: "1d",
+      expiresIn: "180s", // 3mins
+    });
+    // console.log("newToken", newToken);
+
+    // setting new token for user forgotten password
+    const setUserToken = await User.findByIdAndUpdate(
+      { _id: existUser._id },
+      { verifyToken: newToken },
+      { new: true }
+    );
+    // console.log("setUserToken", setUserToken);
+
+    if (setUserToken) {
+      // Construct new-password page url
+      const newPasswordUrl = `${process.env.FRONTEND_URL}/new-password/${newToken}`;
+      // console.log("newPasswordUrl: ", newPasswordUrl);
+
+      // Send email
+      const sent_from = process.env.EMAIL_USER;
+      const send_to = existUser.email;
+      const reply_to = "noreply@blogpoint.com";
+      const subject = "Reset Password - blogpoint.";
+      const template = "forgotPasswordEmailTemplate";
+      const name = existUser.username;
+      const link = newPasswordUrl;
+
+      // Send email
+      await sendEmail(
+        sent_from,
+        send_to,
+        reply_to,
+        subject,
+        template,
+        name,
+        link
+      );
+
+      res.status(200).json({
+        success: true,
+        message: "Reset password link sent to your email.",
+      });
     }
   } catch (error) {
     next(error);
