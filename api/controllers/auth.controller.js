@@ -2,6 +2,8 @@ import User from "../models/user.model.js";
 import bcryptjs from "bcryptjs";
 import validator from "validator";
 import jwt from "jsonwebtoken";
+import { text } from "express";
+import nodemailer from "nodemailer";
 
 import sendEmail from "../utils/sendEmail.js";
 import { errorHandler } from "../utils/error.js";
@@ -183,7 +185,7 @@ export const forgotPassword = async (req, res, next) => {
       const sent_from = process.env.EMAIL_USER;
       const send_to = existUser.email;
       const reply_to = "noreply@blogpoint.com";
-      const subject = "blogpoint. - Reset Password";
+      const subject = "BLOGPOINT. Reset Password";
       const template = "forgotPasswordEmailTemplate";
       const name = existUser.username;
       const link = newPasswordUrl;
@@ -209,7 +211,7 @@ export const forgotPassword = async (req, res, next) => {
   }
 };
 
-// Reset password
+// Reset password for verified user and check token is expired or not
 export const resetPassword = async (req, res, next) => {
   const { id, token } = req.params;
 
@@ -233,15 +235,32 @@ export const resetPassword = async (req, res, next) => {
   }
 };
 
+// Email config
+const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  service: "gmail",
+  port: "587",
+  // secure: true,
+  auth: {
+    user: "riteshkd997@gmail.com",
+    pass: "gotk bned lseg bhbc",
+  },
+  // for some security checks like 'https'
+  // for setting rejects or unauthorized to false
+  // prevent not to make any issue for sending email
+  tls: {
+    rejectUnauthorized: false,
+  },
+});
+
 // New password
 export const newPassword = async (req, res, next) => {
   const { id, token } = req.params;
-
   const { password } = req.body;
 
   try {
     const validUser = await User.findOne({ _id: id, verifyToken: token });
-    // console.log(validUser);
+    console.log(validUser);
 
     // validate for token verify
     const verifyToken = jwt.verify(token, process.env.JWT_SECRET);
@@ -263,6 +282,177 @@ export const newPassword = async (req, res, next) => {
       );
 
       await setUserNewPassword.save();
+
+      const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: validUser.email,
+        replyTo: "noreply@blogpoint.com",
+        subject: "BLOGPOINT. Password Changed",
+        // text: `Now you can login your account from given link:- http://localhost:5173/sign-in`,
+        html: `
+          <!DOCTYPE html>
+            <html lang="en">
+              <head>
+                <meta charset="UTF-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                <title>Email Template</title>
+              </head>
+              <body
+                style="background-color: grey; font-family: 'Poppins', Arial, sans-serif"
+              >
+                <table
+                  align="center"
+                  border="0"
+                  cellpadding="0"
+                  cellspacing="0"
+                  width="550"
+                  bgcolor="white"
+                  style="border: 2px solid black"
+                >
+                  <tbody>
+                    <!-- HEADER -->
+                    <tr>
+                      <td
+                        align="center"
+                        style="
+                          background-color: #4cb96b;
+                          color: #ffffff;
+                          height: 50px;
+                          line-height: 25px;
+                          letter-spacing: 0.7px;
+                        "
+                      >
+                        <p style="margin-bottom: 0px">
+                          <a
+                            href="#"
+                            target="_blank"
+                            style="
+                              font-size: 23px;
+                              font-weight: bold;
+                              color: #ffffff;
+                              text-decoration: none;
+                            "
+                            >BLOGPOINT.</a
+                          >
+                        </p>
+                        <p style="font-size: 14px; font-weight: semibold; margin-top: 0px">
+                          Password Changed
+                        </p>
+                      </td>
+                    </tr>
+
+                    <!-- BODY -->
+                    <tr>
+                      <td>
+                        <table style="padding: 25px 20px; font-size: 15px">
+                          <tr>
+                            <td>
+                              <tr>
+                                <td style="line-height: 25px; letter-spacing: 0.7px">
+                                  <p>
+                                    Hi
+                                    <span style="font-weight: bold; font-size: 18px"
+                                      >${validUser.username}</span
+                                    >,
+                                  </p>
+                                  <p>Password changed successfull.</p>
+                                  <p>
+                                    Your account password has been changed. You can login
+                                    your account by clicking below button.
+                                  </p>
+                                  <a
+                                    href="${process.env.FRONTEND_URL}/sign-in"
+                                    target="_blank"
+                                    style="
+                                      font-weight: bold;
+                                      text-decoration: none;
+                                      padding: 7px 15px;
+                                      border-radius: 3px;
+                                      background-color: #4cb96b;
+                                      color: #ffffff;
+                                    "
+                                    >Login</a
+                                  >
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <p
+                                    style="
+                                      margin-bottom: 0px;
+                                      margin-top: 25px;
+                                      color: black;
+                                    "
+                                  >
+                                    Or copy and paste the URL into your browser:
+                                  </p>
+                                  <p
+                                    style="
+                                      margin-top: 5px;
+                                      background-color: rgba(0, 0, 0, 0.07);
+                                      padding: 5px 9px 5px 9px;
+                                      border-radius: 7px;
+                                      width: fit-content;
+                                    "
+                                  >
+                                    <a
+                                      href="#"
+                                      target="_blank"
+                                      style="color: #0400ed; font-size: 12px"
+                                    >
+                                      http://localhost:5173/sign-in
+                                    </a>
+                                  </p>
+                                </td>
+                              </tr>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                    <!-- FOOTER -->
+                    <tr>
+                      <td
+                        align="center"
+                        style="
+                          background-color: #333333;
+                          color: #ffffff;
+                          font-size: 13px;
+                          height: 95px;
+                          line-height: 25px;
+                          letter-spacing: 0.7px;
+                        "
+                      >
+                        <p style="margin-bottom: 0px">
+                          Copyright © 2025 | <strong>BLOGPOINT.</strong> | All Rights
+                          Reserved.
+                        </p>
+                        <p style="margin-top: 0px">Mahrajgunj, Kathmandu, Nepal</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </body>
+            </html>
+        `,
+      };
+
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          console.log("Error: ", error);
+          return res.status(401).json({
+            success: false,
+            message: "Password changed failed!",
+          });
+        }
+        if (info) {
+          console.log("Info: ", info);
+          res.status(200).json({
+            success: true,
+            message: "Password changed success.",
+          });
+        }
+      });
 
       res.status(200).json({
         success: true,

@@ -36,8 +36,8 @@ const ResetPassword = () => {
       if (!res.ok) {
         setLoading(false);
         setError(data.message);
-        toast.error("User not valid!");
-        navigate("/page-not-found");
+        toast.error("User not valid or token expired!");
+        navigate("/token-expired");
         return;
       }
       if (res.ok) {

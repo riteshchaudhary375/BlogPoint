@@ -23,6 +23,7 @@ import UpdatePassword from "./pages/UpdatePassword";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import PageNotFound from "./pages/PageNotFound";
+import TokenExpired from "./pages/TokenExpired";
 
 function App() {
   const [showModal, setShowModal] = useState(false);
@@ -49,6 +50,7 @@ function App() {
           element={<ResetPassword />}
         />
         <Route path="/page-not-found" element={<PageNotFound />} />
+        <Route path="/token-expired" element={<TokenExpired />} />
         <Route
           path="/post/:postSlug"
           element={
