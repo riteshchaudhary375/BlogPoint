@@ -3,6 +3,7 @@ import Title from "../components/Title";
 import { assets } from "../assets/assets";
 import NewsLetterBox from "../components/NewsLetterBox";
 import Title2 from "../components/Title2";
+import PricingSubscription from "../components/PricingSubscription";
 
 const About = () => {
   return (
@@ -85,6 +86,9 @@ const About = () => {
 
       {/* News-Letter-Box */}
       <NewsLetterBox />
+
+      {/* Subscription Pricing */}
+      <PricingSubscription />
     </div>
   );
 };

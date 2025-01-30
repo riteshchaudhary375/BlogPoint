@@ -4,6 +4,7 @@ import Hero from "../components/Hero";
 import Category from "../components/Category";
 import PostsContainer from "../components/PostsContainer";
 import ContactForm from "../components/ContactForm";
+import PricingSubscription from "../components/PricingSubscription";
 
 const Home = () => {
   return (
@@ -15,6 +16,9 @@ const Home = () => {
         <ContactForm />
       </div>
       <NewsLetterBox />
+      <div className="container">
+        <PricingSubscription />
+      </div>
     </main>
   );
 };
