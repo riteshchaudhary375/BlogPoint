@@ -4,9 +4,12 @@ import validator from "validator";
 import jwt from "jsonwebtoken";
 import { text } from "express";
 import nodemailer from "nodemailer";
+import dotenv from "dotenv";
+dotenv.config();
 
 import sendEmail from "../utils/sendEmail.js";
 import { errorHandler } from "../utils/error.js";
+import nodemailerTransporter from "../utils/nodemailerTransporter.js";
 
 export const signup = async (req, res, next) => {
   try {
@@ -184,7 +187,7 @@ export const forgotPassword = async (req, res, next) => {
       // Send email
       const sent_from = process.env.EMAIL_USER;
       const send_to = existUser.email;
-      const reply_to = "noreply@blogpoint.com";
+      const reply_to = process.env.EMAIL_NO_REPLY;
       const subject = "BLOGPOINT. Reset Password";
       const template = "forgotPasswordEmailTemplate";
       const name = existUser.username;
@@ -242,8 +245,8 @@ const transporter = nodemailer.createTransport({
   port: "587",
   // secure: true,
   auth: {
-    user: "riteshkd997@gmail.com",
-    pass: "gotk bned lseg bhbc",
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
   },
   // for some security checks like 'https'
   // for setting rejects or unauthorized to false
@@ -260,7 +263,7 @@ export const newPassword = async (req, res, next) => {
 
   try {
     const validUser = await User.findOne({ _id: id, verifyToken: token });
-    console.log(validUser);
+    // console.log(validUser);
 
     // validate for token verify
     const verifyToken = jwt.verify(token, process.env.JWT_SECRET);
@@ -286,7 +289,7 @@ export const newPassword = async (req, res, next) => {
       const mailOptions = {
         from: process.env.EMAIL_USER,
         to: validUser.email,
-        replyTo: "noreply@blogpoint.com",
+        replyTo: process.env.EMAIL_NO_REPLY,
         subject: "BLOGPOINT. Password Changed",
         // text: `Now you can login your account from given link:- http://localhost:5173/sign-in`,
         html: `
@@ -437,32 +440,36 @@ export const newPassword = async (req, res, next) => {
         `,
       };
 
-      transporter.sendMail(mailOptions, function (error, info) {
+      // 'nodemailerTransporter' from utils folder
+      nodemailerTransporter.sendMail(mailOptions, function (error, info) {
         if (error) {
           console.log("Error: ", error);
           return res.status(401).json({
             success: false,
-            message: "Password changed failed!",
+            // message: "Password changed failed email!",
+            message: "Token expired! Please try again",
           });
         }
         if (info) {
           console.log("Info: ", info);
           res.status(200).json({
             success: true,
-            message: "Password changed success.",
+            // message: "Password changed success email.",
+            message: "Password updated. Please login your account",
           });
         }
       });
 
-      res.status(200).json({
+      /* res.status(200).json({
         success: true,
         message: "Password updated. Please login your account",
-      });
-    } else {
+      }); */
+    }
+    /* else {
       return res
         .status(401)
         .json({ success: false, message: "Token expired! Please try again" });
-    }
+    } */
   } catch (error) {
     next(error);
   }
