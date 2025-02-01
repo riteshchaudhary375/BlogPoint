@@ -3,7 +3,7 @@ import Title from "../components/Title";
 import { assets } from "../assets/assets";
 import NewsLetterBox from "../components/NewsLetterBox";
 import Title2 from "../components/Title2";
-import PricingSubscription from "../components/PricingSubscription";
+import PricingSubscription from "../components/subscriptionPackage/PricingSubscription";
 
 const About = () => {
   return (

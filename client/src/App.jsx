@@ -24,68 +24,79 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import PageNotFound from "./pages/PageNotFound";
 import TokenExpired from "./pages/TokenExpired";
+import Success from "./pages/subscriptionPackage/Success";
+import Failed from "./pages/subscriptionPackage/Failed";
 
 function App() {
   const [showModal, setShowModal] = useState(false);
   const [showMessageModal, setShowMessageModal] = useState(false);
 
+
+
   return (
     // <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
     // <div className="">
     <BrowserRouter>
-      {/* Scroll to top = 8:28:05 */}
-      <ScrollToTop />
-      <Header />
+    
+        {/* Scroll to top = 8:28:05 */}
+        <ScrollToTop />
+        <Header />
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/blogs" element={<Blogs />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/sign-in" element={<SignIn />} />
-        <Route path="/sign-up" element={<SignUp />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route
-          path="/reset-password/:userId/:token"
-          element={<ResetPassword />}
-        />
-        <Route path="/page-not-found" element={<PageNotFound />} />
-        <Route path="/token-expired" element={<TokenExpired />} />
-        <Route
-          path="/post/:postSlug"
-          element={
-            <PostPage showModal={showModal} setShowModal={setShowModal} />
-          }
-        />
-
-        {/* Private Route */}
-        <Route element={<PrivateRoute />}>
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/profile/update-password" element={<UpdatePassword />} />
-        </Route>
-
-        {/* Admin Route */}
-        <Route element={<PrivateRouteForAdmin />}></Route>
-
-        {/* Admin & Creator Route */}
-        <Route element={<PrivateRouteAdminCreator />}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/blogs" element={<Blogs />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route
-            path="/dashboard"
+            path="/reset-password/:userId/:token"
+            element={<ResetPassword />}
+          />
+          <Route path="/page-not-found" element={<PageNotFound />} />
+          <Route path="/token-expired" element={<TokenExpired />} />
+          <Route
+            path="/post/:postSlug"
             element={
-              <AdminDashboard
-                showModal={showModal}
-                setShowModal={setShowModal}
-                showMessageModal={showMessageModal}
-                setShowMessageModal={setShowMessageModal}
-              />
+              <PostPage showModal={showModal} setShowModal={setShowModal} />
             }
           />
-          <Route path="/create-post" element={<CreatePost />} />
-          <Route path="/update-post/:postId" element={<UpdatePost />} />
-        </Route>
-      </Routes>
 
-      <Footer showModal={showModal} showMessageModal={showMessageModal} />
+          {/* Private Route */}
+          <Route element={<PrivateRoute />}>
+            <Route path="/profile" element={<Profile />} />
+            <Route
+              path="/profile/update-password"
+              element={<UpdatePassword />}
+            />
+          </Route>
+          <Route path="/payment-success" element={<Success />} />
+          <Route path="/payment-failed" element={<Failed />} />
+
+          {/* Admin Route */}
+          <Route element={<PrivateRouteForAdmin />}></Route>
+
+          {/* Admin & Creator Route */}
+          <Route element={<PrivateRouteAdminCreator />}>
+            <Route
+              path="/dashboard"
+              element={
+                <AdminDashboard
+                  showModal={showModal}
+                  setShowModal={setShowModal}
+                  showMessageModal={showMessageModal}
+                  setShowMessageModal={setShowMessageModal}
+                />
+              }
+            />
+            <Route path="/create-post" element={<CreatePost />} />
+            <Route path="/update-post/:postId" element={<UpdatePost />} />
+          </Route>
+        </Routes>
+
+        <Footer showModal={showModal} showMessageModal={showMessageModal} />
+ 
 
       {/* the circle container on body is of react-hot-toast */}
       <Toaster position="bottom-right" reverseOrder={false} />

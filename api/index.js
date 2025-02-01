@@ -11,6 +11,7 @@ import postRoutes from "./routes/post.route.js";
 import commentRoutes from "./routes/comment.route.js";
 import messageRoutes from "./routes/message.route.js";
 import subscriberRoutes from "./routes/subscriber.route.js";
+import subscriptionPackageRoutes from "./routes/subscription.package.route.js";
 
 dotenv.config();
 
@@ -43,6 +44,7 @@ app.use("/api/post", postRoutes);
 app.use("/api/comment", commentRoutes);
 app.use("/api/message", messageRoutes);
 app.use("/api/subscriber", subscriberRoutes);
+app.use("/api/subscriptionPackage", subscriptionPackageRoutes);
 
 // Middleware for error handle
 app.use((err, req, res, next) => {

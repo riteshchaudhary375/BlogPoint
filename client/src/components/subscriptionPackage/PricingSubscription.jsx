@@ -1,10 +1,76 @@
-import React from "react";
+import React, { useState } from "react";
 import { IoMdCheckmark } from "react-icons/io";
 
-import Title2 from "./Title2";
-import Button from "./Button";
+import Title2 from "../Title2";
+import Button from "../Button";
+import PayPalButtonsPopUp from "./PayPalButtonsPopUp";
 
 const PricingSubscription = () => {
+  const [showPayPalBtn1, setShowPayPalBtn1] = useState(false);
+  const [showPayPalBtn2, setShowPayPalBtn2] = useState(false);
+  const [showPayPalBtn3, setShowPayPalBtn3] = useState(false);
+
+  /* const subscriptionPlans = [
+    {
+      type: "Basic",
+      price: 5,
+      pkg: "basic",
+      duration: "month",
+      features: [
+        "Unlimited files in draft",
+        "Unlimited viewers and commenters",
+        "Unlimited editors on 3 team files",
+        "1 team project",
+        "30-days vision history",
+        "Unlimited cloud storage",
+      ],
+    },
+    {
+      type: "Professional",
+      price: 18,
+      pkg: "professional",
+      duration: "month",
+      features: [
+        "Unlimited files in draft",
+        "Unlimited viewers and commenters",
+        "Unlimited editors on 3 team files",
+        "1 team project",
+        "30-days vision history",
+        "Unlimited cloud storage",
+      ],
+    },
+    {
+      type: "Enterprise",
+      price: 209,
+      pkg: "enterprise",
+      duration: "year",
+      features: [
+        "Unlimited files in draft",
+        "Unlimited viewers and commenters",
+        "Unlimited editors on 3 team files",
+        "1 team project",
+        "30-days vision history",
+        "Unlimited cloud storage",
+      ],
+    },
+  ]; */
+
+  const subscriptionPlans = [
+    {
+      planName: "basic",
+      duration: "month",
+    },
+    {
+      planName: "professional",
+      duration: "month",
+    },
+    {
+      planName: "enterprise",
+      duration: "year",
+    },
+  ];
+  // console.log(subscriptionPlans[2].planName);
+
   return (
     <div className="border border-borderColor rounded-sm p-4">
       <div className="lg:mx-12">
@@ -25,13 +91,19 @@ const PricingSubscription = () => {
           <div className="mt-16">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 gap-y-6 -mt-1">
               {/* <!-- Plan 1 --> */}
-              <div className="border border-borderColor rounded-sm p-6 flex flex-col justify-between">
+              <div className="relative border border-borderColor rounded-sm p-6 flex flex-col justify-between">
                 <div className="flex flex-col gap-3">
-                  <p className="text-textColor2 text-sm font-medium">Starter</p>
-                  <div className="flex flex-col">
-                    <p className="text-3xl font-medium">Free</p>
+                  <p className="text-textColor2 text-sm font-medium">Basic</p>
+                  {/* <div className="flex flex-col">
+                    <p className="text-3xl font-medium">$0</p>
                     <p className="text-sm text-textColor3">Per Month</p>
-                  </div>
+                  </div> */}
+                  <p className="text-sm text-textColor3">
+                    <span className="text-3xl text-textColor1 font-medium">
+                      $5
+                    </span>{" "}
+                    / month
+                  </p>
                   <div className="flex flex-col gap-2 mt-6">
                     <p className="uppercase text-textColor3">Key Features</p>
                     {/* <ul className="space-y-3"> */}
@@ -83,12 +155,34 @@ const PricingSubscription = () => {
                 {/* Button */}
                 <div className="text-center my-4">
                   <Button
+                    disabled={showPayPalBtn2 || showPayPalBtn3}
                     type={"button"}
                     text={"Get Started"}
                     className={"border border-textColor3 hover:bg-lightBgHover"}
-                    handleClick={() => alert("Processing...")}
+                    handleClick={() => setShowPayPalBtn1(true)}
                   />
                 </div>
+                {showPayPalBtn1 && !showPayPalBtn2 && !showPayPalBtn3 && (
+                  <div
+                    className={`absolute z-10 left-0 right-0 ${
+                      showPayPalBtn1 ? "bottom-0" : "-bottom-44"
+                    } bg-gradient-to-t from-gray-400 to-gray-100 border border-t-borderColor py-2 pt-6`}
+                  >
+                    <div className="w-full flex items-center justify-end">
+                      <p
+                        className="-mt-4 mr-4 mb-4 text-lg cursor-pointer hover:text-red-600"
+                        onClick={() => setShowPayPalBtn1(false)}
+                      >
+                        X
+                      </p>
+                    </div>
+                    <PayPalButtonsPopUp
+                      planName={subscriptionPlans[0].planName}
+                      duration={subscriptionPlans[0].duration}
+                      setShowPayPalBtn1={setShowPayPalBtn1}
+                    />
+                  </div>
+                )}
               </div>
 
               {/* <!-- Plan 2 --> */}
@@ -102,7 +196,7 @@ const PricingSubscription = () => {
                   </p>
                   <p className="text-sm text-textColor3">
                     <span className="text-3xl text-textColor1 font-medium">
-                      $15
+                      $18
                     </span>{" "}
                     / month
                   </p>
@@ -157,23 +251,45 @@ const PricingSubscription = () => {
                 {/* Button */}
                 <div className="text-center my-4">
                   <Button
+                    disabled={showPayPalBtn1 || showPayPalBtn3}
                     type={"button"}
                     text={"Get Started"}
                     className={"border border-textColor3 hover:bg-lightBgHover"}
-                    handleClick={() => alert("Processing...")}
+                    handleClick={() => setShowPayPalBtn2(true)}
                   />
                 </div>
+                {!showPayPalBtn1 && showPayPalBtn2 && !showPayPalBtn3 && (
+                  <div
+                    className={`absolute z-10 left-0 right-0 ${
+                      showPayPalBtn2 ? "bottom-0" : "-bottom-44"
+                    } bg-gradient-to-t from-gray-400 to-gray-100 border border-t-borderColor py-2 pt-6`}
+                  >
+                    <div className="w-full flex items-center justify-end">
+                      <p
+                        className="-mt-4 mr-4 mb-4 text-lg cursor-pointer hover:text-red-600"
+                        onClick={() => setShowPayPalBtn2(false)}
+                      >
+                        X
+                      </p>
+                    </div>
+                    <PayPalButtonsPopUp
+                      planName={subscriptionPlans[1].planName}
+                      duration={subscriptionPlans[1].duration}
+                      setShowPayPalBtn2={setShowPayPalBtn2}
+                    />
+                  </div>
+                )}
               </div>
 
               {/* <!-- Plan 3 --> */}
-              <div className="border border-borderColor rounded-sm p-6 flex flex-col justify-between">
+              <div className="relative border border-borderColor rounded-sm p-6 flex flex-col justify-between">
                 <div className="flex flex-col gap-3">
                   <p className="text-textColor2 text-sm font-medium">
                     Enterprise
                   </p>
                   <p className="text-sm text-textColor3">
                     <span className="text-3xl text-textColor1 font-medium">
-                      $155
+                      $209
                     </span>{" "}
                     / year
                   </p>
@@ -228,12 +344,34 @@ const PricingSubscription = () => {
                 {/* Button */}
                 <div className="text-center my-4">
                   <Button
+                    disabled={showPayPalBtn1 || showPayPalBtn2}
                     type={"button"}
                     text={"Get Started"}
                     className={"border border-textColor3 hover:bg-lightBgHover"}
-                    handleClick={() => alert("Processing...")}
+                    handleClick={() => setShowPayPalBtn3(true)}
                   />
                 </div>
+                {!showPayPalBtn1 && !showPayPalBtn2 && showPayPalBtn3 && (
+                  <div
+                    className={`absolute z-10 left-0 right-0 ${
+                      showPayPalBtn3 ? "bottom-0" : "-bottom-44"
+                    } bg-gradient-to-t from-gray-400 to-gray-100 border border-t-borderColor py-2 pt-6`}
+                  >
+                    <div className="w-full flex items-center justify-end">
+                      <p
+                        className="-mt-4 mr-4 mb-4 text-lg cursor-pointer hover:text-red-600"
+                        onClick={() => setShowPayPalBtn3(false)}
+                      >
+                        X
+                      </p>
+                    </div>
+                    <PayPalButtonsPopUp
+                      planName={subscriptionPlans[2].planName}
+                      duration={subscriptionPlans[2].duration}
+                      setShowPayPalBtn3={setShowPayPalBtn3}
+                    />
+                  </div>
+                )}
               </div>
             </div>
           </div>

@@ -4,7 +4,7 @@ import Hero from "../components/Hero";
 import Category from "../components/Category";
 import PostsContainer from "../components/PostsContainer";
 import ContactForm from "../components/ContactForm";
-import PricingSubscription from "../components/PricingSubscription";
+import PricingSubscription from "../components/subscriptionPackage/PricingSubscription";
 
 const Home = () => {
   return (
