@@ -7,7 +7,7 @@ import {
 
 const router = express.Router();
 
-router.post("/create", createSubscriptionPackage);
-router.post("/savePayment", savePayment);
+router.post("/create/:userId", verifyToken, createSubscriptionPackage);
+router.post("/savePayment/:userId", verifyToken, savePayment);
 
 export default router;

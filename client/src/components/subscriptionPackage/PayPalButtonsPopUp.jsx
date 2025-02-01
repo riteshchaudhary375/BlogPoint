@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -10,6 +11,9 @@ const PayPalButtonsPopUp = ({
   setShowPayPalBtn2,
   setShowPayPalBtn3,
 }) => {
+  const { currentUser } = useSelector((state) => state.user);
+  // console.log(currentUser);
+
   const navigate = useNavigate();
 
   // Create a subscription
@@ -18,14 +22,17 @@ const PayPalButtonsPopUp = ({
     console.log("duration-client", duration); */
 
     try {
-      const res = await fetch(`/api/subscriptionPackage/create`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          plan_name: planName,
-          duration: duration,
-        }),
-      });
+      const res = await fetch(
+        `/api/subscriptionPackage/create/${currentUser._id}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            plan_name: planName,
+            duration: duration,
+          }),
+        }
+      );
       const data = await res.json();
       /* if (!res.ok) {
         toast.error(data.message);
@@ -54,15 +61,19 @@ const PayPalButtonsPopUp = ({
     }
 
     try {
-      const res = await fetch(`/api/subscriptionPackage/savePayment`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        // body: JSON.stringify(payedData),
-        body: JSON.stringify({
-          orderID: payedData.orderID,
-          subscriptionID: payedData.subscriptionID,
-        }),
-      });
+      const res = await fetch(
+        `/api/subscriptionPackage/savePayment/${currentUser._id}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          // body: JSON.stringify(payedData),
+          body: JSON.stringify({
+            orderID: payedData.orderID,
+            subscriptionID: payedData.subscriptionID,
+            subscribedMethod: "PayPal",
+          }),
+        }
+      );
       const data = await res.json();
       // console.log("Approve res data: ", data);
 

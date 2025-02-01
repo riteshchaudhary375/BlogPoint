@@ -1,3 +1,5 @@
+import User from "../models/user.model.js";
+import subscriptionPackage from "../models/subscription.package.model.js";
 import { errorHandler } from "../utils/error.js";
 import dotenv from "dotenv";
 dotenv.config();
@@ -59,6 +61,14 @@ const generateAccessToken = async () => {
 
 // Create subscription
 export const createSubscriptionPackage = async (req, res, next) => {
+  /* console.log("params user id: ", req.params.userId);
+  console.log("token user id: ", req.user.id); */
+
+  if (req.user.id !== req.params.userId)
+    return next(
+      errorHandler(400, "You are not allowed to subscribe the package!")
+    );
+
   try {
     const { plan_name, duration } = req.body;
     // console.log("plan_name", req.body.plan_name);
@@ -106,9 +116,15 @@ export const createSubscriptionPackage = async (req, res, next) => {
 
 // Save order for subscriber
 export const savePayment = async (req, res, next) => {
+  /* console.log("params user id: ", req.params.userId);
+  console.log("token user id: ", req.user.id); */
+
+  if (req.user.id !== req.params.userId)
+    return next(errorHandler(400, "User id failed!"));
+
   try {
     // const { orderID, subscriptionID } = req.body.data;
-    const { orderID, subscriptionID } = req.body;
+    const { orderID, subscriptionID, subscribedMethod } = req.body;
     // console.log("orderID", orderID);
     // console.log("subscriptionID", subscriptionID);
 
@@ -140,10 +156,39 @@ export const savePayment = async (req, res, next) => {
     } */
     // console.log("paypalData: ", paypalData);
 
+    // User details
+    const userDetails = await User.findById(req.params.userId).select(
+      "-password"
+    );
+    // console.log(userDetails);
+
+    const subscribePlan = plans.find(
+      (_plan) => _plan.plan_id === paypalData.plan_id
+    );
+
+    // passing subscription data to db
+    const newSubscriptionData = new subscriptionPackage({
+      userId: req.params.userId,
+      userData: userDetails,
+      isSubscribed: true,
+      subscribedPlan: subscribePlan.plan_name,
+      duration: subscribePlan.duration,
+      createdDate: paypalData.start_time,
+      paymentMethod: subscribedMethod,
+      currencyCode: paypalData.billing_info.last_payment.amount.currency_code,
+      amount: paypalData.billing_info.last_payment.amount.value,
+      paymentTime: paypalData.billing_info.last_payment.time,
+      nextBilling: paypalData.billing_info.next_billing_time,
+    });
+
+    const savedSubscriptionData = await newSubscriptionData.save();
+
     res.status(200).json({
       success: true,
       message: "Subscribed successful",
-      paymentData: paypalData,
+      // paymentData: paypalData,
+      // userDetails,
+      subscribedData: savedSubscriptionData,
     });
   } catch (error) {
     next(error);
