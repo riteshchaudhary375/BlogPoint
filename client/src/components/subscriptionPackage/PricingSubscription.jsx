@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { IoMdCheckmark } from "react-icons/io";
 
 import Title2 from "../Title2";
@@ -6,6 +8,10 @@ import Button from "../Button";
 import PayPalButtonsPopUp from "./PayPalButtonsPopUp";
 
 const PricingSubscription = () => {
+  const { currentUser } = useSelector((state) => state.user);
+  // console.log(currentUser);
+  const navigate = useNavigate();
+
   const [showPayPalBtn1, setShowPayPalBtn1] = useState(false);
   const [showPayPalBtn2, setShowPayPalBtn2] = useState(false);
   const [showPayPalBtn3, setShowPayPalBtn3] = useState(false);
@@ -162,26 +168,59 @@ const PricingSubscription = () => {
                     handleClick={() => setShowPayPalBtn1(true)}
                   />
                 </div>
+
                 {showPayPalBtn1 && !showPayPalBtn2 && !showPayPalBtn3 && (
-                  <div
-                    className={`absolute z-10 left-0 right-0 ${
-                      showPayPalBtn1 ? "bottom-0" : "-bottom-44"
-                    } bg-gradient-to-t from-gray-400 to-gray-100 border border-t-borderColor py-2 pt-6`}
-                  >
-                    <div className="w-full flex items-center justify-end">
-                      <p
-                        className="-mt-4 mr-4 mb-4 text-lg cursor-pointer hover:text-red-600"
-                        onClick={() => setShowPayPalBtn1(false)}
+                  <>
+                    {currentUser ? (
+                      <div
+                        className={`absolute z-10 left-0 right-0 ${
+                          showPayPalBtn1 ? "bottom-0" : "-bottom-44"
+                        } bg-gradient-to-t from-gray-400 to-gray-100 border border-t-borderColor py-2 pt-6`}
                       >
-                        X
-                      </p>
-                    </div>
-                    <PayPalButtonsPopUp
-                      planName={subscriptionPlans[0].planName}
-                      duration={subscriptionPlans[0].duration}
-                      setShowPayPalBtn1={setShowPayPalBtn1}
-                    />
-                  </div>
+                        <div className="w-full flex items-center justify-end">
+                          <p
+                            className="-mt-4 mr-4 mb-4 text-lg cursor-pointer hover:text-red-600"
+                            onClick={() => setShowPayPalBtn1(false)}
+                          >
+                            X
+                          </p>
+                        </div>
+                        <PayPalButtonsPopUp
+                          planName={subscriptionPlans[0].planName}
+                          duration={subscriptionPlans[0].duration}
+                          setShowPayPalBtn1={setShowPayPalBtn1}
+                        />
+                      </div>
+                    ) : (
+                      <div
+                        className={`absolute z-10 left-0 right-0 ${
+                          showPayPalBtn1 ? "bottom-0" : "-bottom-44"
+                        } bg-gradient-to-t from-gray-400 to-gray-100 border border-t-borderColor py-2 pt-6 pb-6`}
+                      >
+                        <div className="w-full flex items-center justify-end">
+                          <p
+                            className="-mt-4 mr-4 mb-4 text-lg cursor-pointer hover:text-red-600"
+                            onClick={() => setShowPayPalBtn1(false)}
+                          >
+                            X
+                          </p>
+                        </div>
+                        <div className="flex flex-col gap-4 items-center justify-center">
+                          <p className="text-sm text-textColor1">
+                            Please login your account to subscribe plan:
+                          </p>
+                          <Button
+                            type={"button"}
+                            text={"Login"}
+                            className={
+                              "text-xs text-textLight bg-bgDark border-none outline-none hover:bg-opacity-[93%]"
+                            }
+                            handleClick={() => navigate("/sign-in")}
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
 
@@ -259,25 +298,57 @@ const PricingSubscription = () => {
                   />
                 </div>
                 {!showPayPalBtn1 && showPayPalBtn2 && !showPayPalBtn3 && (
-                  <div
-                    className={`absolute z-10 left-0 right-0 ${
-                      showPayPalBtn2 ? "bottom-0" : "-bottom-44"
-                    } bg-gradient-to-t from-gray-400 to-gray-100 border border-t-borderColor py-2 pt-6`}
-                  >
-                    <div className="w-full flex items-center justify-end">
-                      <p
-                        className="-mt-4 mr-4 mb-4 text-lg cursor-pointer hover:text-red-600"
-                        onClick={() => setShowPayPalBtn2(false)}
+                  <>
+                    {currentUser ? (
+                      <div
+                        className={`absolute z-10 left-0 right-0 ${
+                          showPayPalBtn2 ? "bottom-0" : "-bottom-44"
+                        } bg-gradient-to-t from-gray-400 to-gray-100 border border-t-borderColor py-2 pt-6`}
                       >
-                        X
-                      </p>
-                    </div>
-                    <PayPalButtonsPopUp
-                      planName={subscriptionPlans[1].planName}
-                      duration={subscriptionPlans[1].duration}
-                      setShowPayPalBtn2={setShowPayPalBtn2}
-                    />
-                  </div>
+                        <div className="w-full flex items-center justify-end">
+                          <p
+                            className="-mt-4 mr-4 mb-4 text-lg cursor-pointer hover:text-red-600"
+                            onClick={() => setShowPayPalBtn2(false)}
+                          >
+                            X
+                          </p>
+                        </div>
+                        <PayPalButtonsPopUp
+                          planName={subscriptionPlans[1].planName}
+                          duration={subscriptionPlans[1].duration}
+                          setShowPayPalBtn2={setShowPayPalBtn2}
+                        />
+                      </div>
+                    ) : (
+                      <div
+                        className={`absolute z-10 left-0 right-0 ${
+                          showPayPalBtn2 ? "bottom-0" : "-bottom-44"
+                        } bg-gradient-to-t from-gray-400 to-gray-100 border border-t-borderColor py-2 pt-6 pb-6`}
+                      >
+                        <div className="w-full flex items-center justify-end">
+                          <p
+                            className="-mt-4 mr-4 mb-4 text-lg cursor-pointer hover:text-red-600"
+                            onClick={() => setShowPayPalBtn2(false)}
+                          >
+                            X
+                          </p>
+                        </div>
+                        <div className="flex flex-col gap-4 items-center justify-center">
+                          <p className="text-sm text-textColor1">
+                            Please login your account to subscribe plan:
+                          </p>
+                          <Button
+                            type={"button"}
+                            text={"Login"}
+                            className={
+                              "text-xs text-textLight bg-bgDark border-none outline-none hover:bg-opacity-[93%]"
+                            }
+                            handleClick={() => navigate("/sign-in")}
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
 
@@ -352,25 +423,57 @@ const PricingSubscription = () => {
                   />
                 </div>
                 {!showPayPalBtn1 && !showPayPalBtn2 && showPayPalBtn3 && (
-                  <div
-                    className={`absolute z-10 left-0 right-0 ${
-                      showPayPalBtn3 ? "bottom-0" : "-bottom-44"
-                    } bg-gradient-to-t from-gray-400 to-gray-100 border border-t-borderColor py-2 pt-6`}
-                  >
-                    <div className="w-full flex items-center justify-end">
-                      <p
-                        className="-mt-4 mr-4 mb-4 text-lg cursor-pointer hover:text-red-600"
-                        onClick={() => setShowPayPalBtn3(false)}
+                  <>
+                    {currentUser ? (
+                      <div
+                        className={`absolute z-10 left-0 right-0 ${
+                          showPayPalBtn3 ? "bottom-0" : "-bottom-44"
+                        } bg-gradient-to-t from-gray-400 to-gray-100 border border-t-borderColor py-2 pt-6`}
                       >
-                        X
-                      </p>
-                    </div>
-                    <PayPalButtonsPopUp
-                      planName={subscriptionPlans[2].planName}
-                      duration={subscriptionPlans[2].duration}
-                      setShowPayPalBtn3={setShowPayPalBtn3}
-                    />
-                  </div>
+                        <div className="w-full flex items-center justify-end">
+                          <p
+                            className="-mt-4 mr-4 mb-4 text-lg cursor-pointer hover:text-red-600"
+                            onClick={() => setShowPayPalBtn3(false)}
+                          >
+                            X
+                          </p>
+                        </div>
+                        <PayPalButtonsPopUp
+                          planName={subscriptionPlans[2].planName}
+                          duration={subscriptionPlans[2].duration}
+                          setShowPayPalBtn3={setShowPayPalBtn3}
+                        />
+                      </div>
+                    ) : (
+                      <div
+                        className={`absolute z-10 left-0 right-0 ${
+                          showPayPalBtn3 ? "bottom-0" : "-bottom-44"
+                        } bg-gradient-to-t from-gray-400 to-gray-100 border border-t-borderColor py-2 pt-6 pb-6`}
+                      >
+                        <div className="w-full flex items-center justify-end">
+                          <p
+                            className="-mt-4 mr-4 mb-4 text-lg cursor-pointer hover:text-red-600"
+                            onClick={() => setShowPayPalBtn3(false)}
+                          >
+                            X
+                          </p>
+                        </div>
+                        <div className="flex flex-col gap-4 items-center justify-center">
+                          <p className="text-sm text-textColor1">
+                            Please login your account to subscribe plan:
+                          </p>
+                          <Button
+                            type={"button"}
+                            text={"Login"}
+                            className={
+                              "text-xs text-textLight bg-bgDark border-none outline-none hover:bg-opacity-[93%]"
+                            }
+                            handleClick={() => navigate("/sign-in")}
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
             </div>
