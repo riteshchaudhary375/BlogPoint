@@ -1,5 +1,6 @@
 import React from "react";
 import { PayPalButtons } from "@paypal/react-paypal-js";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 const PayPalButtonsPopUp = ({
@@ -9,6 +10,8 @@ const PayPalButtonsPopUp = ({
   setShowPayPalBtn2,
   setShowPayPalBtn3,
 }) => {
+  const navigate = useNavigate();
+
   // Create a subscription
   const handleCreateSubscription = async () => {
     /* console.log("planName-client", planName);
@@ -66,9 +69,11 @@ const PayPalButtonsPopUp = ({
       if (!res.ok) {
         toast.error(data.message);
         console.log("error res data: ", data.message);
+        navigate("/payment-failed");
         return;
       }
       if (res.ok) {
+        navigate("/payment-success");
         toast.success(data.message);
         // console.log("success res data: ", data.paymentData);
       }
