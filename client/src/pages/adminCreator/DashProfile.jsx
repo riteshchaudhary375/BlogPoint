@@ -1,10 +1,11 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import Title2 from "../../components/Title2.jsx";
 import Button from "../../components/Button.jsx";
+import Badge from "../../components/Badge.jsx";
 import HorizontalLine from "../../components/HorizontalLine.jsx";
 import {
   updateUserStart,
@@ -20,12 +21,17 @@ const DashProfile = () => {
   // console.log(currentUser);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [image, setImage] = useState(false);
   const [isEditProfile, setIsEditProfile] = useState(false);
   const filePickerRef = useRef();
+
+  const [subscribedData, setSubscribedData] = useState({});
+  // console.log("subscribedData: ", subscribedData);
+  const [isSubscribed, setIsSubscribed] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -101,6 +107,33 @@ const DashProfile = () => {
       // console.log(error.message);
     }
   };
+
+  useEffect(() => {
+    const fetchSubscribePlanData = async () => {
+      try {
+        const res = await fetch(
+          `/api/subscriptionPackage/getPlan/${currentUser._id}`
+        );
+        const data = await res.json();
+        if (!res.ok) {
+          console.log(data.message);
+          toast.error(data.message);
+          return;
+        }
+        if (res.ok) {
+          // if (data.subscribedData[0].userId === currentUser._id) {
+          if (data.subscribedData[0].userId === currentUser._id) {
+            setSubscribedData(data.subscribedData[0]);
+            setIsSubscribed(true);
+          }
+        }
+      } catch (error) {
+        // console.log(error);
+        // toast.error(error.message);
+      }
+    };
+    fetchSubscribePlanData();
+  }, [currentUser._id]);
 
   return (
     currentUser && (
@@ -273,6 +306,80 @@ const DashProfile = () => {
               handleClick={() => alert("Processing...")}
             />
           </form> */}
+
+              {/* Subscription Info */}
+              <div>
+                <div className="-mb-2.5">
+                  <Title2 text1={"Subscription Information"} />
+                </div>
+                {isSubscribed ? (
+                  <div className="grid grid-cols-[1.5fr_3fr] gap-y-2.5 text-textColor3">
+                    <p className="font-medium text-textColor1 whitespace-nowrap">
+                      Subscribed Plan:
+                    </p>
+                    {/* <p className="font-medium">Basic</p> */}
+                    <p className="text-blue-600 capitalize">
+                      <Badge
+                        badgeTitle={subscribedData.subscribedPlan}
+                        textSize={"base"}
+                        paddingX={"2"}
+                        paddingY={"0.5"}
+                      />
+                    </p>
+
+                    <p className="font-medium text-textColor1">Duration:</p>
+                    <p className="capitalize">1 {subscribedData.duration}</p>
+
+                    <p className="font-medium text-textColor1 whitespace-nowrap">
+                      Created Date:
+                    </p>
+                    <p>
+                      {new Date(subscribedData.createdDate).toLocaleString()}
+                    </p>
+
+                    <p className="font-medium text-textColor1 whitespace-nowrap">
+                      Payment Method:
+                    </p>
+                    <p>{subscribedData.paymentMethod}</p>
+
+                    <p className="font-medium text-textColor1 whitespace-nowrap">
+                      Paid Amount:
+                    </p>
+                    <p>$ {subscribedData.amount}</p>
+
+                    <p className="font-medium text-textColor1 whitespace-nowrap">
+                      Payment Time:
+                    </p>
+                    {/* <p>{subscribedData.paymentTime}</p> */}
+                    <p>
+                      {new Date(subscribedData.paymentTime).toLocaleString()}
+                    </p>
+
+                    <p className="font-medium text-textColor1 whitespace-nowrap">
+                      Next Billing:
+                    </p>
+                    {/* <p>{subscribedData.nextBilling}</p> */}
+                    <p>
+                      {new Date(subscribedData.nextBilling).toLocaleString()}
+                    </p>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center border border-borderColor rounded-sm p-6">
+                    <p className="text-red-600 mb-2">Not subscribed yet!</p>
+                    <p className="text-xs text-textColor3 -mb-2 text-center">
+                      Click the below button to subscribe the package and enjoy
+                      the features.
+                    </p>
+                    <Button
+                      disabled={loading || isEditProfile || isEdit}
+                      type={"button"}
+                      text={"Subscribe Plan"}
+                      className={`w-fit mt-6 text-xs font-light border-none outline-none text-textLight bg-bgDark hover:bg-opacity-[93%]`}
+                      handleClick={() => navigate("/about")}
+                    />
+                  </div>
+                )}
+              </div>
 
               {/* Contact */}
               <div>

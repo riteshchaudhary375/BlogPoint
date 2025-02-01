@@ -1,5 +1,5 @@
 import User from "../models/user.model.js";
-import subscriptionPackage from "../models/subscription.package.model.js";
+import SubscriptionPackage from "../models/subscription.package.model.js";
 import { errorHandler } from "../utils/error.js";
 import dotenv from "dotenv";
 dotenv.config();
@@ -167,7 +167,7 @@ export const savePayment = async (req, res, next) => {
     );
 
     // passing subscription data to db
-    const newSubscriptionData = new subscriptionPackage({
+    const newSubscriptionData = new SubscriptionPackage({
       userId: req.params.userId,
       userData: userDetails,
       isSubscribed: true,
@@ -189,6 +189,25 @@ export const savePayment = async (req, res, next) => {
       // paymentData: paypalData,
       // userDetails,
       subscribedData: savedSubscriptionData,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Get subscribed plan
+export const getPlan = async (req, res, next) => {
+  if (req.user.id !== req.params.userId)
+    return next(errorHandler(400, "You are not allowed to get this data!"));
+  try {
+    const subscribedData = await SubscriptionPackage.find({
+      userId: req.params.userId,
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Subscribed plan data fetched",
+      subscribedData,
     });
   } catch (error) {
     next(error);
