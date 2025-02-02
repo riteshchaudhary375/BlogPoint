@@ -195,7 +195,7 @@ export const savePayment = async (req, res, next) => {
   }
 };
 
-// Get subscribed plan
+// Get subscribed plan for specific user
 export const getPlan = async (req, res, next) => {
   if (req.user.id !== req.params.userId)
     return next(errorHandler(400, "You are not allowed to get this data!"));
@@ -208,6 +208,55 @@ export const getPlan = async (req, res, next) => {
       success: true,
       message: "Subscribed plan data fetched",
       subscribedData,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Get package enrolled for admin panel
+export const getPackageEnrolled = async (req, res, next) => {
+  const verifiedUser = await User.findById(req.user.id);
+  if (!verifiedUser.isAdmin)
+    return next(
+      errorHandler(
+        400,
+        "You are not allowed to see list of enrolled subscribers!"
+      )
+    );
+
+  try {
+    const startIndex = parseInt(req.query.startIndex) || 0;
+    const limit = parseInt(req.query.limit) || 9;
+
+    const enrolledPackages = await SubscriptionPackage.find()
+      .sort({ createdAt: -1 })
+      .skip(startIndex)
+      .limit(limit);
+
+    const totalEnrolledPackages = await SubscriptionPackage.countDocuments();
+
+    const now = new Date();
+    const oneMonthAgo = new Date(
+      now.getFullYear(),
+      now.getMonth() - 1,
+      now.getDate()
+    );
+    const lastMonthEnrolledPackages = await SubscriptionPackage.countDocuments({
+      createdAt: { $gte: oneMonthAgo },
+    });
+
+    let totalEarning = 0;
+    for (let i = 0; i < enrolledPackages.length; i++) {
+      totalEarning = totalEarning + parseInt(enrolledPackages[i].amount);
+    }
+
+    res.status(200).json({
+      success: true,
+      enrolledPackages,
+      totalEnrolledPackages,
+      lastMonthEnrolledPackages,
+      totalEarning,
     });
   } catch (error) {
     next(error);

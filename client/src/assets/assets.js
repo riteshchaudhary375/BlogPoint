@@ -62,6 +62,7 @@ import message from "./message-svgrepo-com.svg";
 import contact_form_msg_icon from "./contact_form_msg_icon.png";
 import message_icon from "./speech-bubble-svgrepo-com.svg";
 import subscribers from "./subscribers.svg";
+import package_enroll from "./package-delivery-box-2-svgrepo-com.svg";
 
 // Category
 import cpu from "./cpu.svg";
@@ -158,6 +159,7 @@ export const assets = {
   contact_form_msg_icon,
   message_icon,
   subscribers,
+  package_enroll,
 };
 
 /* export const categoryData = [

@@ -38,6 +38,11 @@ const DashboardView = () => {
   const [totalSubscribers, setTotalSubscribers] = useState(0);
   const [lastMonthSubscribers, setLastMonthSubscribers] = useState(0);
 
+  const [packageEnrolled, setPackageEnrolled] = useState([]);
+  const [totalPackageEnrolled, setTotalPackageEnrolled] = useState(0);
+  const [lastMonthPackageEnrolled, setLastMonthPackageEnrolled] = useState(0);
+  const [totalEarning, setTotalEarning] = useState(0);
+
   const [fetching, setFetching] = useState(false);
 
   useEffect(() => {
@@ -135,12 +140,31 @@ const DashboardView = () => {
       }
     };
 
+    const fetchPackageEnrolled = async () => {
+      try {
+        const res = await fetch(
+          `/api/subscriptionPackage/getPackageEnrolled?limit=5`
+        );
+        const data = await res.json();
+        // console.log(data);
+        if (res.ok) {
+          setPackageEnrolled(data.enrolledPackages);
+          setTotalPackageEnrolled(data.totalEnrolledPackages);
+          setLastMonthPackageEnrolled(data.lastMonthEnrolledPackages);
+          setTotalEarning(data.totalEarning);
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+
     if (currentUser.isAdmin) {
       fetchUsers();
       fetchPosts();
       fetchComments();
       fetchMessages();
       fetchSubscribers();
+      fetchPackageEnrolled();
     }
 
     // Aborting useEffect for unnecessary fetch
@@ -259,6 +283,52 @@ const DashboardView = () => {
               icon={assets.message}
               lastMonthData={lastMonthComments}
             />
+
+            {/* Total Package Enrolled */}
+            <div className="w-full md:w-72 rounded-sm shadow-md border border-borderColor p-4">
+              <div className="flex flex-col gap-5">
+                <div className="flex justify-between">
+                  <div>
+                    <h3 className="text-xl text-textColor2 font-light whitespace-nowrap">
+                      Total Package Enrolled
+                    </h3>
+                    <p className="text-2xl text-textColor1">
+                      {totalPackageEnrolled}
+                    </p>
+                  </div>
+                  <img
+                    src={assets.package_enroll}
+                    alt="card_icon"
+                    className="w-14 h-14 object-cover object-center -mt-2"
+                  />
+                </div>
+                {/* Total earning Status */}
+                <div className="text-textColor3 text-xs font-light flex gap-2 -my-4">
+                  <p className="text-textColor2">
+                    USD,
+                    <span className="text-sm text-textColor1">$</span>{" "}
+                    <span className="font-medium text-blue-700 text-sm">
+                      {totalEarning}
+                    </span>
+                    , Total Earning
+                  </p>
+                </div>
+                {/* )} */}
+                <div className="flex gap-2 items-center">
+                  <span className="text-blue-700 flex items-center font-medium">
+                    <img
+                      src={assets.arrow_up_navigation}
+                      alt="arrow_up_icon"
+                      className="w-4 h-4 object-cover object-center"
+                    />
+                    {lastMonthPackageEnrolled}
+                  </span>
+                  <p className="text-textColor3 text-sm font-light">
+                    Last month
+                  </p>
+                </div>
+              </div>
+            </div>
 
             {/* Total Posts */}
             <TotalDataCard
@@ -492,6 +562,84 @@ const DashboardView = () => {
                 )}
               </table>
             </div>
+          </div>
+
+          {/* Enrolled Package Table */}
+          <div>
+            <div className="flex items-center justify-between">
+              <div className="font-light -mb-4">
+                <Title2 text1={"Recent"} text2={"Package Enrolled"} />
+              </div>
+
+              <Link to={"/dashboard?tab=package-enrolled"}>
+                <Button
+                  type={"button"}
+                  text={"See All"}
+                  className={
+                    "border border-bgDark hover:bg-lightBgHover text-xs"
+                  }
+                  // handleClick={() => alert("Processing...")}
+                />
+              </Link>
+            </div>
+            <table className="table-auto w-full border border-borderColor rounded-sm text-left">
+              <thead className="bg-lightBgHover border-b border-borderColorHover uppercase text-textColor2">
+                <tr>
+                  {/* <th className="p-4 font-medium">Created_Date</th> */}
+                  <th className="p-4 font-medium">Subscribed_Plan</th>
+                  <th className="p-4 font-medium">Next_Billing</th>
+                  <th className="p-4 font-medium">Username</th>
+                  {/* <th className="p-4 font-medium">Email</th> */}
+                  <th className="p-4 font-medium">Role</th>
+                </tr>
+              </thead>
+              <tbody>
+                {/* {users.length > 0 || posts.length > 0) && ( posts && */}
+                {packageEnrolled && packageEnrolled.length < 1 ? (
+                  <tr className="border-b border-borderColor text-textColor3 text-center">
+                    <td className="p-4 text-base font-light"></td>
+                    <td className="p-4 text-base font-light">
+                      Data Not Found!
+                    </td>
+                    <td className="p-4 text-base font-light"></td>
+                  </tr>
+                ) : (
+                  packageEnrolled &&
+                  packageEnrolled.map((data, index) => (
+                    <tr
+                      key={index}
+                      className="hover:bg-lightBgHover border-b border-borderColor text-textColor3"
+                    >
+                      {/* <td className="p-4 text-sm font-light">
+                        {new Date(data.createdDate).toLocaleDateString()}
+                      </td> */}
+
+                      <td className="p-4 text-base font-medium">
+                        <p className="w-fit line-clamp-1 capitalize border border-borderColor px-1 py-0.5 rounded-sm text-blue-500">
+                          {data.subscribedPlan}
+                        </p>
+                      </td>
+
+                      <td className="p-4 text-sm font-light">
+                        {new Date(data.nextBilling).toLocaleDateString()}
+                      </td>
+
+                      <td className="p-4 text-base font-light">
+                        <p className="w-fit line-clamp-1">
+                          {data.userData.username}
+                        </p>
+                      </td>
+
+                      <td className="p-4 text-base font-light">
+                        <p className="w-fit line-clamp-1 border border-borderColor px-1 rounded-sm">
+                          {data.userData.role}
+                        </p>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
           </div>
 
           {/* Post Table */}

@@ -178,6 +178,29 @@ const DashSidebar = () => {
           {currentUser && currentUser.isAdmin && (
             <>
               <HorizontalLine />
+              <Link to={"/dashboard?tab=package-enrolled"}>
+                <div
+                  className={`px-4 py-1.5 flex items-center gap-2 cursor-pointer ${
+                    tab === "package-enrolled"
+                      ? "bg-lightBgHover"
+                      : "hover:bg-lightBgHover"
+                  }`}
+                  // onClick={() => setTab("users")}
+                >
+                  <img
+                    src={assets.package_enroll}
+                    alt="message_icon"
+                    className="w-6 h-6 md:w-7 md:h-7 whitespace-nowrap"
+                  />
+                  <p>Package Enroll</p>
+                </div>
+              </Link>
+            </>
+          )}
+
+          {currentUser && currentUser.isAdmin && (
+            <>
+              <HorizontalLine />
               <Link to={"/dashboard?tab=users"}>
                 <div
                   className={`px-4 py-1.5 flex items-center gap-2 cursor-pointer ${

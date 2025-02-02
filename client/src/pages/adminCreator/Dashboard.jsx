@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import DashSidebar from "../../components/adminCreator/DashSidebar";
 import DashboardView from "../admin/DashboardView";
@@ -7,12 +8,12 @@ import DashPosts from "../admin/DashPosts";
 import DashUsers from "../admin/DashUsers";
 import DashProfile from "./DashProfile";
 import CreatePost from "./CreatePost";
-import { useSelector } from "react-redux";
 import MyPosts from "../creator/MyPosts";
 import DashboardForCreator from "../creator/DashboardForCreator";
 import DashComments from "../../components/admin/DashComments";
 import DashMessages from "../../components/admin/DashMessages";
 import DashSubscribers from "../../components/admin/DashSubscribers";
+import DashPackageEnroll from "../../components/admin/DashPackageEnroll";
 
 const Dashboard = ({
   showModal,
@@ -91,6 +92,16 @@ const Dashboard = ({
                 setShowModal={setShowModal}
               />
             )}
+
+            {/* Admin */}
+            {tab === "package-enrolled" &&
+              currentUser &&
+              currentUser.isAdmin && (
+                <DashPackageEnroll
+                  showModal={showModal}
+                  setShowModal={setShowModal}
+                />
+              )}
 
             {/* Admin */}
             {tab === "users" && currentUser && currentUser.isAdmin && (

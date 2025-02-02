@@ -11,7 +11,7 @@ const subscriptionPackageSchema = new mongoose.Schema(
       required: true,
     },
     isSubscribed: {
-      type: String,
+      type: Boolean,
       default: false,
     },
     subscribedPlan: {
