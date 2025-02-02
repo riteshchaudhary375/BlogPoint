@@ -262,3 +262,39 @@ export const getPackageEnrolled = async (req, res, next) => {
     next(error);
   }
 };
+
+// Delete package enrolled by admin
+export const deletePackageEnrolled = async (req, res, next) => {
+  try {
+    const enrolledPackage = await SubscriptionPackage.findById(
+      req.params.enrolledPackageId
+    );
+    // console.log(enrolledPackage._id);
+
+    if (!enrolledPackage)
+      return next(errorHandler(404, "Enrolled package not found"));
+
+    const verifiedUser = await User.findById(req.user.id);
+
+    if (enrolledPackage.userId !== verifiedUser.id && !verifiedUser.isAdmin)
+      return next(
+        errorHandler(
+          403,
+          "You are not allowed to delete this enrolled package subscribed detail!"
+        )
+      );
+
+    /* if (enrolledPackage.userId !== req.user.id && !req.user.isAdmin)
+      return next(
+        errorHandler(403, "You are not allowed to delete this comment")
+      ); */
+
+    await SubscriptionPackage.findByIdAndDelete(enrolledPackage._id);
+
+    res
+      .status(200)
+      .json({ success: true, message: "Enrolled package deleted!" });
+  } catch (error) {
+    next(error);
+  }
+};
