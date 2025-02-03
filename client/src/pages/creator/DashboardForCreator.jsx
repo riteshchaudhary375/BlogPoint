@@ -15,8 +15,20 @@ const DashboardForCreator = () => {
 
   const [posts, setPosts] = useState([]);
   //   console.log(posts);
-  const [totalPosts, setTotalPosts] = useState(0);
-  const [lastMonthPosts, setLastMonthPosts] = useState(0);
+  // const [totalPosts, setTotalPosts] = useState(0);
+  // const [lastMonthPosts, setLastMonthPosts] = useState(0);
+  const [creatorTotalPosts, setCreatorTotalPosts] = useState(0);
+  // console.log("creatorTotalPosts:", creatorTotalPosts);
+  const [creatorLastMonthPosts, setCreatorLastMonthPosts] = useState(0);
+  // console.log("creatorLastMonthPosts:", creatorLastMonthPosts);
+
+  const [comments, setComments] = useState([]);
+  // console.log("comments", comments);
+  const [creatorTotalComments, setCreatorTotalComments] = useState(0);
+  // console.log("creatorTotalComments:", creatorTotalComments);
+  const [creatorLastMonthComments, setCreatorLastMonthComments] = useState(0);
+  // console.log("creatorLastMonthComments:", creatorLastMonthComments);
+
   const [fetching, setFetching] = useState(false);
 
   useEffect(() => {
@@ -39,8 +51,36 @@ const DashboardForCreator = () => {
         }
         if (res.ok) {
           setPosts(data.posts);
-          setTotalPosts(data.totalPosts);
-          setLastMonthPosts(data.lastMonthPosts);
+          // setTotalPosts(data.totalPosts); // for admin total posts
+          // setLastMonthPosts(data.lastMonthPosts); // for admin total posts
+          setCreatorTotalPosts(data.creatorTotalPosts);
+          setCreatorLastMonthPosts(data.creatorLastMonthPosts);
+          setFetching(false);
+        }
+      } catch (error) {
+        toast.error(error.message);
+        setFetching(false);
+      }
+    };
+
+    const fetchComments = async () => {
+      try {
+        setFetching(true);
+
+        const res = await fetch(
+          `/api/comment/getCreatorPostComment/${currentUser._id}`,
+          { signal }
+        );
+        const data = await res.json();
+        if (!res.ok) {
+          toast.error(data.message);
+          setFetching(false);
+          return;
+        }
+        if (res.ok) {
+          setComments(data.comments);
+          setCreatorTotalComments(data.totalComments);
+          setCreatorLastMonthComments(data.lastMonthComments);
           setFetching(false);
         }
       } catch (error) {
@@ -51,6 +91,7 @@ const DashboardForCreator = () => {
 
     if (currentUser.isCreator) {
       fetchPosts();
+      fetchComments();
     }
 
     // Aborting useEffect for unnecessary fetch
@@ -71,17 +112,17 @@ const DashboardForCreator = () => {
             {/* Total Comments */}
             <TotalDataCard
               title={"Total Comments"}
-              totalData={"54"}
-              // icon={assets.posts_icon}
-              lastMonthData={"17"}
+              totalData={creatorTotalComments}
+              icon={assets.message}
+              lastMonthData={creatorLastMonthComments}
             />
 
             {/* Total Posts */}
             <TotalDataCard
               title={"Total Posts"}
-              totalData={totalPosts}
+              totalData={creatorTotalPosts}
               icon={assets.posts_icon}
-              lastMonthData={lastMonthPosts}
+              lastMonthData={creatorLastMonthPosts}
             />
           </div>
 
@@ -93,14 +134,15 @@ const DashboardForCreator = () => {
                   <Title2 text1={"Recent"} text2={"Comments"} />
                 </div>
 
-                <Button
-                  type={"button"}
-                  text={"See All"}
-                  className={
-                    "border border-bgDark hover:bg-lightBgHover text-xs"
-                  }
-                  handleClick={() => alert("Processing...")}
-                />
+                <Link to={"/dashboard?tab=comments"}>
+                  <Button
+                    type={"button"}
+                    text={"See All"}
+                    className={
+                      "border border-bgDark hover:bg-lightBgHover text-xs"
+                    }
+                  />
+                </Link>
               </div>
 
               <table className="table-auto w-full border border-borderColor rounded-sm text-left">
@@ -111,14 +153,24 @@ const DashboardForCreator = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="hover:bg-lightBgHover border-b border-borderColor text-textColor3">
-                    <td className="p-4 text-base font-medium">nice post</td>
-                    <td className="p-4 text-base font-medium">7</td>
-                  </tr>
-                  <tr className="hover:bg-lightBgHover border-b border-borderColor text-textColor3">
+                  {comments &&
+                    comments.slice(0, 5).map((comment, index) => (
+                      <tr
+                        key={index}
+                        className="hover:bg-lightBgHover border-b border-borderColor text-textColor3"
+                      >
+                        <td className="p-4 text-base font-medium">
+                          <p className="line-clamp-1">{comment.content}</p>
+                        </td>
+                        <td className="p-4 text-base font-medium">
+                          {comment.numberOfLikes}
+                        </td>
+                      </tr>
+                    ))}
+                  {/* <tr className="hover:bg-lightBgHover border-b border-borderColor text-textColor3">
                     <td className="p-4 text-base font-medium">Informative</td>
                     <td className="p-4 text-base font-medium">2</td>
-                  </tr>
+                  </tr> */}
                 </tbody>
               </table>
             </div>

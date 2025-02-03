@@ -14,6 +14,7 @@ import DashComments from "../../components/admin/DashComments";
 import DashMessages from "../../components/admin/DashMessages";
 import DashSubscribers from "../../components/admin/DashSubscribers";
 import DashPackageEnroll from "../../components/admin/DashPackageEnroll";
+import MyComments from "../creator/MyComments";
 
 const Dashboard = ({
   showModal,
@@ -73,6 +74,11 @@ const Dashboard = ({
             {/* Admin = 10:08:16 */}
             {tab === "comments" && currentUser && currentUser.isAdmin && (
               <DashComments showModal={showModal} setShowModal={setShowModal} />
+            )}
+
+            {/* Comments of post for creator */}
+            {tab === "comments" && currentUser && currentUser.isCreator && (
+              <MyComments showModal={showModal} setShowModal={setShowModal} />
             )}
 
             {/* Admin */}

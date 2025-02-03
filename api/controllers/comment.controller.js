@@ -146,3 +146,73 @@ export const getcomments = async (req, res, next) => {
     next(error);
   }
 };
+
+// Get comments for Creator panel
+export const getCreatorPostComment = async (req, res, next) => {
+  const verifiedUser = await User.findById(req.params.userId);
+  // console.log(verifiedUser);
+  // console.log(req.user);
+
+  if (req.user.id !== verifiedUser._id && !verifiedUser.isCreator)
+    return next(errorHandler(401, "You are not allowed to see post comments!"));
+
+  try {
+    const startIndex = parseInt(req.query.startIndex) || 0;
+    const limit = parseInt(req.query.limit) || 9;
+    // const sortDirection = req.query.sort === "desc" ? -1 : 1;
+
+    const comments = await Comment.find(verifiedUser.userId)
+      // .sort({ createdAt: sortDirection })
+      .sort({ createdAt: -1 })
+      .skip(startIndex)
+      .limit(limit);
+
+    const totalComments = await Comment.find(
+      verifiedUser.userId
+    ).countDocuments();
+
+    const now = new Date();
+    const oneMonthAgo = new Date(
+      now.getFullYear(),
+      now.getMonth() - 1,
+      now.getDate()
+    );
+    const lastMonthComments = await Comment.find(
+      verifiedUser.userId
+    ).countDocuments({
+      createdAt: { $gte: oneMonthAgo },
+    });
+
+    res.status(200).json({ comments, totalComments, lastMonthComments });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Delete creator post comment by creator
+export const deleteCommentByCreator = async (req, res, next) => {
+  const verifiedUser = await User.findById(req.params.userId);
+  // console.log(verifiedUser);
+  // console.log(req.user);
+
+  if (req.user.id !== verifiedUser._id && !verifiedUser.isCreator)
+    return next(
+      errorHandler(401, "You are not allowed to delete this comment!")
+    );
+
+  try {
+    const comment = await Comment.findById(req.params.commentId);
+    if (!comment) return next(errorHandler(404, "Comment not found"));
+
+    if (comment.userId !== verifiedUser._id && !verifiedUser.isCreator)
+      return next(
+        errorHandler(403, "You are not allowed to delete this comment")
+      );
+
+    await Comment.findByIdAndDelete(comment);
+
+    res.status(200).json({ success: true, message: "Comment deleted" });
+  } catch (error) {
+    next(error);
+  }
+};

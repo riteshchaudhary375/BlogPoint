@@ -5,6 +5,7 @@ import {
   create,
   deletePost,
   getAllPostsForAdmin,
+  getCreatorPostsOnly,
   getPosts,
   getSlugPost,
   update,
@@ -14,6 +15,7 @@ const router = express.Router();
 
 router.get("/getAllPostsForAdmin", verifyToken, getAllPostsForAdmin);
 router.get("/get", getPosts);
+router.get("/getCreatorPostsOnly/:userId", verifyToken, getCreatorPostsOnly);
 router.get("/getSlugPost/:postId", getSlugPost);
 router.delete("/delete/:postId/:userId", verifyToken, deletePost);
 router.post("/create/:userId", upload.single("image"), verifyToken, create);

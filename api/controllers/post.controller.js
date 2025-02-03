@@ -84,14 +84,39 @@ export const getPosts = async (req, res, next) => {
       createdAt: { $gte: oneMonthAgo }, // for last month = same year and same time but decreasing 1 month from now (date / time).
     });
 
+    // Creator Posts
+    const creatorTotalPosts = await Post.find({
+      ...(req.query.userId && { userId: req.query.userId }),
+    }).countDocuments();
+
+    const creatorLastMonthPosts = await Post.find({
+      ...(req.query.userId && { userId: req.query.userId }),
+    }).countDocuments({
+      createdAt: { $gte: oneMonthAgo }, // for last month = same year and same time but decreasing 1 month from now (date / time).
+    });
+
     res.status(200).json({
       posts,
       totalPosts,
       lastMonthPosts,
+      creatorTotalPosts,
+      creatorLastMonthPosts,
     });
   } catch (error) {
     next(error);
   }
+};
+
+// Get creator posts only
+export const getCreatorPostsOnly = async (req, res, next) => {
+  const verifiedUser = await User.findById(req.params.userId);
+
+  if (req.user.id !== verifiedUser && !verifiedUser.isCreator)
+    return next(errorHandler(401, "You are not allowed to see posts list!"));
+
+  try {
+    const creatorPosts = await Post.find(verifiedUser.userId);
+  } catch (error) {}
 };
 
 // Get slug post

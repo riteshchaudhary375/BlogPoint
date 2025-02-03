@@ -106,6 +106,29 @@ const DashSidebar = () => {
             </div>
           </Link>
 
+          {currentUser && currentUser.isCreator && (
+            <>
+              <HorizontalLine />
+              <Link to={"/dashboard?tab=comments"}>
+                <div
+                  className={`px-4 py-1.5 flex items-center gap-2 cursor-pointer ${
+                    tab === "comments"
+                      ? "bg-lightBgHover"
+                      : "hover:bg-lightBgHover"
+                  }`}
+                  // onClick={() => setTab("users")}
+                >
+                  <img
+                    src={assets.message}
+                    alt="dashboard_icon"
+                    className="w-6 h-6 md:w-7 md:h-7"
+                  />
+                  <p>Comments</p>
+                </div>
+              </Link>
+            </>
+          )}
+
           {currentUser && currentUser.isAdmin && (
             <>
               <HorizontalLine />
