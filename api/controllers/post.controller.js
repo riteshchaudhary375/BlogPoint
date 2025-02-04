@@ -51,7 +51,8 @@ export const getPosts = async (req, res, next) => {
   try {
     const startIndex = parseInt(req.query.startIndex) || 0;
     const limit = parseInt(req.query.limit) || 9;
-    const sortDirection = req.query.order === "asc" ? 1 : -1;
+    const sortDirection = req.query.sort === "asc" ? 1 : -1;
+    // const sortDirection = req.query.order;
 
     // below queries is used in path location for searching and sorting
     const posts = await Post.find({
@@ -66,9 +67,10 @@ export const getPosts = async (req, res, next) => {
         ],
       }),
     })
+      // .sort({ createdAt: sortDirection })
+      .sort({ createdAt: sortDirection })
       .skip(startIndex)
-      .limit(limit)
-      .sort({ updatedAt: sortDirection });
+      .limit(limit);
 
     const totalPosts = await Post.countDocuments();
 

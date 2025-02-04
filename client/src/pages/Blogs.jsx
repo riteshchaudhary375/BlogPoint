@@ -67,21 +67,6 @@ const Blogs = () => {
     "Sports & Fitness",
   ];
 
-  const handleChange = (e) => {
-    if (e.target.id === "searchTerm") {
-      setSidebarData({ ...sidebarData, searchTerm: e.target.value });
-    }
-    if (e.target.id === "sort") {
-      const order = e.target.value || "desc";
-      setSidebarData({ ...sidebarData, sort: order });
-    }
-    if (e.target.id === "category") {
-      // const category = e.target.value || "Uncategorized";
-      const category = e.target.value;
-      setSidebarData({ ...sidebarData, category });
-    }
-  };
-
   // useEffect for filtered posts
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -100,41 +85,65 @@ const Blogs = () => {
 
     // Fetching filter post
     const fetchFilterPosts = async () => {
-      setFetching(true);
-      const searchQuery = urlParams.toString();
-      const res = await fetch(`/api/post/get?${searchQuery}`);
-      if (!res.ok) {
-        // toast.error(data.message)
-        setFetching(false);
-        return;
-      }
-      if (res.ok) {
-        const data = await res.json();
-        // setFilteredPosts(data.posts);
-        setPosts(data.posts);
-        setFetching(false);
-        if (data.posts.length === 9) {
-          setShowMore(true);
-        } else {
-          setShowMore(false);
+      try {
+        setFetching(true);
+        const searchQuery = urlParams.toString();
+        const res = await fetch(`/api/post/get?${searchQuery}`);
+        if (!res.ok) {
+          // toast.error(data.message)
+          setFetching(false);
+          return;
         }
+        if (res.ok) {
+          const data = await res.json();
+          // setFilteredPosts(data.posts);
+          setPosts(data.posts);
+          setFetching(false);
+          if (data.posts.length === 9) {
+            setShowMore(true);
+          } else {
+            setShowMore(false);
+          }
+        }
+      } catch (error) {
+        setFetching(false);
+        console.log(error);
       }
     };
 
     fetchFilterPosts();
   }, [location.search]);
 
+  const handleChange = (e) => {
+    if (e.target.id === "searchTerm") {
+      setSidebarData({ ...sidebarData, searchTerm: e.target.value });
+    }
+    if (e.target.id === "sort") {
+      const order = e.target.value || "desc";
+      setSidebarData({ ...sidebarData, sort: order });
+    }
+    if (e.target.id === "category") {
+      // const category = e.target.value || "Uncategorized";
+      const category = e.target.value;
+      setSidebarData({ ...sidebarData, category });
+    }
+  };
+
   const handleSubmitFilter = async (e) => {
     e.preventDefault();
 
-    const urlParams = new URLSearchParams(location.search);
+    try {
+      const urlParams = new URLSearchParams(location.search);
 
-    urlParams.set("searchTerm", sidebarData.searchTerm);
-    urlParams.set("sort", sidebarData.sort);
-    urlParams.set("category", sidebarData.category);
+      urlParams.set("searchTerm", sidebarData.searchTerm);
+      urlParams.set("sort", sidebarData.sort);
+      urlParams.set("category", sidebarData.category);
 
-    const searchQuery = urlParams.toString();
-    navigate(`/blogs?${searchQuery}`);
+      const searchQuery = urlParams.toString();
+      navigate(`/blogs?${searchQuery}`);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // Handle show more button
@@ -231,6 +240,7 @@ const Blogs = () => {
                 id="sort"
                 onChange={handleChange}
                 value={sidebarData.sort}
+                // defaultValue={"desc"}
                 className="bg-inherit border border-borderColor outline-borderColorHover rounded-sm text-textColor2 font-light text-sm px-2 h-10 cursor-pointer"
               >
                 <option value="desc">Sort by: Latest</option>
