@@ -161,15 +161,15 @@ export const getCreatorPostComment = async (req, res, next) => {
     const limit = parseInt(req.query.limit) || 9;
     // const sortDirection = req.query.sort === "desc" ? -1 : 1;
 
-    const comments = await Comment.find(verifiedUser.userId)
+    const comments = await Comment.find({ userId: verifiedUser._id })
       // .sort({ createdAt: sortDirection })
       .sort({ createdAt: -1 })
       .skip(startIndex)
       .limit(limit);
 
-    const totalComments = await Comment.find(
-      verifiedUser.userId
-    ).countDocuments();
+    const totalComments = await Comment.find({
+      userId: verifiedUser._id,
+    }).countDocuments();
 
     const now = new Date();
     const oneMonthAgo = new Date(
@@ -177,9 +177,9 @@ export const getCreatorPostComment = async (req, res, next) => {
       now.getMonth() - 1,
       now.getDate()
     );
-    const lastMonthComments = await Comment.find(
-      verifiedUser.userId
-    ).countDocuments({
+    const lastMonthComments = await Comment.find({
+      userId: verifiedUser._id,
+    }).countDocuments({
       createdAt: { $gte: oneMonthAgo },
     });
 
