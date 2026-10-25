@@ -214,6 +214,11 @@ export const forgotPassword = async (req, res, next) => {
   }
 };
 
+// check whether .env is actually loading
+// console.log("EMAIL:", process.env.EMAIL);
+// console.log("PASSWORD EXISTS:", !!process.env.PASSWORD);
+// console.log("FRONTEND_URL:", process.env.FRONTEND_URL);
+
 // Reset password for verified user and check token is expired or not
 export const resetPassword = async (req, res, next) => {
   const { id, token } = req.params;
