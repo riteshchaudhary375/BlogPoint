@@ -4,9 +4,7 @@ BlogPoint is a full-stack **MERN Stack blog application** where users can create
 
 The application also includes authentication, password recovery through email, image uploads, Google login, and PayPal subscription functionality.
 
-## Live Demo
-
-**Live Application:** Add your Render deployment URL here
+**Live Application:** [BlogPoint App](https://blogpoint-yw3m.onrender.com)
 
 ## Features
 
