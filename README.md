@@ -1,5 +1,9 @@
 # BlogPoint – MERN Stack Blog Application
 
+### NOTE:
+
+- FUll documentation of this project in pdf format file named as "document/blogpoint-document.pdf".
+
 BlogPoint is a full-stack **MERN Stack blog application** where users can create accounts, read and interact with blog posts, while creators can publish and manage content. Administrators have access to a dashboard for managing users, posts, comments, messages, subscribers, and subscription payments.
 
 The application also includes authentication, password recovery through email, image uploads, Google login, and PayPal subscription functionality.
