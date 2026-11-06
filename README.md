@@ -2,7 +2,7 @@
 
 ### NOTE:
 
-- FUll documentation of this project in pdf format file named as "document/blogpoint-document.pdf".
+- document of this project is in document folder.
 
 BlogPoint is a full-stack **MERN Stack blog application** where users can create accounts, read and interact with blog posts, while creators can publish and manage content. Administrators have access to a dashboard for managing users, posts, comments, messages, subscribers, and subscription payments.
 
